@@ -898,6 +898,11 @@ main { padding-top: 12px; }
 .tf-new { font-weight: 900; font-size: 1.15rem; color: #fff5b0; text-shadow: 0 0 12px rgba(255,240,150,.8); opacity: 0; animation: popIn .5s cubic-bezier(.2,1.6,.4,1) forwards; }
 .tf-end { margin-top: 16px; font-weight: 900; font-size: 1.1rem; opacity: 0; animation: popIn .6s cubic-bezier(.2,1.6,.4,1) forwards; }
 .tf-row, .tf-new, .tf-end { animation-fill-mode: both; }
+.taufe { background: radial-gradient(circle at 50% 40%, #ff7ab8, #7a0b4a); }
+@keyframes tfIn { from { opacity: 0; transform: translateY(16px) scale(.85); } to { opacity: 1; transform: none; } }
+.tf-row { animation: tfIn .5s cubic-bezier(.2,1.5,.4,1) both; }
+.tf-new { animation: tfIn .5s cubic-bezier(.2,1.6,.4,1) both; }
+.tf-end { animation: tfIn .6s cubic-bezier(.2,1.6,.4,1) both; }
 
 </style>
 </head>
@@ -1196,7 +1201,19 @@ function logPatch(room, ev) {
   return patch;
 }
 const PUSSY_EMOJIS = ['💅', '👑', '💖', '🌸', '🦄', '🎀', '💋', '👠', '🍓', '🦋', '🌷', '💎', '🍒', '🐱', '🌈', '✨'];
-const dname = p => { if (!p || !p.name) return 'Jemand'; const n = /pussy/i.test(p.name) ? p.name : `${p.name} Pussy`; return p.emoji ? `${n} ${p.emoji}` : n; };
+const SUFFIXES = ['Pussy', 'Luder', 'Sahneschnitte', 'Zuckerschnecke', 'Wildkatze', 'Sexbombe', 'Knackpo', 'Pfirsichpopo',
+  'Lustmolchin', 'Schlüpferstürmerin', 'Raubkatze', 'Biest', 'Bunny', 'Glitzerluder', 'Prachtweib', 'Spitzenhöschen',
+  'Naschkatze', 'Kuschelmaus', 'Herzensbrecherin', 'Sugar Babe', 'Bettflüsterin', 'Schnecke', 'Busenfreundin', 'Teufelchen'];
+function pickSuffixes(n, taken = []) {
+  const pool = SUFFIXES.filter(x => !taken.includes(x)).sort(() => Math.random() - .5);
+  return Array.from({ length: n }, (_, i) => pool[i % pool.length]);
+}
+const dname = p => {
+  if (!p || !p.name) return 'Jemand';
+  const suf = p.suffix || 'Pussy';
+  const n = new RegExp(suf, 'i').test(p.name) ? p.name : `${p.name} ${suf}`;
+  return p.emoji ? `${n} ${p.emoji}` : n;
+};
 const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
 const nameOf = (room, pid) => shownName(room, (room.players || {})[pid]);
 
@@ -1221,7 +1238,7 @@ function renderStart(prefillCode = '') {
       ${prefillCode && !ro ? `<div class="invite-banner">💌 Du wurdest in Raum <b>${esc(prefillCode)}</b> eingeladen!<small>Gib deinen Namen ein und tippe auf „Los“ 💖</small></div>` : ''}
       ${ro ? `<p class="note">👀 Du kannst Räume ansehen, aber nichts eintragen. Dafür muss dich die Besitzerin der App als Bearbeiter einladen.</p>` : `
       <label class="field"><span>💖 Dein Name</span>
-        <input class="input" id="name" maxlength="16" value="${esc(lastName)}" placeholder="z. B. Alina" autocomplete="off"></label>
+        <input class="input" id="name" maxlength="16" value="${esc(lastName)}" placeholder="z. B. Wet Ass Pussy 💦" autocomplete="off"></label>
       <div class="field"><span>✨ Dein Glücks-Emoji</span>
         <div class="emo-pick" id="emoPick">${PUSSY_EMOJIS.map(e => `<button type="button" class="emo ${e === myEmoji ? 'on' : ''}" data-emo="${e}">${e}</button>`).join('')}</div></div>
       ${prefillCode ? '' : `<button class="btn wide shine" id="create">👑 Neuen Raum erstellen 👑</button>
@@ -1275,7 +1292,7 @@ function renderStart(prefillCode = '') {
       const ev = { id: rid(), ts: Date.now(), type: 'join', pid };
       const ok = existing
         ? await write(() => state.backend.updateRoom(code, { players: { [pid]: { emoji: myEmoji } } }))
-        : await write(() => state.backend.updateRoom(code, { players: { [pid]: { name, emoji: myEmoji, joined: Date.now() } }, log: logPatch(room, ev) }));
+        : await write(() => state.backend.updateRoom(code, { players: { [pid]: { name, emoji: myEmoji, joined: Date.now(), ...(room.status === 'playing' ? { suffix: pickSuffixes(1, Object.values(room.players || {}).map(p => p.suffix))[0] } : {}) } }, log: logPatch(room, ev) }));
       if (ok) enterRoom(code, pid);
     } catch (err) { toast('Beitreten hat nicht geklappt – bitte nochmal versuchen 💔'); }
     e.target.disabled = false;
@@ -1682,7 +1699,7 @@ async function addPlayer() {
   if (!name) return;
   const pid = rid();
   const ev = { id: rid(), ts: Date.now(), type: 'join', pid };
-  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, emoji: pick(PUSSY_EMOJIS), joined: Date.now() } }, log: logPatch(state.room, ev) }));
+  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, emoji: pick(PUSSY_EMOJIS), joined: Date.now(), ...(state.room.status === 'playing' ? { suffix: pickSuffixes(1, Object.values(state.room.players || {}).map(p => p.suffix))[0] } : {}) } }, log: logPatch(state.room, ev) }));
   if (ok && state.room) renderRoom();
 }
 
@@ -1734,7 +1751,10 @@ async function nextGame() {
   room.bomb = null;
   room.recent = null;
   const ev = { id: rid(), ts: Date.now(), type: 'newgame', game: g + 1 };
-  room.log = { [ev.id]: ev };
+  const tf = { id: rid(), ts: Date.now() + 1, type: 'taufe' };
+  const sufs = pickSuffixes(playersOf(room).length, playersOf(room).map(([, p]) => p.suffix));
+  playersOf(room).forEach(([, p], i) => { p.suffix = sufs[i]; });
+  room.log = { [ev.id]: ev, [tf.id]: tf };
   await write(() => state.backend.setRoom(state.session.code, room));
 }
 
@@ -3247,7 +3267,7 @@ function renderLobby() {
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
       <h1>Pussey<span>Würfel</span></h1>
-      <p class="tagline"><span>Heute wird eine von euch zur <b>Pussy des Tages</b> gekrönt 👑 Zeigt, was für krasse Pussys ihr seid! 😈💅</span></p>
+      <p class="tagline"><span>Heute wird eine von euch zur <b>Pussy des Tages</b> gekrönt 👑 Und beim Start bekommt jede einen geheimen Spitznamen … 😈💅</span></p>
       <div class="lobby-card">
         <small>💌 Raum-Code</small>
         <div class="bigcode">${esc(session.code)}</div>
@@ -3283,8 +3303,10 @@ async function startGame() {
   if (!ids.length) return;
   const ev = { id: rid(), ts: Date.now(), type: 'newgame', game: room.game || 1 };
   const tf = { id: rid(), ts: Date.now() + 1, type: 'taufe' };
+  const sufs = pickSuffixes(ids.length);
   await write(() => state.backend.updateRoom(state.session.code, {
     status: 'playing',
+    players: Object.fromEntries(ids.map((id, i) => [id, { suffix: sufs[i] }])),
     turn: { pid: ids[0], choosing: null, n: 0, card: null },
     log: { ...logPatch(room, ev), ...logPatch(room, tf) }
   }));
@@ -3449,12 +3471,12 @@ async function pussyTaufe(room) {
   const el = document.createElement('div');
   el.className = 'taufe';
   el.innerHTML = `<div class="tf-in">
-    <div class="tf-title">✨ Die Pussy-Taufe ✨</div>
-    <div class="tf-sub">Ab jetzt heißt ihr …</div>
+    <div class="tf-title">✨ Die geheime Taufe ✨</div>
+    <div class="tf-sub">Die Würfelfee hat entschieden – ab jetzt heißt ihr …</div>
     <div class="tf-list">${ps.map(([id, p], i) => `<div class="tf-row" style="animation-delay:${0.4 + i * 0.5}s">
       <span class="tf-old">${esc(p.name)}</span><span class="tf-arrow">🪄</span>
       <span class="tf-new" style="animation-delay:${0.8 + i * 0.5}s">${esc(dname(p))}</span></div>`).join('')}</div>
-    <div class="tf-end" style="animation-delay:${1.2 + ps.length * 0.5}s">Möge die krasseste Pussy gewinnen 👑😈</div>
+    <div class="tf-end" style="animation-delay:${1.2 + ps.length * 0.5}s">Und jetzt: Möge die Krasseste gewinnen 👑😈</div>
   </div>`;
   fx().appendChild(el);
   play('magic'); fairyDust(1500);
