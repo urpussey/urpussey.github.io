@@ -1212,7 +1212,8 @@ function pickSuffixes(n, taken = []) {
 }
 const dname = p => {
   if (!p || !p.name) return 'Jemand';
-  const n = /pussy/i.test(p.name) ? p.name : `${p.name} Pussy`;
+  const base = p.name.trim();
+  const n = /pussy/i.test(base) ? base : `${base}${/[sßxz]$/i.test(base) ? '’' : '’s'} Pussy`;
   return p.emoji ? `${n} ${p.emoji}` : n;
 };
 const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
