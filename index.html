@@ -882,6 +882,22 @@ main { padding-top: 12px; }
 .tagline { text-align: center; margin: 4px 0 0; color: var(--ink); font-weight: 800; font-size: 1.05rem; line-height: 1.35; }
 .tagline b { color: var(--hot); font-family: var(--display); font-weight: 400; font-size: 1.25em; }
 .tagline span { display: block; margin-top: 6px; font-size: .88rem; color: var(--muted); font-weight: 700; }
+/* Emoji-Auswahl & Pussy-Taufe */
+.emo-pick { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.emo { font-size: 1.35rem; aspect-ratio: 1; border-radius: 12px; background: #fff; border: 2px solid var(--soft); display: grid; place-items: center; transition: .15s; }
+.emo.on { border-color: var(--hot); background: #ffe0ef; transform: scale(1.12); box-shadow: 0 4px 10px rgba(232,64,141,.35); }
+.taufe { position: absolute; inset: 0; display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, rgba(255,120,190,.92), rgba(110,10,70,.94)); animation: fade .4s; z-index: 4; }
+.taufe.out { animation: popOut .5s forwards; }
+.tf-in { text-align: center; color: #fff; padding: 20px; width: 100%; max-width: 420px; }
+.tf-title { font-family: var(--display); font-size: 2.2rem; text-shadow: 0 4px 0 rgba(120,0,60,.35), 0 0 20px rgba(255,220,240,.8); animation: bob 2s ease-in-out infinite; }
+.tf-sub { font-weight: 800; margin: 4px 0 14px; opacity: .9; }
+.tf-list { display: flex; flex-direction: column; gap: 10px; }
+.tf-row { display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255,255,255,.16); border: 2px solid rgba(255,255,255,.35); border-radius: 18px; padding: 10px; opacity: 0; animation: lpIn .5s cubic-bezier(.2,1.5,.4,1) forwards; }
+.tf-old { font-weight: 700; text-decoration: line-through; opacity: .7; }
+.tf-arrow { animation: wandIdle .6s ease-in-out infinite; }
+.tf-new { font-weight: 900; font-size: 1.15rem; color: #fff5b0; text-shadow: 0 0 12px rgba(255,240,150,.8); opacity: 0; animation: popIn .5s cubic-bezier(.2,1.6,.4,1) forwards; }
+.tf-end { margin-top: 16px; font-weight: 900; font-size: 1.1rem; opacity: 0; animation: popIn .6s cubic-bezier(.2,1.6,.4,1) forwards; }
+.tf-row, .tf-new, .tf-end { animation-fill-mode: both; }
 
 </style>
 </head>
@@ -1179,7 +1195,10 @@ function logPatch(room, ev) {
   if (list.length > 40) list.slice(0, list.length - 40).forEach(e => { patch[e.id] = null; });
   return patch;
 }
-const nameOf = (room, pid) => ((room.players || {})[pid] || {}).name || 'Jemand';
+const PUSSY_EMOJIS = ['💅', '👑', '💖', '🌸', '🦄', '🎀', '💋', '👠', '🍓', '🦋', '🌷', '💎', '🍒', '🐱', '🌈', '✨'];
+const dname = p => { if (!p || !p.name) return 'Jemand'; const n = /pussy/i.test(p.name) ? p.name : `${p.name} Pussy`; return p.emoji ? `${n} ${p.emoji}` : n; };
+const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
+const nameOf = (room, pid) => shownName(room, (room.players || {})[pid]);
 
 /* ================= Startbildschirm ================= */
 
@@ -1188,6 +1207,7 @@ function renderStart(prefillCode = '') {
   clearTimeout(state.loadTimer);
   state.room = null;
   const lastName = store.get('kx-name') || '';
+  let myEmoji = store.get('kx-emoji') || PUSSY_EMOJIS[0];
   const ro = !state.canWrite;
   $('#app').innerHTML = `
     <div class="start">
@@ -1202,6 +1222,8 @@ function renderStart(prefillCode = '') {
       ${ro ? `<p class="note">👀 Du kannst Räume ansehen, aber nichts eintragen. Dafür muss dich die Besitzerin der App als Bearbeiter einladen.</p>` : `
       <label class="field"><span>💖 Dein Name</span>
         <input class="input" id="name" maxlength="16" value="${esc(lastName)}" placeholder="z. B. Alina" autocomplete="off"></label>
+      <div class="field"><span>✨ Dein Glücks-Emoji</span>
+        <div class="emo-pick" id="emoPick">${PUSSY_EMOJIS.map(e => `<button type="button" class="emo ${e === myEmoji ? 'on' : ''}" data-emo="${e}">${e}</button>`).join('')}</div></div>
       ${prefillCode ? '' : `<button class="btn wide shine" id="create">👑 Neuen Raum erstellen 👑</button>
       <div class="or"><span>🌸 oder beitreten 🌸</span></div>`}`}
       <div class="join">
@@ -1214,6 +1236,12 @@ function renderStart(prefillCode = '') {
     if (!n) { toast('Bitte zuerst deinen Namen eingeben 💕'); $('#name').focus(); return null; }
     store.set('kx-name', n); return n;
   };
+  if ($('#emoPick')) $('#emoPick').onclick = e => {
+    const b = e.target.closest('[data-emo]'); if (!b) return;
+    myEmoji = b.dataset.emo; store.set('kx-emoji', myEmoji);
+    document.querySelectorAll('#emoPick .emo').forEach(x => x.classList.toggle('on', x === b));
+    burst([myEmoji, '✨', '💖'], 10, 50, 60); play('pling');
+  };
   $('#code').oninput = e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); };
   if (!ro && $('#create')) $('#create').onclick = async e => {
     const name = getName(); if (!name) return;
@@ -1224,7 +1252,7 @@ function renderStart(prefillCode = '') {
       const pid = rid();
       const ok = await write(() => state.backend.setRoom(code, {
         created: Date.now(), game: 1,
-        players: { [pid]: { name, joined: Date.now() } },
+        players: { [pid]: { name, emoji: myEmoji, joined: Date.now() } },
         status: 'lobby', host: pid,
         turn: { pid, choosing: null, n: 0, card: null }
       }));
@@ -1245,9 +1273,9 @@ function renderStart(prefillCode = '') {
       const existing = Object.entries(room.players || {}).find(([, p]) => p && p.name && p.name.toLowerCase() === name.toLowerCase());
       const pid = existing ? existing[0] : rid();
       const ev = { id: rid(), ts: Date.now(), type: 'join', pid };
-      const ok = existing || await write(() => state.backend.updateRoom(code, {
-        players: { [pid]: { name, joined: Date.now() } }, log: logPatch(room, ev)
-      }));
+      const ok = existing
+        ? await write(() => state.backend.updateRoom(code, { players: { [pid]: { emoji: myEmoji } } }))
+        : await write(() => state.backend.updateRoom(code, { players: { [pid]: { name, emoji: myEmoji, joined: Date.now() } }, log: logPatch(room, ev) }));
       if (ok) enterRoom(code, pid);
     } catch (err) { toast('Beitreten hat nicht geklappt – bitte nochmal versuchen 💔'); }
     e.target.disabled = false;
@@ -1335,6 +1363,7 @@ function playEvent(e, room) {
     if (e.phase === 'reveal') showCard({ id: e.card, key: e.id, ts: e.ts, roast: e.roast, cheer: e.cheer, hidden: true, revealed: true, status: 'done' }, e.pid, false, false);
     return;
   }
+  if (e.type === 'taufe') { pussyTaufe(room); return; }
   if (e.type === 'roll') { fxShow('roll', e); return; }
   if (e.type === 'wheel') { fxShow('wheel', e); return; }
   if (e.type === 'slot') { fxShow('slot', e); return; }
@@ -1414,7 +1443,7 @@ function renderRoom() {
       </button>` : (ro ? '' : `<button class="btn wide drawbtn shine" id="drawbtn">🔮 Zauberkarte ziehen ✨</button>`)}` : ''}
     ${chestHTML(room)}
     <nav class="names">
-      ${players.map(([id, p]) => `<span class="nchip ${turn.pid === id ? 'turn' : ''}">${turn.pid === id ? '🎲 ' : ''}${esc(p.name)}${p.shield ? ' 🛡️' : ''}${room.bomb && room.bomb.pid === id ? ' 💣' : ''}</span>`).join('')}
+      ${players.map(([id, p]) => `<span class="nchip ${turn.pid === id ? 'turn' : ''}">${turn.pid === id ? '🎲 ' : ''}${esc(dname(p))}${p.shield ? ' 🛡️' : ''}${room.bomb && room.bomb.pid === id ? ' 💣' : ''}</span>`).join('')}
       ${ro ? '' : `<button class="nchip add" id="addPlayer" aria-label="Mitspielerin hinzufügen">＋</button>`}
     </nav>
     ${standHTML(players, turn)}
@@ -1542,7 +1571,7 @@ function overviewHTML(players) {
       <thead><tr><th>Spielerin</th>${past.map(g => `<th>Sp. ${g}</th>`).join('')}<th>Sp. ${game}<br><small>läuft</small></th><th>Gesamt</th>${state.canWrite ? '<th></th>' : ''}</tr></thead>
       <tbody>${rows.map((r, i) => `
         <tr class="${r.sum === lead ? 'lead' : ''}">
-          <td><span class="rank">${medal(i)}</span> ${esc(r.p.name)}</td>
+          <td><span class="rank">${medal(i)}</span> ${esc(dname(r.p))}</td>
           ${past.map(g => `<td>${(r.p.history || {})['g' + g] ?? '–'}</td>`).join('')}
           <td>${r.cur}<br><small>${r.filled}/${ALL.length}</small></td>
           <td class="tot">${r.sum}</td>
@@ -1605,7 +1634,7 @@ function openPicker(pid, catId) {
   setChoosing(pid, catId);
   openSheet(`
     <div class="pickhead">
-      <div>${c.type === 'upper' ? die(c.face, 'die mid', true) : `<span class="bigemo">${EMO[c.id]}</span>`}<h3>${c.label}</h3><p class="muted small">${esc(p.name)} · ${c.hint}</p></div>
+      <div>${c.type === 'upper' ? die(c.face, 'die mid', true) : `<span class="bigemo">${EMO[c.id]}</span>`}<h3>${c.label}</h3><p class="muted small">${esc(dname(p))} · ${c.hint}</p></div>
       ${isNum(cur) ? `<div class="curval">jetzt<b>${cur === 0 ? '💔' : cur}</b></div>` : ''}
     </div>
     ${fxNote}
@@ -1653,13 +1682,13 @@ async function addPlayer() {
   if (!name) return;
   const pid = rid();
   const ev = { id: rid(), ts: Date.now(), type: 'join', pid };
-  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, joined: Date.now() } }, log: logPatch(state.room, ev) }));
+  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, emoji: pick(PUSSY_EMOJIS), joined: Date.now() } }, log: logPatch(state.room, ev) }));
   if (ok && state.room) renderRoom();
 }
 
 async function removePlayer(pid) {
   const p = (state.room.players || {})[pid]; if (!p) return;
-  if (!(await confirmBox(`${esc(p.name)} entfernen? 🥺`, 'Alle Punkte dieser Person gehen verloren.', 'Entfernen', true))) return;
+  if (!(await confirmBox(`${esc(shownName(state.room, p))} entfernen? 🥺`, 'Alle Punkte dieser Person gehen verloren.', 'Entfernen', true))) return;
   const room = clone(state.room);
   if (turnOf(room).pid === pid) room.turn = nextTurn(room, pid);
   if (room.turn && room.turn.card && room.turn.pid === pid) room.turn.card = null;
@@ -1755,7 +1784,7 @@ function tableHTML(players, turn) {
 
   const head = `<tr><th class="lblc corner">🌸</th>${cols.map(c => `
     <th class="${c.on ? 'on' : ''} ${c.turn ? 'turn' : ''}">
-      <span class="hn">${c.turn ? '🎲 ' : ''}${esc(c.on ? c.p.name : shortName(c.p.name))}${c.p.shield ? ' 🛡️' : ''}</span>
+      <span class="hn">${c.turn ? '🎲 ' : ''}${esc(c.on ? dname(c.p) : shortName(c.p.name))}${c.p.shield ? ' 🛡️' : ''}</span>
       ${c.turn && c.on && turn.card ? `<span class="hcard">${isSecret(turn.card) ? '🔒 Geheimkarte' : `${cardDef(turn.card.id).emo} ${cardDef(turn.card.id).title}`}</span>` : ''}
       <span class="ht">${c.t.total}</span>
     </th>`).join('')}</tr>`;
@@ -1789,7 +1818,7 @@ function tableHTML(players, turn) {
     let free = ALL.filter(c => !isNum((tp.scores || {})[c.id]) && !(tcard.locked || []).includes(c.id));
     if (tcard.forceCat) free = free.filter(c => c.id === tcard.forceCat);
     picker = `<div class="pickbar">
-      <label for="catSelect">🎯 <b>${esc(tp.name)}</b> trägt ein in …</label>
+      <label for="catSelect">🎯 <b>${esc(dname(tp))}</b> trägt ein in …</label>
       <div class="selwrap"><select id="catSelect" data-pid="${turn.pid}">
         <option value="">💖 Freie Kategorie wählen (${free.length} frei)</option>
         <optgroup label="Oberer Teil">${free.filter(c => c.type === 'upper').map(c => `<option value="${c.id}">${EMO[c.id]} ${c.label} – ${c.hint}</option>`).join('')}</optgroup>
@@ -1831,18 +1860,18 @@ function standHTML(players, turn) {
     ${state.standOpen ? `<div class="standlist">${rows.map((r, i) => `
       <div class="srow ${r.id === turn.pid ? 'turn' : ''}">
         <span class="smed">${medal(i)}</span>
-        <span class="sname">${esc(r.p.name)}</span>
+        <span class="sname">${esc(dname(r.p))}</span>
         <span class="sbar"><i style="width:${Math.max(4, Math.round((Math.max(0, r.t) / max) * 100))}%"></i></span>
         <b class="spts">${r.t}</b>
       </div>`).join('')}
-      ${g > 1 ? `<p class="sall">Alle Spiele zusammen: ${[...rows].sort((a, b) => b.all - a.all).map(r => `${esc(r.p.name)} ${r.all}`).join(' · ')}</p>` : ''}
+      ${g > 1 ? `<p class="sall">Alle Spiele zusammen: ${[...rows].sort((a, b) => b.all - a.all).map(r => `${esc(dname(r.p))} ${r.all}`).join(' · ')}</p>` : ''}
     </div>` : ''}
   </section>`;
 }
 function openRemoveMenu() {
   const players = playersOf(state.room);
   openSheet(`<h3>Wer soll raus? 🥺</h3>
-    ${players.map(([id, p]) => `<button class="menuitem" data-act="rm:${id}">👋 ${esc(p.name)}</button>`).join('')}
+    ${players.map(([id, p]) => `<button class="menuitem" data-act="rm:${id}">👋 ${esc(dname(p))}</button>`).join('')}
     <div class="actions"><button class="btn ghost" data-act="no">Abbrechen</button></div>`,
     (act, _b, close) => { close(); if (act.startsWith('rm:')) removePlayer(act.slice(3)); });
 }
@@ -3229,7 +3258,7 @@ function renderLobby() {
         <div class="lobby-head"><b>💕 In der Lobby (${players.length})</b>${ro ? '' : '<button class="nchip add" id="lobbyAdd">＋ ohne Handy</button>'}</div>
         <div class="lobby-list">
           ${players.map(([id, p], i) => `<div class="lp ${id === session.pid ? 'me' : ''}" style="animation-delay:${i * 0.06}s">
-            <span class="lp-av">${avatars[i % avatars.length]}</span><span class="lp-name">${esc(p.name)}</span>
+            <span class="lp-av">${p.emoji || avatars[i % avatars.length]}</span><span class="lp-name">${esc(p.name)}</span>
             ${id === host ? '<span class="lp-host">👑 Gastgeberin</span>' : ''}
             ${isHost && id !== session.pid ? `<button class="lp-rm" data-rm="${id}" aria-label="entfernen">×</button>` : ''}
           </div>`).join('')}
@@ -3253,10 +3282,11 @@ async function startGame() {
   const ids = orderOf(room);
   if (!ids.length) return;
   const ev = { id: rid(), ts: Date.now(), type: 'newgame', game: room.game || 1 };
+  const tf = { id: rid(), ts: Date.now() + 1, type: 'taufe' };
   await write(() => state.backend.updateRoom(state.session.code, {
     status: 'playing',
     turn: { pid: ids[0], choosing: null, n: 0, card: null },
-    log: logPatch(room, ev)
+    log: { ...logPatch(room, ev), ...logPatch(room, tf) }
   }));
 }
 
@@ -3266,7 +3296,7 @@ const gameOver = room => {
   return room && room.status !== 'lobby' && ps.length > 0 && ps.every(([, p]) => calc(p).filled === ALL.length);
 };
 const AVATARS = ['💖', '🌸', '🦄', '🎀', '🦋', '👑', '💅', '🌷', '✨', '🍓'];
-const avatarOf = (room, pid) => AVATARS[Math.max(0, orderOf(room).indexOf(pid)) % AVATARS.length];
+const avatarOf = (room, pid) => ((room.players[pid] || {}).emoji) || AVATARS[Math.max(0, orderOf(room).indexOf(pid)) % AVATARS.length];
 
 // Wird nach jedem Rendern aufgerufen: Banner statt Zug-Anzeige, Siegerehrung automatisch starten
 function ceremonyHook(app) {
@@ -3294,7 +3324,7 @@ function ceremonyData(room) {
   const award = (fn, emo, title, unit) => {
     const mx = Math.max(...ps.map(fn)); if (mx <= 0) return null;
     const who = ps.filter(x => fn(x) === mx);
-    return { emo, title, names: who.map(x => x.p.name).join(' & '), val: `${mx} ${unit}` };
+    return { emo, title, names: who.map(x => dname(x.p)).join(' & '), val: `${mx} ${unit}` };
   };
   const awards = [
     award(kn, '💎', 'Kniffel-Queen', 'Kniffel'),
@@ -3319,7 +3349,7 @@ async function showCeremony(replay) {
   el.id = 'ceremony';
   const pod = (x, place) => x ? `<div class="pd pd${place}" data-place="${place}">
       <div class="pd-who"><div class="pd-av">${avatarOf(room, x.id)}${place === 1 ? '<span class="pd-crown">👑</span>' : ''}</div>
-        <div class="pd-name">${esc(x.p.name)}</div><div class="pd-pts">${x.t} Punkte</div></div>
+        <div class="pd-name">${esc(dname(x.p))}</div><div class="pd-pts">${x.t} Punkte</div></div>
       <div class="pd-block"><span>${x.rank}</span><small>${RANK_TITLES[x.rank - 1] || ''}</small></div></div>` : '<div class="pd pd-empty"></div>';
   el.innerHTML = `
     <div class="cer-bg"><i class="spot s1"></i><i class="spot s2"></i><i class="spot s3"></i></div>
@@ -3327,7 +3357,7 @@ async function showCeremony(replay) {
       <div class="cer-title">✨ Die große Siegerehrung ✨</div>
       <div class="cer-sub" id="cerSub">Trommelwirbel bitte …</div>
       <div class="podium">${pod(top[1], 2)}${pod(top[0], 1)}${pod(top[2], 3)}</div>
-      <div class="cer-rest">${rest.map(x => `<div class="cr" data-rank="${x.rank}"><b>${x.rank}.</b> ${avatarOf(room, x.id)} ${esc(x.p.name)}<span>${x.t}</span></div>`).join('')}</div>
+      <div class="cer-rest">${rest.map(x => `<div class="cr" data-rank="${x.rank}"><b>${x.rank}.</b> ${avatarOf(room, x.id)} ${esc(dname(x.p))}<span>${x.t}</span></div>`).join('')}</div>
       <div class="cer-awards">${awards.map(a => `<div class="aw"><span class="aw-emo">${a.emo}</span><b>${a.title}</b><small>${esc(a.names)} · ${a.val}</small></div>`).join('')}</div>
       <div class="cer-last"></div>
       <div class="cer-btns">
@@ -3364,7 +3394,7 @@ async function showCeremony(replay) {
   const p1 = el.querySelector('.pd1'); p1.classList.add('rise'); await sleep(500);
   p1.classList.add('crowned');
   play('harp'); setTimeout(() => play('fanfare'), 900);
-  sub(`${top[0].p.name} ist die Pussy des Tages! 👑💅`);
+  sub(`${dname(top[0].p)} ist die Pussy des Tages! 👑`);
   dustBurst(120); rain(['👑', '💖', '✨', '💎', '🌸', '🦄', '💕'], 80); buzz([100, 50, 100, 50, 300]);
   setTimeout(() => unicornFly(el), 1200);
   state.cerFw = setInterval(() => { if (cancelled()) return clearInterval(state.cerFw); burst(pick([['💖', '✨', '💗'], ['🌸', '💫', '🎀'], ['💎', '✨', '👑']]), 20, 15 + Math.random() * 70, 15 + Math.random() * 40); play('pling'); }, 700);
@@ -3374,9 +3404,9 @@ async function showCeremony(replay) {
   await sleep(1400); if (cancelled()) return;
   if (ps.length >= 2) {
     const lastX = ps[ps.length - 1];
-    el.querySelector('.cer-last').innerHTML = `<div class="last-card">🥀 <b>${esc(lastX.p.name)}</b><small>${esc(pick(LAST_ROASTS))}</small></div>`;
+    el.querySelector('.cer-last').innerHTML = `<div class="last-card">🥀 <b>${esc(dname(lastX.p))}</b><small>${esc(pick(LAST_ROASTS))}</small></div>`;
     el.querySelector('.cer-last').classList.add('show');
-    laughFX(`${esc(lastX.p.name)} ist die Pechmarie des Tages! 😂`);
+    laughFX(`${esc(dname(lastX.p))} ist die Pechmarie des Tages! 😂`);
     await sleep(1600);
   }
   el.querySelector('.cer-btns').classList.add('show');
@@ -3411,6 +3441,27 @@ SFX.harp = function () {
   [1047, 1319, 1568, 2093].forEach(f => tone(f, 0.8, 1.8, 'sine', 0.06));
   for (let i = 0; i < 10; i++) tone(2500 + Math.random() * 2000, 0.9 + i * 0.08, 0.25, 'sine', 0.03);
 };
+
+/* ================= Pussy-Taufe beim Spielstart ================= */
+async function pussyTaufe(room) {
+  const ps = playersOf(room);
+  if (!ps.length) return;
+  const el = document.createElement('div');
+  el.className = 'taufe';
+  el.innerHTML = `<div class="tf-in">
+    <div class="tf-title">✨ Die Pussy-Taufe ✨</div>
+    <div class="tf-sub">Ab jetzt heißt ihr …</div>
+    <div class="tf-list">${ps.map(([id, p], i) => `<div class="tf-row" style="animation-delay:${0.4 + i * 0.5}s">
+      <span class="tf-old">${esc(p.name)}</span><span class="tf-arrow">🪄</span>
+      <span class="tf-new" style="animation-delay:${0.8 + i * 0.5}s">${esc(dname(p))}</span></div>`).join('')}</div>
+    <div class="tf-end" style="animation-delay:${1.2 + ps.length * 0.5}s">Möge die krasseste Pussy gewinnen 👑😈</div>
+  </div>`;
+  fx().appendChild(el);
+  play('magic'); fairyDust(1500);
+  ps.forEach((_, i) => setTimeout(() => { play('pling'); burst(['✨', '💖', '💅', '👑'], 12, 50, 35 + i * 8); }, 800 + i * 500));
+  setTimeout(() => { play('harp'); rain(['💖', '✨', '👑', '💅', '🌸'], 40); }, 900 + ps.length * 500);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 500); }, 3800 + ps.length * 500);
+}
 
 init();
 
