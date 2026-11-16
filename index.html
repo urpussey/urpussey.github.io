@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <meta name="description" content="Du bist eingeladen! Zauberkarten · Live-Punkte · Glitzer 💖">
 <meta property="og:type" content="website">
-<meta property="og:title" content="PusseyWürfel 💖👑">
+<meta property="og:title" content="PussyKniffel 💖👑">
 <meta property="og:description" content="Du bist eingeladen! Zauberkarten · Live-Punkte · Glitzer ✨">
 <meta property="og:image" content="https://urpussey.github.io/vorschau.png"><meta property="og:url" content="https://urpussey.github.io/">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -18,9 +18,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="PusseyWürfel">
+<meta name="apple-mobile-web-app-title" content="PussyKniffel">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>PusseyWürfel</title>
+<title>PussyKniffel</title>
 <style>
 :root {
   --ink: #26385a;
@@ -1233,7 +1233,7 @@ function renderStart(prefillCode = '') {
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
       <div class="logo">${die(5, 'die big d1', true)}${die(3, 'die big d2', true)}</div>
-      <h1>Pussey<span>Würfel</span></h1>
+      <h1>Pussy<span>Kniffel</span></h1>
       <div class="hearts" aria-hidden="true">💕 ♡ 💖 ♡ 💕</div>
       <p class="tagline">Wer wird heute zur <b>Pussy des Tages</b> gekrönt? 👑💅<br><span>Zeig allen, was für eine krasse Pussy du bist! 😈💅✨</span></p>
       ${state.backend.mode === 'local' ? `<p class="note">🌷 Vorschau-Modus: Punkte werden nur auf diesem Gerät gespeichert.</p>` : ''}
@@ -3233,7 +3233,7 @@ const inviteLink = code => {
   const baseUrl = state.backend && state.backend.mode === 'claude' ? ARTIFACT_URL : location.href.split('#')[0].split('?')[0];
   return `${baseUrl}#raum-${code}`;
 };
-const inviteText = code => `💖 Komm in meinen PusseyWürfel-Raum! 👑🎲\nRaum-Code: ${code}\n${inviteLink(code)}`;
+const inviteText = code => `💖 Komm in meinen PussyKniffel-Raum! 👑🎲\nRaum-Code: ${code}\n${inviteLink(code)}`;
 
 function openInvite() {
   const code = state.session.code;
@@ -3244,7 +3244,7 @@ function openInvite() {
     ${navigator.share && state.backend.mode !== 'claude' ? '<button class="btn wide ghost" data-act="share" style="margin-top:8px">📤 Teilen …</button>' : ''}
     <button class="btn wide ghost" data-act="copy" style="margin-top:8px">📋 Link kopieren</button>`,
     async (act, _b, close) => {
-      if (act === 'share') { try { await navigator.share({ title: 'PusseyWürfel', text: inviteText(code) }); } catch {} close(); }
+      if (act === 'share') { try { await navigator.share({ title: 'PussyKniffel', text: inviteText(code) }); } catch {} close(); }
       if (act === 'copy') {
         try { await navigator.clipboard.writeText(inviteText(code)); toast('Einladung kopiert 💌'); } catch { toast(`Raum-Code: ${code} 💖`); }
         close();
@@ -3265,7 +3265,7 @@ function renderLobby() {
     <div class="lobby">
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
-      <h1>Pussey<span>Würfel</span></h1>
+      <h1>Pussy<span>Kniffel</span></h1>
       <p class="tagline"><span>Heute wird eine von euch zur <b>Pussy des Tages</b> gekrönt 👑 Zeigt, was ihr drauf habt! 😈💅</span></p>
       <div class="lobby-card">
         <small>💌 Raum-Code</small>
