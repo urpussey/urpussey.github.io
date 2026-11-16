@@ -825,6 +825,63 @@ main { padding-top: 12px; }
 .invite-banner b { color: var(--hot); letter-spacing: .15em; }
 .invite-banner small { display: block; font-weight: 600; color: var(--muted); margin-top: 3px; }
 .sheet .bigcode { text-align: center; }
+/* ===== Siegerehrung ===== */
+.over-banner { display: block; width: calc(100% - 28px); margin: 10px 14px 0; padding: 14px; border-radius: 20px; background: linear-gradient(135deg, #ffd56b, #ff8cc6 50%, #ff4fa3); color: #fff; font-weight: 800; font-size: 1.05rem; box-shadow: 0 8px 20px rgba(232,64,141,.35); animation: glow 1.6s ease-in-out infinite; position: relative; z-index: 3; }
+#ceremony { position: fixed; inset: 0; z-index: 35; overflow-y: auto; -webkit-overflow-scrolling: touch; animation: fade .5s; }
+.cer-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #ff6fb5, #a8156a 55%, #4a0730); overflow: hidden; }
+.cer-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,.5) 0 1.5px, transparent 2.5px) 0 0 / 40px 40px; opacity: .35; animation: dust 6s linear infinite; }
+.spot { position: absolute; top: -20%; width: 40vw; height: 140%; background: linear-gradient(180deg, rgba(255,240,250,.45), transparent 75%); transform-origin: top center; filter: blur(6px); }
+.spot.s1 { left: 5%; animation: sweep 3.2s ease-in-out infinite alternate; }
+.spot.s2 { left: 30%; animation: sweep 2.6s ease-in-out infinite alternate-reverse; }
+.spot.s3 { left: 55%; animation: sweep 3.6s ease-in-out infinite alternate; }
+@keyframes sweep { from { transform: rotate(-22deg); } to { transform: rotate(22deg); } }
+.cer-in { position: relative; min-height: 100%; padding: calc(env(safe-area-inset-top) + 28px) 16px calc(env(safe-area-inset-bottom) + 30px); display: flex; flex-direction: column; align-items: center; gap: 12px; color: #fff; }
+.cer-title { font-family: var(--display); font-size: 2rem; text-align: center; text-shadow: 0 4px 0 rgba(120,0,60,.35), 0 0 24px rgba(255,200,230,.8); animation: bob 2.4s ease-in-out infinite; }
+.cer-sub { font-weight: 800; font-size: 1.15rem; text-align: center; min-height: 1.6em; }
+.cer-sub.pop { animation: popIn .5s cubic-bezier(.2,1.6,.4,1); }
+.podium { display: flex; align-items: flex-end; justify-content: center; gap: 8px; width: 100%; max-width: 420px; height: 330px; margin-top: 6px; }
+.pd { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.pd-who { text-align: center; opacity: 0; transform: translateY(30px) scale(.6); transition: .6s cubic-bezier(.2,1.6,.4,1) .35s; }
+.pd.rise .pd-who { opacity: 1; transform: none; }
+.pd-av { position: relative; width: 64px; height: 64px; margin: 0 auto; display: grid; place-items: center; font-size: 2rem; background: #fff; border-radius: 50%; border: 3px solid #ffd0e5; box-shadow: 0 6px 16px rgba(120,0,60,.35); }
+.pd1 .pd-av { width: 80px; height: 80px; font-size: 2.6rem; border-color: #ffd56b; }
+.pd-crown { position: absolute; top: -70vh; left: 50%; transform: translateX(-50%) rotate(-30deg); font-size: 2.6rem; opacity: 0; }
+.pd1.crowned .pd-crown { animation: crownDrop 1.1s cubic-bezier(.3,1.4,.5,1) forwards; }
+@keyframes crownDrop { 0% { top: -70vh; opacity: 1; transform: translateX(-50%) rotate(-200deg) scale(2); } 75% { top: -38px; transform: translateX(-50%) rotate(10deg) scale(1.2); } 100% { top: -34px; opacity: 1; transform: translateX(-50%) rotate(-8deg) scale(1); filter: drop-shadow(0 0 12px #ffd56b); } }
+.pd1.crowned .pd-av { animation: glowGold 1.4s ease-in-out infinite; }
+.pd-name { font-weight: 900; margin-top: 6px; font-size: 1rem; text-shadow: 0 2px 6px rgba(120,0,60,.5); max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pd-pts { font-weight: 700; font-size: .85rem; opacity: .9; margin-bottom: 6px; }
+.pd-block { width: 100%; height: 0; border-radius: 18px 18px 6px 6px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 10px; overflow: hidden; transition: height .9s cubic-bezier(.2,1.3,.4,1); box-shadow: inset 0 -8px 0 rgba(0,0,0,.08), 0 10px 26px rgba(60,0,30,.35); border: 3px solid rgba(255,255,255,.7); }
+.pd-block span { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: #fff; text-shadow: 0 3px 0 rgba(120,0,60,.3); }
+.pd-block small { font-size: .62rem; font-weight: 800; margin-top: 4px; text-align: center; padding: 0 4px; }
+.pd1 .pd-block { background: linear-gradient(180deg, #ffe08a, #f7b733); }
+.pd2 .pd-block { background: linear-gradient(180deg, #ffc2df, #ff6fb5); }
+.pd3 .pd-block { background: linear-gradient(180deg, #e4c6f5, #b45ad8); }
+.pd1.rise .pd-block { height: 150px; } .pd2.rise .pd-block { height: 110px; } .pd3.rise .pd-block { height: 78px; }
+.cer-rest { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 6px; }
+.cr { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.35); border-radius: 16px; padding: 8px 12px; font-weight: 800; opacity: 0; transform: translateX(-30px); transition: .5s cubic-bezier(.2,1.6,.4,1); }
+.cr.show { opacity: 1; transform: none; }
+.cr span { margin-left: auto; }
+.cer-awards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 420px; opacity: 0; transform: translateY(20px); transition: .6s; }
+.cer-awards.show { opacity: 1; transform: none; }
+.aw { background: #fff; color: var(--ink); border-radius: 18px; padding: 10px; text-align: center; box-shadow: 0 6px 16px rgba(60,0,30,.3); }
+.aw-emo { display: block; font-size: 1.6rem; }
+.aw b { display: block; font-size: .85rem; color: var(--blue); }
+.aw small { display: block; font-size: .72rem; color: var(--muted); font-weight: 700; }
+.cer-last { width: 100%; max-width: 420px; opacity: 0; transform: scale(.8); transition: .5s cubic-bezier(.2,1.6,.4,1); }
+.cer-last.show { opacity: 1; transform: none; }
+.last-card { background: linear-gradient(135deg, #9b59b6, #d6336c); border: 3px dashed #fff; border-radius: 20px; padding: 12px; text-align: center; transform: rotate(-1.5deg); }
+.last-card b { font-size: 1.1rem; }
+.last-card small { display: block; font-weight: 700; margin-top: 2px; }
+.cer-btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; opacity: 0; pointer-events: none; transition: .5s; }
+.cer-btns.show { opacity: 1; pointer-events: auto; }
+.cer-btns .btn.ghost { background: rgba(255,255,255,.9); }
+.unicorn { position: fixed; left: -20vw; top: 30vh; font-size: 4rem; z-index: 3; animation: uniFly 3.2s ease-in-out forwards; filter: drop-shadow(0 0 14px #fff); }
+@keyframes uniFly { 0% { left: -20vw; top: 34vh; transform: scaleX(-1) rotate(0); } 25% { top: 20vh; } 50% { top: 30vh; transform: scaleX(-1) rotate(-10deg); } 75% { top: 16vh; } 100% { left: 115vw; top: 24vh; transform: scaleX(-1) rotate(0); } }
+.rb-trail { position: fixed; z-index: 2; font-size: 1.3rem; animation: dustFloat 1.3s ease-out forwards; --dx: 0px; --dy: 30px; pointer-events: none; }
+.tagline { text-align: center; margin: 4px 0 0; color: var(--ink); font-weight: 800; font-size: 1.05rem; line-height: 1.35; }
+.tagline b { color: var(--hot); font-family: var(--display); font-weight: 400; font-size: 1.25em; }
+.tagline span { display: block; margin-top: 6px; font-size: .88rem; color: var(--muted); font-weight: 700; }
 
 </style>
 </head>
@@ -1139,7 +1196,7 @@ function renderStart(prefillCode = '') {
       <div class="logo">${die(5, 'die big d1', true)}${die(3, 'die big d2', true)}</div>
       <h1>Pussey<span>Würfel</span></h1>
       <div class="hearts" aria-hidden="true">💕 ♡ 💖 ♡ 💕</div>
-      <p class="muted center">Der Prinzessinnen-Wertungsblock für 6 Würfel 🎲✨<br>Live mit allen am Tisch 💅</p>
+      <p class="tagline">Wer wird heute zur <b>Pussy des Tages</b> gekrönt? 👑💅<br><span>Zeig allen, was für eine krasse Pussy du bist! 😈💅✨</span></p>
       ${state.backend.mode === 'local' ? `<p class="note">🌷 Vorschau-Modus: Punkte werden nur auf diesem Gerät gespeichert.</p>` : ''}
       ${prefillCode && !ro ? `<div class="invite-banner">💌 Du wurdest in Raum <b>${esc(prefillCode)}</b> eingeladen!<small>Gib deinen Namen ein und tippe auf „Los“ 💖</small></div>` : ''}
       ${ro ? `<p class="note">👀 Du kannst Räume ansehen, aber nichts eintragen. Dafür muss dich die Besitzerin der App als Bearbeiter einladen.</p>` : `
@@ -1257,7 +1314,7 @@ function handleLive(room) {
       state.focus = { pid: entry.pid, until: Date.now() + 2700 };
       setTimeout(() => { if (state.room) renderRoom(); }, 2750);
     }
-    if (t && t === state.session.pid) {
+    if (t && t === state.session.pid && !gameOver(room)) {
       const delay = (entry ? (entry.bonus ? 5400 : 2800) : 300) + (payout ? 4400 : 0) + (state.fxDelay || 0);
       setTimeout(() => {
         pop(`🎲 ${esc(nameOf(state.room, t))} ist dran! 💖`, 'Zauberkarte ziehen, Prinzessin 👑', true); burst(['💖', '✨', '👑', '🌸', '🎀'], 22); buzz([80, 60, 80]); play('turn');
@@ -1363,6 +1420,7 @@ function renderRoom() {
     ${standHTML(players, turn)}
     <main id="main" class="${ro ? 'readonly' : ''}">${tableHTML(players, turn)}</main>`;
 
+  ceremonyHook(app);
   window.scrollTo(0, y);
   const tsc = app.querySelector('.tscroll'), onTh = app.querySelector('.ptable th.on');
   if (tsc && onTh && state.lastOn !== onTh.textContent) { tsc.scrollLeft = 0; state.lastOn = onTh.textContent; }
@@ -1614,6 +1672,7 @@ function shareCode() { openInvite(); }
 
 function openMenu() {
   const items = state.canWrite ? `
+    ${gameOver(state.room) ? '<button class="menuitem" data-act="ceremony">🏆 Siegerehrung nochmal ansehen</button>' : ''}
     <button class="menuitem" data-act="next">🎲 Nächstes Spiel starten<small>Punkte von Spiel ${state.room.game || 1} speichern, Blöcke leeren</small></button>` : '';
   openSheet(`<h3>Menü 🎀</h3>${items}
     ${state.canWrite ? '<button class="menuitem" data-act="remove">👋 Mitspielerin entfernen<small>Jemand ist gegangen?</small></button>' : ''}
@@ -1623,6 +1682,7 @@ function openMenu() {
     (act, _b, close) => {
       close();
       if (act === 'next') nextGame();
+      if (act === 'ceremony') showCeremony(true);
       if (act === 'remove') openRemoveMenu();
       if (act === 'share') shareCode();
       if (act === 'sound') { SND.on = !SND.on; store.set('kx-sound', SND.on ? 'on' : 'off'); audioUnlock(); if (SND.on) play('pling'); toast(SND.on ? '🔊 Töne an' : '🔇 Töne aus'); }
@@ -3158,6 +3218,7 @@ function renderLobby() {
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
       <h1>Pussey<span>Würfel</span></h1>
+      <p class="tagline"><span>Heute wird eine von euch zur <b>Pussy des Tages</b> gekrönt 👑 Zeigt, was für krasse Pussys ihr seid! 😈💅</span></p>
       <div class="lobby-card">
         <small>💌 Raum-Code</small>
         <div class="bigcode">${esc(session.code)}</div>
@@ -3198,6 +3259,158 @@ async function startGame() {
     log: logPatch(room, ev)
   }));
 }
+
+/* ================= Siegerehrung ================= */
+const gameOver = room => {
+  const ps = playersOf(room || {});
+  return room && room.status !== 'lobby' && ps.length > 0 && ps.every(([, p]) => calc(p).filled === ALL.length);
+};
+const AVATARS = ['💖', '🌸', '🦄', '🎀', '🦋', '👑', '💅', '🌷', '✨', '🍓'];
+const avatarOf = (room, pid) => AVATARS[Math.max(0, orderOf(room).indexOf(pid)) % AVATARS.length];
+
+// Wird nach jedem Rendern aufgerufen: Banner statt Zug-Anzeige, Siegerehrung automatisch starten
+function ceremonyHook(app) {
+  const room = state.room;
+  if (!gameOver(room)) return;
+  ['.turnbar', '#cardchip', '#drawbtn'].forEach(sel => { const el = app.querySelector(sel); if (el) el.remove(); });
+  const chest = app.querySelector('#chest');
+  if (chest && !app.querySelector('.over-banner')) {
+    chest.insertAdjacentHTML('beforebegin', `<button class="over-banner" id="overBanner">🏆 Spiel vorbei! <b>Zur Siegerehrung</b> ✨</button>`);
+    app.querySelector('#overBanner').onclick = () => showCeremony(true);
+  }
+  const key = `${state.session.code}:${room.game || 1}`;
+  if (state.ceremonyKey !== key) { state.ceremonyKey = key; setTimeout(() => showCeremony(false), (state.fxDelay || 0) + 3200); }
+}
+
+function ceremonyData(room) {
+  const ps = playersOf(room).map(([id, p]) => ({ id, p, t: calc(p).total }));
+  ps.sort((a, b) => b.t - a.t);
+  let rank = 0, last = null;
+  ps.forEach((x, i) => { if (x.t !== last) { rank = i + 1; last = x.t; } x.rank = rank; });
+  const s = x => x.p.scores || {};
+  const kn = x => (s(x).k5 > 0 ? 1 : 0) + (s(x).k6 > 0 ? 1 : 0) + Object.values(x.p.xk || {}).filter(v => v > 0).length;
+  const best = x => Math.max(0, ...Object.values(s(x)).filter(v => typeof v === 'number'));
+  const zeros = x => Object.values(s(x)).filter(v => v === 0).length;
+  const award = (fn, emo, title, unit) => {
+    const mx = Math.max(...ps.map(fn)); if (mx <= 0) return null;
+    const who = ps.filter(x => fn(x) === mx);
+    return { emo, title, names: who.map(x => x.p.name).join(' & '), val: `${mx} ${unit}` };
+  };
+  const awards = [
+    award(kn, '💎', 'Kniffel-Queen', 'Kniffel'),
+    award(best, '🔥', 'Höchster Einzelwurf', 'Punkte'),
+    award(x => x.p.extra || 0, '🔮', 'Zauberkarten-Liebling', 'Kartenpunkte'),
+    award(zeros, '🥀', 'Streich-Königin', 'gestrichen')
+  ].filter(Boolean);
+  return { ps, awards };
+}
+
+const RANK_TITLES = ['👑 Pussy des Tages', '💖 Vize-Prinzessin', '✨ Glitzer-Bronze', '🌸 Blümchen-Platz', '🎀 Schleifchen-Platz', '🦋 Schmetterlings-Platz'];
+const LAST_ROASTS = ['Pechmarie des Tages! Selbst die Würfel haben Mitleid 😂', 'Letzter Platz – aber hey, wenigstens hübsch dabei gewesen 💅', 'Die Würfelgöttin hat entschieden: Heute nicht, Süße! 😹', 'Herzlichen Glückwunsch zum goldenen Löffel … äh, Holzlöffel 🥄😂'];
+
+async function showCeremony(replay) {
+  const room = state.room; if (!room || !gameOver(room)) return;
+  if (state.ceremonyRunning) return;
+  state.ceremonyRunning = true;
+  closeCardLayer();
+  const { ps, awards } = ceremonyData(room);
+  const top = ps.slice(0, 3), rest = ps.slice(3);
+  const el = document.createElement('div');
+  el.id = 'ceremony';
+  const pod = (x, place) => x ? `<div class="pd pd${place}" data-place="${place}">
+      <div class="pd-who"><div class="pd-av">${avatarOf(room, x.id)}${place === 1 ? '<span class="pd-crown">👑</span>' : ''}</div>
+        <div class="pd-name">${esc(x.p.name)}</div><div class="pd-pts">${x.t} Punkte</div></div>
+      <div class="pd-block"><span>${x.rank}</span><small>${RANK_TITLES[x.rank - 1] || ''}</small></div></div>` : '<div class="pd pd-empty"></div>';
+  el.innerHTML = `
+    <div class="cer-bg"><i class="spot s1"></i><i class="spot s2"></i><i class="spot s3"></i></div>
+    <div class="cer-in">
+      <div class="cer-title">✨ Die große Siegerehrung ✨</div>
+      <div class="cer-sub" id="cerSub">Trommelwirbel bitte …</div>
+      <div class="podium">${pod(top[1], 2)}${pod(top[0], 1)}${pod(top[2], 3)}</div>
+      <div class="cer-rest">${rest.map(x => `<div class="cr" data-rank="${x.rank}"><b>${x.rank}.</b> ${avatarOf(room, x.id)} ${esc(x.p.name)}<span>${x.t}</span></div>`).join('')}</div>
+      <div class="cer-awards">${awards.map(a => `<div class="aw"><span class="aw-emo">${a.emo}</span><b>${a.title}</b><small>${esc(a.names)} · ${a.val}</small></div>`).join('')}</div>
+      <div class="cer-last"></div>
+      <div class="cer-btns">
+        ${state.canWrite ? '<button class="btn shine" data-c="again">🎲 Nochmal spielen</button>' : ''}
+        <button class="btn ghost" data-c="replay">✨ Nochmal ansehen</button>
+        <button class="btn ghost" data-c="close">Schließen</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  el.querySelector('.cer-btns').onclick = e => {
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    const c = b.dataset.c;
+    el.remove(); state.ceremonyRunning = false; clearInterval(state.cerFw);
+    if (c === 'replay') showCeremony(true);
+    if (c === 'again') nextGame();
+  };
+  const sub = t => { const x = el.querySelector('#cerSub'); x.classList.remove('pop'); void x.offsetWidth; x.textContent = t; x.classList.add('pop'); };
+  const cancelled = () => !document.body.contains(el);
+
+  play('drumroll'); buzz([30, 30, 30, 30, 30, 30, 30]);
+  await sleep(2400); if (cancelled()) return;
+  // Plätze ab 4 von hinten
+  const rows = [...el.querySelectorAll('.cr')].reverse();
+  if (rows.length) sub('Erstmal die Plätze ab 4 … 🎀');
+  for (const r of rows) { r.classList.add('show'); play('pling'); await sleep(700); if (cancelled()) return; }
+  // Treppchen
+  const show = async (place, text) => {
+    const p = el.querySelector(`.pd${place}`); if (!p) return;
+    sub(text); p.classList.add('rise'); await sleep(450); play('chime'); burst(['✨', '💖', '🌸'], 16, place === 2 ? 30 : 70, 55); await sleep(1100);
+  };
+  await show(3, 'Auf Platz 3 … ✨'); if (cancelled()) return;
+  await show(2, 'Auf Platz 2 … 💖'); if (cancelled()) return;
+  sub('Und die Krone geht an … 👑'); play('drumroll'); await sleep(2400); if (cancelled()) return;
+  const p1 = el.querySelector('.pd1'); p1.classList.add('rise'); await sleep(500);
+  p1.classList.add('crowned');
+  play('harp'); setTimeout(() => play('fanfare'), 900);
+  sub(`${top[0].p.name} ist die Pussy des Tages! 👑💅`);
+  dustBurst(120); rain(['👑', '💖', '✨', '💎', '🌸', '🦄', '💕'], 80); buzz([100, 50, 100, 50, 300]);
+  setTimeout(() => unicornFly(el), 1200);
+  state.cerFw = setInterval(() => { if (cancelled()) return clearInterval(state.cerFw); burst(pick([['💖', '✨', '💗'], ['🌸', '💫', '🎀'], ['💎', '✨', '👑']]), 20, 15 + Math.random() * 70, 15 + Math.random() * 40); play('pling'); }, 700);
+  setTimeout(() => clearInterval(state.cerFw), 6000);
+  await sleep(3600); if (cancelled()) return;
+  el.querySelector('.cer-awards').classList.add('show'); play('chime');
+  await sleep(1400); if (cancelled()) return;
+  if (ps.length >= 2) {
+    const lastX = ps[ps.length - 1];
+    el.querySelector('.cer-last').innerHTML = `<div class="last-card">🥀 <b>${esc(lastX.p.name)}</b><small>${esc(pick(LAST_ROASTS))}</small></div>`;
+    el.querySelector('.cer-last').classList.add('show');
+    laughFX(`${esc(lastX.p.name)} ist die Pechmarie des Tages! 😂`);
+    await sleep(1600);
+  }
+  el.querySelector('.cer-btns').classList.add('show');
+  state.ceremonyRunning = false;
+}
+
+function unicornFly(host) {
+  const u = document.createElement('div');
+  u.className = 'unicorn'; u.textContent = '🦄';
+  host.appendChild(u);
+  const trail = setInterval(() => {
+    if (!document.body.contains(u)) return clearInterval(trail);
+    const r = u.getBoundingClientRect();
+    const t = document.createElement('span'); t.className = 'rb-trail';
+    t.style.left = (r.left + 10) + 'px'; t.style.top = (r.top + r.height * 0.55) + 'px';
+    t.textContent = pick(['🌈', '✨', '💖', '⭐']);
+    host.appendChild(t); setTimeout(() => t.remove(), 1400);
+  }, 70);
+  play('magic');
+  setTimeout(() => { clearInterval(trail); u.remove(); }, 3300);
+}
+
+SFX.drumroll = function () {
+  const c = SND.ctx;
+  for (let i = 0; i < 34; i++) noise(i * 0.065, 0.06, 0.05 + i * 0.004, 150, 700);
+  tone(220, 2.2, 0.5, 'triangle', 0.12); tone(330, 2.2, 0.5, 'triangle', 0.1);
+};
+SFX.harp = function () {
+  // magischer Harfen-Glissando nach oben, dann Glitzer-Akkord
+  const notes = [523, 587, 659, 784, 880, 1047, 1175, 1319, 1568, 1760, 2093, 2349, 2637];
+  notes.forEach((f, i) => { tone(f, i * 0.055, 0.9, 'triangle', 0.07); tone(f * 2, i * 0.055 + 0.01, 0.5, 'sine', 0.025); });
+  [1047, 1319, 1568, 2093].forEach(f => tone(f, 0.8, 1.8, 'sine', 0.06));
+  for (let i = 0; i < 10; i++) tone(2500 + Math.random() * 2000, 0.9 + i * 0.08, 0.25, 'sine', 0.03);
+};
 
 init();
 
