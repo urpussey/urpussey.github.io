@@ -1019,6 +1019,15 @@ main { padding-top: 12px; }
 .fx-turn.mine b { animation: glowTxt 1s ease-in-out infinite; }
 @keyframes glowTxt { 50% { text-shadow: 0 0 22px #fff, 0 4px 16px rgba(122,20,80,.5); } }
 
+/* Spielzeugkiste = Banane 🍌 */
+.chest-art { display: flex; align-items: center; justify-content: center; }
+.banana { display: inline-block; font-size: 2rem; line-height: 1; transform-origin: 50% 80%; animation: bananaWiggle 2.2s ease-in-out infinite; filter: drop-shadow(0 3px 5px rgba(180,120,0,.35)); }
+@keyframes bananaWiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(12deg) scale(1.08); } }
+.chest.full .banana { animation-duration: .9s; }
+.fx-chest .fc-art { display: flex; align-items: center; justify-content: center; }
+.fx-chest .banana { font-size: 9rem; animation: bananaWiggle .5s ease-in-out infinite; }
+.fx-chest.open .banana { animation: bananaWiggle .9s ease-in-out infinite; filter: drop-shadow(0 0 30px #fff3a0); }
+
 </style>
 </head>
 <body>
@@ -1332,7 +1341,7 @@ const dname = p => {
 const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
 const nameOf = (room, pid) => shownName(room, (room.players || {})[pid]);
 
-const APP_VERSION = '17.11. · 12:20';
+const APP_VERSION = '17.11. · 13:55';
 /* ---------- Wer darf was? Jede trägt nur am eigenen Handy ein – und nur, wenn sie dran ist ---------- */
 const isLocal = () => !!(state.backend && state.backend.mode === 'local');
 function canAct(pid) {
@@ -1546,7 +1555,7 @@ function playEvent(e, room) {
   if (e.type === 'slot') { fxShow('slot', e); return; }
   if (e.type === 'await') { if (canAct(e.target)) { pop('👯‍♀️ Du bist gefragt!', `Bestimme die Kategorie für ${name} 😈`, true); buzz([80, 50, 80]); play('turn'); } return; }
   if (e.type === 'bomb') { pop('💥 BUMM! 💥', `Die Zeitbombe explodiert bei ${name}: −50 Punkte 💣`, true); rain(['💥', '💣', '🔥', '💔'], 45); play('attack'); buzz([200, 80, 300]); setTimeout(() => laughFX(`${name} ist in die Luft geflogen! 💣`), 2400); return; }
-  if (e.type === 'chestin') { setTimeout(() => coinsToChest(e.amount), 900); setTimeout(() => quip(`🪙 ${nameOf(room, e.pid)} zahlt ${e.amount} in die Truhe – ${pick(INSULTS)}`, true), 1500); return; }
+  if (e.type === 'chestin') { setTimeout(() => coinsToChest(e.amount), 900); setTimeout(() => quip(`🪙 ${nameOf(room, e.pid)} zahlt ${e.amount} in die Spielzeugkiste – ${pick(INSULTS)}`, true), 1500); return; }
   if (e.type === 'chestout') { setTimeout(() => chestOpenShow(e.amount, name, e.reason), e.reason ? 1800 : 3000); setTimeout(() => quip(`💰 ${pick(CHEERS)}`), e.reason ? 5800 : 7000); return; }
   if (e.type !== 'entry') return;
   const c = ALL.find(x => x.id === e.cat); if (!c) return;
@@ -1597,7 +1606,7 @@ function renderRoom() {
       <button class="codebtn" id="share" title="Einladung kopieren">
         <span><small>Raum</small><b>${esc(session.code)}</b></span>${copyIcon()}
       </button>
-      <div class="topdeco" aria-hidden="true">👑 💖 🌸</div>
+      <div class="topdeco" aria-hidden="true">🍆 💦 🍑</div>
       <div class="gameinfo"><small>Spiel</small><b>${room.game || 1}</b></div>
       <button class="iconbtn" id="menu" aria-label="Menü">⋯</button>
     </header>
@@ -1646,7 +1655,7 @@ function renderRoom() {
   if (!ro) $('#addPlayer').onclick = addPlayer;
   if (!ro && $('#skip')) $('#skip').onclick = skipTurn;
   if ($('#drawbtn')) $('#drawbtn').onclick = openDrawStage;
-  $('#chest').onclick = () => { const a = state.room.chest || 0; toast(a ? `💰 ${a} Punkte in der Truhe – ${chestChance(a) ? `${chestChance(a)} % Chance pro Zug, dass sie an eine zufällige Person ausgeschüttet wird` : 'ab 15 Punkten kann sie ausgeschüttet werden'} ✨` : '🪙 Hier landet alles, was Pechkarten abziehen. Irgendwann wird sie zufällig ausgeschüttet!'); };
+  $('#chest').onclick = () => { const a = state.room.chest || 0; toast(a ? `💰 ${a} Punkte in der Spielzeugkiste – ${chestChance(a) ? `${chestChance(a)} % Chance pro Zug, dass sie an eine zufällige Person ausgeschüttet wird` : 'ab 15 Punkten kann sie ausgeschüttet werden'} ✨` : '🪙 Hier landet alles, was Pechkarten abziehen. Irgendwann wird sie zufällig ausgeschüttet!'); };
   if ($('#cardchip')) $('#cardchip').onclick = () => { const tt = turnOf(state.room); showCard(tt.card, tt.pid, canAct(tt.pid), true); };
   if ($('#awaitbtn')) $('#awaitbtn').onclick = openAwait;
   app.querySelectorAll('[data-must]').forEach(b => { b.onclick = () => openPicker(turnOf(state.room).pid, b.dataset.must); });
@@ -1732,8 +1741,8 @@ function tickerLine(e, room) {
   if (e.type === 'join') return `👋 <b>${n}</b> ist beigetreten`;
   if (e.type === 'skip') return `⏭ <b>${n}</b> hat ausgesetzt`;
   if (e.type === 'newgame') return `🎲 Spiel ${e.game} gestartet`;
-  if (e.type === 'chestin') return `🪙 ${e.amount} Punkte von <b>${n}</b> landen in der Schatztruhe`;
-  if (e.type === 'chestout') return `💰 <b>${n}</b> bekommt ${e.amount} Punkte aus der Schatztruhe!`;
+  if (e.type === 'chestin') return `🪙 ${e.amount} Punkte von <b>${n}</b> landen in der Spielzeugkiste`;
+  if (e.type === 'chestout') return `💰 <b>${n}</b> bekommt ${e.amount} Punkte aus der Spielzeugkiste!`;
   if (e.type === 'card') {
     const d = cardDef(e.card); if (!d) return '';
     if (e.phase === 'result') return `🪄 ${esc(e.result)}`;
@@ -2107,10 +2116,10 @@ const CARDS = [
   { id: 'pudding', w: 2, rar: 'bad', emo: '🍮', title: 'Wackelpudding', text: 'Du darfst keine Würfel behalten – jeder Wurf mit allen 6 Würfeln!', act: 'ok' , roast: ["Du bist genauso wackelig wie dein Pudding, Liebes. 🍮", "Festhalten konntest du eh noch nie was – nicht mal Würfel."] },
   { id: 'curse', w: 2, rar: 'bad', emo: '🥀', title: 'Feen-Fluch', text: 'Du musst eines deiner freien Felder streichen.', act: 'ownCat' , roast: ["Verflucht! Aber ehrlich: Dein Würfelglück war vorher auch schon tot.", "Die Fee kann dich nicht leiden. Ganz ehrlich? Verständlich. 💅"] },
   { id: 'blind', w: 2, rar: 'bad', emo: '🙈', title: 'Augen zu!', text: 'Deinen ersten Wurf machst du mit geschlossenen Augen – du darfst erst danach schauen.', act: 'ok' , roast: ["Augen zu! Macht bei deinem Würfelglück eh keinen Unterschied.", "Endlich würfelst du so, wie du dich schminkst – blind. 💄"] },
-  { id: 'pirate', w: 3, rar: 'bad', emo: '🏴‍☠️', title: 'Piraten-Überfall', text: 'Piraten klauen dir 15 Punkte – sie landen in der Schatztruhe!', act: 'instant', self: -15 , roast: ["Arrr! Selbst Piraten halten dich für leichte Beute, Prinzessin.", "Die Piraten meinten: Bei der klauen wir, die merkt's eh nicht. 🏴‍☠️"] },
-  { id: 'toll', w: 3, rar: 'common', emo: '🪙', title: 'Truhen-Zoll', text: 'Alle Pussys zahlen 5 Punkte in die Schatztruhe.', act: 'instant', allChest: 5, min: 2 },
-  { id: 'seeker', w: 2, rar: 'rare', emo: '🗝️', title: 'Schatzsucherin', text: 'Du findest den Schlüssel: Die Hälfte der Schatztruhe gehört dir!', act: 'instant', chestShare: 0.5 },
-  { id: 'queen', w: 1, rar: 'legend', emo: '💰', title: 'Schatzkönigin', text: 'Die GANZE Schatztruhe gehört dir!', act: 'instant', chestShare: 1 },
+  { id: 'pirate', w: 3, rar: 'bad', emo: '🏴‍☠️', title: 'Piraten-Überfall', text: 'Piraten klauen dir 15 Punkte – sie landen in der Spielzeugkiste!', act: 'instant', self: -15 , roast: ["Arrr! Selbst Piraten halten dich für leichte Beute, Prinzessin.", "Die Piraten meinten: Bei der klauen wir, die merkt's eh nicht. 🏴‍☠️"] },
+  { id: 'toll', w: 3, rar: 'common', emo: '🪙', title: 'Kisten-Zoll', text: 'Alle Pussys zahlen 5 Punkte in die Spielzeugkiste.', act: 'instant', allChest: 5, min: 2 },
+  { id: 'seeker', w: 2, rar: 'rare', emo: '🗝️', title: 'Schatzsucherin', text: 'Du findest den Schlüssel: Die Hälfte der Spielzeugkiste gehört dir!', act: 'instant', chestShare: 0.5 },
+  { id: 'queen', w: 1, rar: 'legend', emo: '💰', title: 'Schatzkönigin', text: 'Die GANZE Spielzeugkiste gehört dir!', act: 'instant', chestShare: 1 },
   { id: 'calm', w: 6, rar: 'common', emo: '🌷', title: 'Ruhige Runde', text: 'Nichts Besonderes – würfle ganz entspannt.', act: 'ok' },
   { id: 'compliment', w: 2, rar: 'common', emo: '💌', title: 'Kompliment-Zauber', text: 'Mach jeder Person am Tisch ein Kompliment – dafür gibt es +5 Punkte.', act: 'confirm', reward: 5 },
   { id: 'stage', w: 2, rar: 'common', emo: '🎤', title: 'Bühne frei!', text: 'Sing eine Zeile aus deinem Lieblingslied – dafür gibt es +5 Punkte.', act: 'confirm', reward: 5 },
@@ -2124,7 +2133,7 @@ const catLbl = id => { const c = ALL.find(x => x.id === id); return c ? `${EMO[c
 
 
 // Wirkung beim Ziehen (sofortige Karten)
-/* ---------- Schatztruhe ---------- */
+/* ---------- Spielzeugkiste ---------- */
 function addExtra(patch, room, id, d) {
   patch.players = patch.players || {};
   const P = patch.players[id] = patch.players[id] || {};
@@ -2141,7 +2150,7 @@ function chestIn(patch, room, amount, pid, reason) {
   patch.chest = chestNow(patch, room) + amount;
   addLog(patch, room, { type: 'chestin', amount, pid, reason: reason || '' });
 }
-// Zufällige Ausschüttung: je voller die Truhe, desto wahrscheinlicher
+// Zufällige Ausschüttung: je voller die Spielzeugkiste, desto wahrscheinlicher
 function maybePayout(patch, room) {
   const amt = chestNow(patch, room);
   if (amt < 15) return;
@@ -2154,32 +2163,14 @@ function maybePayout(patch, room) {
 const chestChance = a => (a < 15 ? 0 : Math.round(Math.min(0.55, a / 220) * 100));
 
 function chestSVG() {
-  return `<svg class="chestsvg" viewBox="0 0 120 104" aria-hidden="true">
-    <defs>
-      <linearGradient id="chB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8cc6"/><stop offset="1" stop-color="#c2186b"/></linearGradient>
-      <linearGradient id="chG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0a8"/><stop offset="1" stop-color="#e5a823"/></linearGradient>
-      <radialGradient id="chL"><stop offset="0" stop-color="#fffbe0"/><stop offset="1" stop-color="#ffd84d" stop-opacity="0"/></radialGradient>
-    </defs>
-    <ellipse class="ch-glow" cx="60" cy="48" rx="56" ry="26" fill="url(#chL)"/>
-    <g class="ch-coins"><circle cx="40" cy="47" r="7" fill="url(#chG)" stroke="#c98a22"/><circle cx="58" cy="44" r="8" fill="url(#chG)" stroke="#c98a22"/><circle cx="78" cy="47" r="7" fill="url(#chG)" stroke="#c98a22"/><path d="M66 38l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z" fill="#b8f0ff" stroke="#5bc0de"/></g>
-    <rect x="10" y="48" width="100" height="48" rx="8" fill="url(#chB)" stroke="#7a1450" stroke-width="3"/>
-    <rect x="22" y="48" width="9" height="48" fill="url(#chG)"/><rect x="89" y="48" width="9" height="48" fill="url(#chG)"/>
-    <rect x="10" y="84" width="100" height="6" fill="url(#chG)"/>
-    <path d="M60 66c-3-5-11-5-11 1 0 5 11 11 11 11s11-6 11-11c0-6-8-6-11-1z" fill="url(#chG)" stroke="#c98a22" stroke-width="2"/>
-    <g class="ch-lid">
-      <path d="M8 50 Q8 14 60 14 Q112 14 112 50 Z" fill="url(#chB)" stroke="#7a1450" stroke-width="3"/>
-      <path d="M22 50 Q22 22 26 18 L33 17 Q30 24 31 50Z" fill="url(#chG)"/><path d="M98 50 Q98 22 94 18 L87 17 Q90 24 89 50Z" fill="url(#chG)"/>
-      <rect x="8" y="46" width="104" height="7" rx="3" fill="url(#chG)" stroke="#c98a22"/>
-      <circle cx="45" cy="30" r="3" fill="#fff" opacity=".7"/><circle cx="72" cy="26" r="2" fill="#fff" opacity=".7"/>
-    </g>
-  </svg>`;
+  return `<span class="banana" aria-hidden="true">🍌</span>`;
 }
 function chestHTML(room) {
   const a = room.chest || 0;
   const lvl = a >= 100 ? 'full' : a >= 40 ? 'mid' : a > 0 ? 'low' : 'empty';
   return `<button class="chest ${lvl}" id="chest">
     <span class="chest-art">${chestSVG()}</span>
-    <span class="chest-txt"><small>Schatztruhe</small><b><span class="chest-amt">${a}</span> 🪙</b></span>
+    <span class="chest-txt"><small>Spielzeugkiste</small><b><span class="chest-amt">${a}</span> 🍌</b></span>
     <em class="chest-hint">${a ? (a < 15 ? 'sammelt …' : `${chestChance(a)} % Chance`) : 'leer'}</em>
   </button>`;
 }
@@ -2208,13 +2199,13 @@ function coinsToChest(amount) {
 function chestOpenShow(amount, name, reason) {
   const el = document.createElement('div');
   el.className = 'fx-chest';
-  el.innerHTML = `<div class="fc-wrap"><div class="fc-art">${chestSVG()}</div><div class="fc-text"><b>💰 SCHATZTRUHE! 💰</b><small>${name} bekommt ${amount} Punkte${reason ? ` (${esc(reason)})` : ''} 👑</small></div></div>`;
+  el.innerHTML = `<div class="fc-wrap"><div class="fc-art">${chestSVG()}</div><div class="fc-text"><b>🍌 SPIELZEUGKISTE! 💦</b><small>${name} bekommt ${amount} Punkte${reason ? ` (${esc(reason)})` : ''} 👑</small></div></div>`;
   fx().appendChild(el);
   play('drum');
   setTimeout(() => {
     el.classList.add('open');
-    burst(['🪙', '💰', '💎', '👑', '✨', '💖'], 34, 50, 44);
-    rain(['🪙', '💰', '💎', '🪙', '✨'], 50);
+    burst(['🍌', '🍆', '🍑', '💦'], 34, 50, 44);
+    rain(['🍌', '🍆', '🍑', '💦'], 60);
     play('treasure'); buzz([100, 40, 100, 40, 250]);
 
   }, 1100);
@@ -2415,6 +2406,7 @@ async function resolveCard(card, pid, act) {
   else return;
 
   const done = { ...card, status: 'done', result };
+  if (act.startsWith('c:') && def.act === 'ownStruck') { done.forceCat = act.slice(2); done.noBonus = true; done.result = `🧽 ${catLbl(done.forceCat)} ist wieder frei – würfle sie jetzt neu!`; }
   patch.turn = act === 'sleep' ? nextTurn(room, pid) : { card: done };
   if (act === 'sleep') bombStep(patch, room, patch.turn.pid);
   const ev = { id: rid(), ts: Date.now(), type: 'card', phase: 'result', pid, target, card: card.id, result, fx: fxKind };
@@ -2565,7 +2557,7 @@ CARDS.push(
   RC('xroll2', 3, 'rare', '🎲', 'Zwei Extra-Würfe', 'Du hast diese Runde 5 Würfe – perfekt für Kniffel Extrem oder Highway! 💅'),
   RC('pech2', 4, 'common', '🍀', 'Pech gehabt', 'Nur 2 Würfe – dafür zählt deine Wertung ×2.', { mult: 2 }),
   RC('allin', 2, 'rare', '🎰', 'Alles oder nichts', 'Nur 1 Wurf – dafür zählt deine Wertung ZEHNFACH! 😱', { mult: 10 }),
-  RC('rollnum', 3, 'common', '🎲', 'Wurfzahl-Würfel', 'Würfle in echt mit EINEM Würfel – die Zahl bestimmt, wie oft du diesen Zug würfeln darfst: {rolls}', { act: 'rollnum' }),
+  RC('rollnum', 3, 'common', '🎲', 'Wurfzahl-Würfel', 'Würfle mit EINEM Würfel – die Zahl bestimmt, wie oft du diesen Zug würfeln darfst: {rolls}', { act: 'rollnum' }),
   RC('joker1', 4, 'common', '🃏', 'Joker-Würfel', 'Du darfst einmal einen Würfel auf eine beliebige Zahl drehen. 💖'),
   RC('joker2', 2, 'rare', '🃏', 'Zweiter Joker', 'Du darfst zwei Würfel auf beliebige Zahlen drehen! ✨'),
   RC('oneshot', 2, 'rare', '🏹', 'Ein Schuss', 'Nur 1 Wurf – dafür zählt deine Wertung ×8.', { mult: 8 }),
@@ -2589,7 +2581,7 @@ CARDS.push(
   RC('locked', 3, 'bad', '🔒', 'Gesperrt', 'Diese Kategorien sind für dich in diesem Zug gesperrt: {locked}', { lock: 3 }),
   RC('force', 3, 'common', '📌', 'Zwangswahl', 'Leg dich fest, bevor du würfelst – schaffst du deine Kategorie, zählt sie ×3! {force}', { act: 'forceOwn' }),
   RC('oppchoice', 3, 'common', '👯‍♀️', 'Pussy-Wahl', 'Eine andere Pussy bestimmt an IHREM Handy deine Kategorie – schaffst du sie, zählt sie ×3! {force}', { act: 'forceOpp' }),
-  RC('double', 3, 'common', '🎲', 'Doppelt oder nichts', 'Nach dem Eintragen darfst du in echt einen Würfel werfen: 1–3 = Wertung weg, 4–6 = doppelt. Oder du verzichtest. 💋', { doubleOrNothing: true }),
+  RC('double', 3, 'common', '🎲', 'Doppelt oder nichts', 'Nach dem Eintragen darfst du einen Würfel werfen: 1–3 = Wertung weg, 4–6 = doppelt. Oder du verzichtest. 💋', { doubleOrNothing: true }),
   // Bonus & Konto oben
   RC('b100', 2, 'bad', '🧗‍♀️', 'Bonus erst ab 100', 'Dein Bonus kommt ab sofort erst ab 100 Punkten oben. Dafür zählt dieser Wurf ×4.', { act: 'instant', bonusMin: 100, mult: 4 }),
   RC('b50', 2, 'rare', '🎀', 'Bonus schon ab 50', 'Dein Bonus kommt ab sofort schon ab 50 Punkten oben – und dieser Wurf zählt ×4! 🎀', { act: 'instant', bonusMin: 50, mult: 4 }),
@@ -2607,8 +2599,8 @@ CARDS.push(
   RC('setback', 2, 'bad', '📉', 'Rückschlag', 'Deine beste Wertung verliert 30 Punkte – und dein Wurf zählt nur halb.', { act: 'instant', setback: 30, mult: 0.5 }),
   RC('revive', 2, 'rare', '🧚', 'Wiederbelebung', 'Wähle eine gestrichene Kategorie – du bekommst dort 40 Punkte! 🧚', { act: 'revive' }),
   RC('sacrifice', 2, 'rare', '🕯️', 'Opfergabe', 'Streiche bei dir eine freie Kategorie – dafür darfst du bei einer anderen Pussy 2 Wertungen streichen! 😈', { act: 'sacrifice' }),
-  RC('dieduel', 3, 'common', '🎲', 'Würfelduell', 'Würfle in echt einen Würfel: Gerade – du streichst bei einer anderen Pussy. Ungerade – bei dir selbst. 🙊', { act: 'dieduel' }),
-  RC('duelall', 3, 'common', '🤺', 'Duell', 'Alle Pussys würfeln in echt einen Würfel! Die Höchste bekommt +30 aufs Bonus-Konto, alle anderen −10.', { act: 'duelall', min: 2 }),
+  RC('dieduel', 3, 'common', '🎲', 'Würfelduell', 'Würfle einen Würfel: Gerade – du streichst bei einer anderen Pussy. Ungerade – bei dir selbst. 🙊', { act: 'dieduel' }),
+  RC('duelall', 3, 'common', '🤺', 'Duell', 'Alle Pussys würfeln einen Würfel! Die Höchste bekommt +30 aufs Bonus-Konto, alle anderen −10.', { act: 'duelall', min: 2 }),
   RC('audit', 2, 'rare', '🧾', 'Steuerprüfung', 'Alle anderen Pussys verlieren 10 % ihrer Punkte im unteren Teil – du nicht! 💅', { act: 'instant', audit: 0.1, min: 2 }),
   RC('gooddeed', 3, 'common', '😇', 'Gute Tat', 'Schenk einer anderen Pussy 50 Punkte – dafür zählt dein Wurf ×2. Oder du gibst niemandem etwas.', { act: 'deed', give: 50, dmult: 2 }),
   RC('gooddeed2', 2, 'common', '🎀', 'Gute Bonus-Tat', 'Schenk einer anderen Pussy 15 aufs Bonus-Konto – dafür zählt dein Wurf ×4. Oder niemand bekommt etwas.', { act: 'deed', giveUp: 15, dmult: 4 }),
@@ -2621,7 +2613,7 @@ CARDS.push(
   // Verdeckt – Aufdecken nach dem Eintragen
   RC('h_rescue', 2, 'rare', '🛟', 'Rettungsring', 'Müsstest du streichen, darfst du stattdessen den ganzen Zug wiederholen!', { hidden: 'rescue' }),
   RC('h_void', 2, 'bad', '🥀', 'Alles umsonst', 'Die gewählte Kategorie wird gestrichen.', { hidden: 'void' }),
-  RC('h_fate', 2, 'rare', '🔮', 'Schicksalswürfel', 'Würfle in echt einen Extra-Würfel: 1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10.', { hidden: 'fate' }),
+  RC('h_fate', 2, 'rare', '🔮', 'Schicksalswürfel', 'Würfle einen Extra-Würfel: 1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10.', { hidden: 'fate' }),
   RC('h_jackpot', 2, 'common', '💰', 'Jackpot', 'Ist deine Wertung 40 oder mehr, zählt sie doppelt!', { hidden: 'jackpot' }),
   RC('h_consol', 2, 'common', '🧸', 'Trostpreis', 'Hast du gestrichen, bekommst du trotzdem 20 Punkte. 🧸', { hidden: 'consol' }),
   RC('h_mirror', 2, 'common', '🪞', 'Spiegelung', 'Hast du 0 eingetragen, bekommst du stattdessen den Normalwert der Kategorie geschenkt.', { hidden: 'mirror' }),
@@ -2641,8 +2633,8 @@ CARDS.push(
   RC('h_wheel', 2, 'rare', '🎡', 'Glücksrad', 'Das Rad dreht sich: +10, +25, +50, +100 oder ×2 auf deine Wertung – kein Minus möglich! 🎡', { hidden: 'wheel' }),
   RC('h_slot', 1, 'legend', '🎰', 'Jackpot-Maschine', 'Zieh den Hebel: Drei Walzen mit +25, ×2 oder ×3 – von links nach rechts gerechnet!', { hidden: 'slot' }),
   RC('h_streak', 2, 'bad', '🌧️', 'Pechsträhne', 'Deine nächste Wertung zählt nur die Hälfte.', { hidden: 'streak' }),
-  // Schatztruhe
-  RC('key', 1, 'legend', '🗝️', 'Truhenschlüssel', 'Du hast den Schlüssel zur Schatztruhe gefunden – alles, was drin liegt, gehört dir! 💰', { act: 'instant', chestShare: 1 }),
+  // Spielzeugkiste
+  RC('key', 1, 'legend', '🗝️', 'Kistenschlüssel', 'Du hast den Schlüssel zur Spielzeugkiste gefunden – alles, was drin liegt, gehört dir! 💰', { act: 'instant', chestShare: 1 }),
   // intern: Zug wiederholen (Rettungsring)
   RC('retry', 0, 'rare', '🛟', 'Zug wiederholen', 'Der Rettungsring hat dich gerettet – würfle den ganzen Zug nochmal! 💖')
 );
@@ -2847,15 +2839,15 @@ function instantPatch(room, pid, def, card) {
   let result = '';
   if (card && card.forfeit) return { patch, result: 'Karte verfällt → dein Wurf ×4 🎉' };
   if (def.self > 0) { addExtra(patch, room, pid, def.self); result = `+${def.self} Punkte`; }
-  if (def.self < 0) { addExtra(patch, room, pid, def.self); chestIn(patch, room, -def.self, pid, def.title); result = `${def.self} Punkte → 🪙 Schatztruhe`; }
+  if (def.self < 0) { addExtra(patch, room, pid, def.self); chestIn(patch, room, -def.self, pid, def.title); result = `${def.self} Punkte → 🍌 Spielzeugkiste`; }
   if (def.tax) { others.forEach(id => addExtra(patch, room, id, -def.tax)); addExtra(patch, room, pid, def.tax * others.length); result = `+${def.tax * others.length} Punkte Steuer`; }
   if (def.all) { ids.forEach(id => addExtra(patch, room, id, def.all)); result = `Alle +${def.all}`; }
-  if (def.allChest) { ids.forEach(id => addExtra(patch, room, id, -def.allChest)); chestIn(patch, room, def.allChest * ids.length, pid, def.title); result = `Alle −${def.allChest} → 🪙 Schatztruhe`; }
+  if (def.allChest) { ids.forEach(id => addExtra(patch, room, id, -def.allChest)); chestIn(patch, room, def.allChest * ids.length, pid, def.title); result = `Alle −${def.allChest} → 🍌 Spielzeugkiste`; }
   if (def.chestShare) {
     const have = chestNow(patch, room); const amt = Math.round(have * def.chestShare);
     addExtra(patch, room, pid, amt); patch.chest = have - amt;
     addLog(patch, room, { type: 'chestout', amount: amt, pid, reason: def.title });
-    result = `+${amt} Punkte aus der Schatztruhe 💰`;
+    result = `+${amt} Punkte aus der Spielzeugkiste 💰`;
   }
   if (def.reverse) { patch.dir = room.dir === -1 ? 1 : -1; result = 'Richtung gedreht'; }
   if (def.bonusMin) { P(patch, pid).bonusMin = def.bonusMin; result = `Bonus ab jetzt ab ${def.bonusMin} oben`; }
@@ -2931,7 +2923,7 @@ async function stageRoll(pid, label) {
 function stageDice(q, pid) {
   return new Promise(res => {
     const box = $('#cardlayer .cl-actions'); if (!box) return res(1);
-    box.innerHTML = `<p class="cl-q">${q}</p><p class="pd-hint">Würfelt am Tisch 🎲 – dann die gewürfelte Zahl antippen 👇</p>
+    box.innerHTML = `<p class="cl-q">${q}</p><p class="pd-hint">Würfeln 🎲 – dann die gewürfelte Zahl antippen 👇</p>
       <div class="pinkdice">${[1, 2, 3, 4, 5, 6].map(n => `<button class="pdie" data-n="${n}" aria-label="${n}">${die(n, 'die pd', true)}<b>${n}</b></button>`).join('')}</div>`;
     const st = $('#cardlayer .cl-stage'); if (st) st.classList.add('choose');
     box.onclick = async e => {
@@ -2987,7 +2979,7 @@ async function fxShow(kind, data) {
 }
 
 /* ---------- Aktionskarten vor dem Würfeln ---------- */
-const FALLBACK_TXT = { pts: '+25 Punkte 🎁', x3: 'Wertung ×3 💎', bonus: '+20 aufs Bonus-Konto 🎀', chest: 'Hälfte der Schatztruhe 💰', redraw: 'neue Karte 🔮' };
+const FALLBACK_TXT = { pts: '+25 Punkte 🎁', x3: 'Wertung ×3 💎', bonus: '+20 aufs Bonus-Konto 🎀', chest: 'Hälfte der Spielzeugkiste 💰', redraw: 'neue Karte 🔮' };
 // Trostzauber: Wenn eine Karte gerade nicht einlösbar ist, darf man sich etwas anderes aussuchen
 async function pickFallback(patch, done, pid, why) {
   const room = state.room, me = room.players[pid];
@@ -2996,7 +2988,7 @@ async function pickFallback(patch, done, pid, why) {
     { v: 'x3', label: '💎 Deine Wertung ×3' }
   ];
   if (UPPER.some(c => !isNum((me.scores || {})[c.id])) && calc(me).up < calc(me).bonusMin) opts.push({ v: 'bonus', label: '🎀 +20 aufs Bonus-Konto' });
-  if ((room.chest || 0) >= 20) opts.push({ v: 'chest', label: `💰 Halbe Truhe (${Math.floor((room.chest || 0) / 2)})` });
+  if ((room.chest || 0) >= 20) opts.push({ v: 'chest', label: `💰 Halbe Spielzeugkiste (${Math.floor((room.chest || 0) / 2)})` });
   if (!done.redrawn) opts.push({ v: 'redraw', label: '🔮 Neue Karte ziehen' });
   const v = await stageAsk(`${why ? esc(why) + '<br>' : ''}🎁 <b>Trostzauber!</b> Such dir was aus, Süße:`, opts);
   done.forfeit = true; done.fallback = v;
@@ -3064,7 +3056,7 @@ async function runChooser(card, pid) {
       break;
     }
     case 'rollnum': {
-      const v = await stageDice('🎲 Würfle jetzt in echt mit EINEM Würfel!<br>So oft darfst du diesen Zug würfeln:', pid);
+      const v = await stageDice('🎲 Würfle jetzt mit EINEM Würfel!<br>So oft darfst du diesen Zug würfeln:', pid);
       const ev = { type: 'roll', pid, label: 'Wurfzahl-Würfel', rolls: [[pid, v]] }; addLog(patch, room, ev); state.seen.add(ev.id);
       done.rolls = v; result = `Du darfst ${v}× würfeln 🎲`;
       break;
@@ -3097,7 +3089,8 @@ async function runChooser(card, pid) {
     case 'ownStruck': {
       const cat = await stageAsk('🧽 Welche Kategorie machst du wieder frei?', struckCats(me).map(c => ({ v: c.id, label: catLbl(c.id), small: true })));
       P(patch, pid).scores = { [cat]: null }; P(patch, pid).cfx = { [cat]: null }; P(patch, pid).marks = { [cat]: null }; P(patch, pid).xk = { [cat]: null };
-      result = `${catLbl(cat)} ist wieder frei! 💕`;
+      done.forceCat = cat; done.noBonus = true;   // diese Kategorie muss jetzt neu gewürfelt werden
+      result = `${catLbl(cat)} ist wieder frei – würfle sie jetzt neu! 💕`;
       break;
     }
     case 'revive': {
@@ -3132,7 +3125,7 @@ async function runChooser(card, pid) {
       break;
     }
     case 'dieduel': {
-      const v = await stageDice('🎲 Würfle jetzt in echt einen Würfel!<br>Gerade = du streichst bei einer anderen Pussy · Ungerade = bei dir', pid); const ev = { type: 'roll', pid, label: 'Würfelduell', rolls: [[pid, v]] };
+      const v = await stageDice('🎲 Würfle jetzt einen Würfel!<br>Gerade = du streichst bei einer anderen Pussy · Ungerade = bei dir', pid); const ev = { type: 'roll', pid, label: 'Würfelduell', rolls: [[pid, v]] };
       addLog(patch, room, ev); state.seen.add(ev.id);
       if (v % 2 === 0) {
         if (!others.some(id => attackable(room.players[id]).length)) { result = await pickFallback(patch, done, pid, `Gerade (${v}) – aber niemand hat etwas zum Streichen.`); if (done.fallback === 'redraw') return redrawCard(patch, room, pid); break; }
@@ -3276,7 +3269,7 @@ async function entryFlow(pid, catId, val, xk) {
     if (def.doubleOrNothing && val > 0) {
       const go = await stageAsk(`🎲 Doppelt oder nichts? Du hast ${val} Punkte.`, [{ v: 1, label: '🎲 Ich wag\'s!', cls: 'shine' }, { v: 0, label: 'Lieber nicht 🙈' }]);
       if (go) {
-        const r = await stageDice('🎲 Würfle jetzt in echt!<br>1–3 = alles weg · 4–6 = doppelt', pid); preLog.push({ type: 'roll', pid, label: 'Doppelt oder nichts', rolls: [[pid, r]] });
+        const r = await stageDice('🎲 Würfle jetzt!<br>1–3 = alles weg · 4–6 = doppelt', pid); preLog.push({ type: 'roll', pid, label: 'Doppelt oder nichts', rolls: [[pid, r]] });
         if (r <= 3) { lost += val; val = 0; cfx = '🎲✗'; notes.push(`🎲 ${r}: alles weg!`); } else { val *= 2; cfx = (cfx ? cfx + ' ' : '') + '🎲×2'; notes.push(`🎲 ${r}: doppelt!`); }
       }
     }
@@ -3292,7 +3285,7 @@ async function entryFlow(pid, catId, val, xk) {
       case 'rescue': if (val === 0) { rescue = true; revealResult = '🛟 Gerettet – der ganze Zug wird wiederholt!'; } else revealResult = 'Nicht gebraucht – du hast ja gepunktet 💖'; break;
       case 'void': lost += val; revealResult = `${catLbl(catId)} wird gestrichen 🥀`; val = 0; cfx = '🥀'; break;
       case 'fate': {
-        const r = await stageDice('🔮 Würfle jetzt in echt den Schicksalswürfel!<br>1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10', pid); preLog.push({ type: 'roll', pid, label: 'Schicksalswürfel', rolls: [[pid, r]] });
+        const r = await stageDice('🔮 Würfle jetzt den Schicksalswürfel!<br>1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10', pid); preLog.push({ type: 'roll', pid, label: 'Schicksalswürfel', rolls: [[pid, r]] });
         if (r === 1) { lost += val; val = 0; cfx = '🔮✗'; revealResult = '1 – gestrichen! 💔'; }
         else if (r <= 3) revealResult = `${r} – zählt normal`;
         else { const m = r === 6 ? 10 : 5; mulVal(m, `🔮×${m}`); revealResult = `${r} – ×${m}! 🔮`; }
@@ -3534,7 +3527,7 @@ CHEERS.push(
   'So viel Talent in so einer kleinen Hand 🤏💖',
   'Hol dir den Thron, er wartet schon 👑🪑',
   'Erste Sahne mit Streuseln obendrauf 🍰✨',
-  'Wahnsinn – sogar die Truhe ist neidisch 💰😍',
+  'Wahnsinn – sogar die Spielzeugkiste ist neidisch 💰😍',
   'Zucker, Zimt und Punkte satt 🍬',
   'Mach weiter so und wir müssen dich anbeten 🙏👑',
   'Du bist heute einfach eine andere Liga, Darling 💎',
@@ -3563,7 +3556,7 @@ LAUGHS.push(
   'Ohhh nein … doch! Hahaha! 🤣',
   'Pech gehabt, Glitzerhase! 🐰💔',
   'Hahaha – hast du WIRKLICH gedacht, das wird was? 😹',
-  'Da lacht sogar die Schatztruhe! 💰😂',
+  'Da lacht sogar die Spielzeugkiste! 💰😂',
   'Muahahaha, wie bitter! 🍋😈',
   'Ach Schätzchen … nein. Einfach nein. 😂',
   'Haha, rate mal, wer heute verliert! 🫵😹',
@@ -3600,7 +3593,7 @@ const INSULTS = [
   'Pech? Nein, Süße – das ist dein natürlicher Zustand. 🥀',
   'Deine Strategie: Hoffen und verlieren. 💀',
   'Du spielst Kniffel wie andere Lotto – ohne Gewinn. 🎟️',
-  'Die Schatztruhe sagt danke, du großzügiges Opfer. 💰',
+  'Die Spielzeugkiste sagt danke, du großzügiges Opfer. 💰',
   'Dein Punktestand weint gerade leise. 😢',
   'Zum Glück zählt hier nicht Aussehen … ach, warte. 💅',
   'Dein Pech ist so treu, das ist fast schon Liebe. 💔',
@@ -3632,7 +3625,7 @@ const INSULTS = [
   'Glück hat dich blockiert – auf allen Kanälen. 🚫',
   'Du bist so tief gefallen, unten winkt schon jemand. 👋',
   'Selbst dein Horoskop hat dich heute gewarnt. 🔮',
-  'Die Truhe wird fett, du wirst arm. Perfekte Balance. ⚖️',
+  'Die Spielzeugkiste wird fett, du wirst arm. Perfekte Balance. ⚖️',
   'Deine Punkte haben einen besseren Ort gefunden. 🕊️',
   'Du bist wie ein Rubbellos – nur Nieten. 🎫',
   'Sogar der Frosch würde dich nicht küssen. 🐸',
@@ -3652,7 +3645,7 @@ const INSULTS = [
   'So viel Pech auf einmal – bist du über eine schwarze Katze gestolpert? 🐈‍⬛',
   'Keine Sorge, irgendwer muss ja Letzte werden. 🫶',
   'Das war so traurig, die Einhörner weinen. 🦄😭',
-  'Du schuldest der Schatztruhe ein Dankeschön-Kärtchen. 💌',
+  'Du schuldest der Spielzeugkiste ein Dankeschön-Kärtchen. 💌',
   'Mit deinem Glück verlierst du sogar bei Schere-Stein-Papier. ✂️',
   'Wow. Einfach … wow. Und zwar nicht im guten Sinne. 😬',
   'Die Würfel sind rund, aber dein Spiel ist eckig. 🔲',
@@ -3696,7 +3689,7 @@ function mustHTML(room, turn, mine) {
   const allow = allowedCats(c, tp);
   if (!allow) return '';
   const def = cardDef(c.id);
-  const lbl = def && def.pflicht ? '📜 Pflichtwurf' : c.bet ? '💸 Wette' : def && def.id === 'witch' ? '🧙‍♀️ Die Hexe hat bestimmt' : '📌 Festgelegt';
+  const lbl = def && def.pflicht ? '📜 Pflichtwurf' : c.bet ? '💸 Wette' : def && def.id === 'witch' ? '🧙‍♀️ Die Hexe hat bestimmt' : def && def.id === 'second' ? '🧽 Zweite Chance' : '📌 Festgelegt';
   if (!mine) return `<div class="mustbar"><p>${lbl}: <b>${esc(nameOf(room, turn.pid))}</b> darf nur in ${allow.map(catLbl).join(', ')} eintragen</p></div>`;
   return `<div class="mustbar mine"><p>${lbl} – du darfst diesen Zug nur hier eintragen 👇</p>
     <div class="mustbtns">${allow.map(id => `<button class="btn shine" data-must="${id}">${catLbl(id)}</button>`).join('')}</div></div>`;
@@ -3761,7 +3754,7 @@ setPool(CHEERS, [
   'Das Glück steht auf dich – und zwar richtig hart 😈',
   'Die anderen können nur zuschauen, wie du’s machst 👀💋',
   'Sexy, siegreich, unersättlich – das bist du 💖',
-  'Bei dem Wurf hat sogar die Truhe gestöhnt 🪙😮‍💨',
+  'Bei dem Wurf hat sogar die Spielzeugkiste gestöhnt 🪙😮‍💨',
   'Heute wirst du verwöhnt, Prinzessin 🛁💋',
   'Gib’s ihnen – aber mit Gefühl 😘',
   'Deine Würfel haben gerade einen Orgasmus gehabt 🎲💥',
@@ -3830,7 +3823,7 @@ setPool(INSULTS, [
   'Die Würfel haben Kopfschmerzen, wenn du kommst. 🤕',
   'Dein Pech ist größer als alles, was du je im Bett hattest. 🍆',
   'Selbst mit Gleitgel würdest du heute nirgendwo reinkommen. 🧴',
-  'Du bist so unbefriedigend, die Truhe verlangt ihr Geld zurück. 🪙',
+  'Du bist so unbefriedigend, die Spielzeugkiste verlangt ihr Geld zurück. 🪙',
   'Na, Frust geschoben? Sieht man, Babe. 😏',
   'Deine Punkte sind kürzer als sein Durchhaltevermögen. ⏳',
   'Du bist der Abtörner des Abends. 🥶',
@@ -3847,7 +3840,7 @@ setPool(INSULTS, [
   'Das war so schwach, der Würfel hat einen Schlappen. 🎲🥀',
   'Dein Höhepunkt heute? Dass du mitspielen durftest. 🫠',
   'Du verlierst Punkte schneller als deine Unterwäsche. 👙',
-  'Keine Punkte für dich – aber Trostkuscheln mit der Truhe. 🧸',
+  'Keine Punkte für dich – aber Trostkuscheln mit der Spielzeugkiste. 🧸',
   'Die anderen kommen, du gehst – leer aus. 🚪',
   'Selbst eine aufblasbare Puppe hätte besser gewürfelt. 🎈',
   'Deine Pussy hat heute Hausarrest. 🔒🐱',
@@ -3856,14 +3849,14 @@ setPool(INSULTS, [
   'Dein Glück hat sich nach dem ersten Mal nie wieder gemeldet. 📵',
   'Du bist wie ein Kondom im Portemonnaie – lange da, nie benutzt. 🙈',
   'Heute heißt es für dich: Hand anlegen – an deine Tränen. 😭',
-  'Die Schatztruhe ist voller als dein Terminkalender für Dates. 📅',
+  'Die Spielzeugkiste ist voller als dein Terminkalender für Dates. 📅',
   'Du gibst dir so viel Mühe – und kommst trotzdem nicht. 🫤',
   'Schade, Babe – die Würfel stehen einfach nicht auf dich. 💅',
   'Du hast heute so wenig Glück wie Fummelzeit im Kino. 🍿',
   'Selbst dein Ex lacht gerade über dich. 😂',
   'Wenn Pech sexy wäre, wärst du ein Pornostar. 🎬',
   'Zieh dich warm an – unten in der Tabelle wird’s kalt und einsam. 🥶',
-  'Ganz ehrlich? Die Truhe hat dich lieber als jeder Mann. 🪙💋',
+  'Ganz ehrlich? Die Spielzeugkiste hat dich lieber als jeder Mann. 🪙💋',
   'Du bist heute so heiß wie ein kalter Fisch. 🐟',
   'Mach die Beine zu, es zieht – und die Punkte auch. 🌬️',
   'Dein Glück ist impotent, Süße. 🥀',
@@ -3918,6 +3911,9 @@ const DBL_TXT = ' PLUS: Dein Wurf zählt diesen Zug doppelt! 💖🎲';
  'audit', 'krain', 'coronation', 'bomb', 'revenge', 'key'].forEach(id => { const c = cardDef(id); if (c && !c.mult) { c.mult = 2; c.text += DBL_TXT; } });
 // Ruhige Runde bekommt auch eine Aktion
 (c => { if (c) { c.title = 'Entspannte Runde'; c.text = 'Ganz entspannt, Süße: Du hast diesen Zug 4 Würfe statt 3! 🌷🎲'; } })(cardDef('calm'));
+
+// „Augen zu!“ (blind würfeln) kommt nicht mehr vor
+(c => { if (c) c.w = 0; })(cardDef('blind'));
 
 /* ================= Eigene Web-App: Firebase, Lobby, Einladen ================= */
 
