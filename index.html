@@ -1844,9 +1844,12 @@ function openPicker(pid, catId) {
 
   // Extra-Kniffel: nur wer das Kniffel- bzw. Kniffel-Extrem-Feld schon mit Punkten hat,
   // darf zusätzlich zu den normalen Punkten +50 bzw. +75 aufschreiben.
+  // Und nur in Kategorien, in die ein Wurf mit 5 bzw. 6 gleichen Würfeln überhaupt passen kann
+  // (also nicht bei Straßen, Full House, Paaren usw.).
+  const xkFits = c.type === 'upper' || ['dp', 'vp', 'lo', 'hi', 'ch', 'sc'].includes(catId);
   const xkOpts = [];
-  if (catId !== 'k5' && isNum(s.k5) && s.k5 > 0) xkOpts.push({ pts: 50, emo: '💎', name: 'Extra-Kniffel' });
-  if (catId !== 'k6' && isNum(s.k6) && s.k6 > 0) xkOpts.push({ pts: 75, emo: '👸', name: 'Extra-Kniffel Extrem' });
+  if (xkFits && isNum(s.k5) && s.k5 > 0) xkOpts.push({ pts: 50, emo: '💎', name: 'Extra-Kniffel' });
+  if (xkFits && isNum(s.k6) && s.k6 > 0) xkOpts.push({ pts: 75, emo: '👸', name: 'Extra-Kniffel Extrem' });
   let xkSel = (p.xk || {})[catId] || 0;
   const xkHTML = xkOpts.length ? `<div class="xkbox">
       <p class="xkq">Hast du dabei noch einen Kniffel gewürfelt? 🎲</p>
