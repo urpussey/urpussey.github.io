@@ -2532,19 +2532,24 @@ function pickVoice() {
     || v.find(x => /^en-US/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null;
 }
 if (TTS.ok) { TTS.voice = pickVoice(); speechSynthesis.onvoiceschanged = () => { TTS.voice = pickVoice(); }; }
-// iPhone: Sprachausgabe muss einmal durch eine Berührung freigeschaltet werden
-document.addEventListener('pointerdown', () => {
+// iPhone: Sprachausgabe muss einmal durch ein Antippen (click/touchend) freigeschaltet werden
+function ttsUnlock() {
   if (!TTS.ok || TTS.unlocked) return;
-  TTS.unlocked = true;
-  try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch {}
-}, { capture: true });
+  try { speechSynthesis.speak(new SpeechSynthesisUtterance('')); TTS.unlocked = true; } catch {}
+  if (!TTS.voice) TTS.voice = pickVoice();
+}
+['touchend', 'click'].forEach(ev => document.addEventListener(ev, ttsUnlock, { capture: true }));
+let lastUtter = null; // Referenz behalten, sonst verschluckt Safari die Ausgabe
 function sayCardLine() {
   if (!TTS.ok || !SND.on) return;
   try {
-    speechSynthesis.cancel();
+    if (!TTS.voice) TTS.voice = pickVoice();
     const u = new SpeechSynthesisUtterance('Wet Ass Pussy!');
-    if (TTS.voice) { u.voice = TTS.voice; u.lang = TTS.voice.lang; } else u.lang = 'en-US';
-    u.rate = 0.95; u.pitch = 1.15; u.volume = 1;
+    u.lang = 'en-US';
+    if (TTS.voice) u.voice = TTS.voice;
+    u.rate = 0.95; u.pitch = 1.15;
+    lastUtter = u;
+    if (speechSynthesis.paused) speechSynthesis.resume();
     speechSynthesis.speak(u);
   } catch {}
 }
