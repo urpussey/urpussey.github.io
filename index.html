@@ -2335,6 +2335,7 @@ function showCard(card, pid, mine, already) {
   const reveal = () => {
     l.querySelector('.card3d').classList.add('flipped');
     l.classList.remove('casting');
+    sayCardLine();
     const def = cardDef(card.id);
     dustBurst(90);
     if (isSecret(card)) { play('magic'); renderCardActions(card, pid, mine); return; }
@@ -2522,6 +2523,31 @@ function audioUnlock() {
   } catch {}
 }
 document.addEventListener('pointerdown', audioUnlock, { capture: true });
+/* ---------- Stimme beim Kartenumdrehen ---------- */
+const TTS = { ok: 'speechSynthesis' in window, unlocked: false, voice: null };
+function pickVoice() {
+  if (!TTS.ok) return null;
+  const v = speechSynthesis.getVoices();
+  return v.find(x => /samantha|ava|allison|susan|zira|female/i.test(x.name) && /^en/i.test(x.lang))
+    || v.find(x => /^en-US/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null;
+}
+if (TTS.ok) { TTS.voice = pickVoice(); speechSynthesis.onvoiceschanged = () => { TTS.voice = pickVoice(); }; }
+// iPhone: Sprachausgabe muss einmal durch eine Berührung freigeschaltet werden
+document.addEventListener('pointerdown', () => {
+  if (!TTS.ok || TTS.unlocked) return;
+  TTS.unlocked = true;
+  try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch {}
+}, { capture: true });
+function sayCardLine() {
+  if (!TTS.ok || !SND.on) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance('Wet Ass Pussy!');
+    if (TTS.voice) { u.voice = TTS.voice; u.lang = TTS.voice.lang; } else u.lang = 'en-US';
+    u.rate = 0.95; u.pitch = 1.15; u.volume = 1;
+    speechSynthesis.speak(u);
+  } catch {}
+}
 function tone(freq, at, dur, type = 'sine', vol = 0.18, slideTo = null) {
   const c = SND.ctx, t = c.currentTime + at;
   const o = c.createOscillator(), g = c.createGain();
@@ -3242,6 +3268,7 @@ async function flipReveal(card, pid) {
   l.classList.add('casting'); fairyDust(1400); play('magic');
   await sleep(1400);
   l.classList.remove('casting'); l.querySelector('.card3d').classList.add('flipped');
+  sayCardLine();
   dustBurst(90);
   const def = cardDef(card.id);
   if (def.rar === 'legend') { rain(['👑', '💎', '✨'], 40); play('fanfare'); } else if (def.rar === 'bad') laughQuiet(); else { play('chime'); cheerFX(); }
