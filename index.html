@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <meta name="description" content="Du bist eingeladen! Zauberkarten · Live-Punkte · Glitzer 💖">
 <meta property="og:type" content="website">
-<meta property="og:title" content="PusseyWürfel 💖👑">
+<meta property="og:title" content="PussyKniffel 💖👑">
 <meta property="og:description" content="Du bist eingeladen! Zauberkarten · Live-Punkte · Glitzer ✨">
 <meta property="og:image" content="https://urpussey.github.io/vorschau.png"><meta property="og:url" content="https://urpussey.github.io/">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
@@ -18,9 +18,9 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="PusseyWürfel">
+<meta name="apple-mobile-web-app-title" content="PussyKniffel">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>PusseyWürfel</title>
+<title>PussyKniffel</title>
 <style>
 :root {
   --ink: #26385a;
@@ -906,6 +906,119 @@ main { padding-top: 12px; }
 .emo-pick { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; width: 100%; }
 .emo { width: 100%; min-width: 0; padding: 0; font-size: 1.2rem; }
 
+/* ===== Leuchtende Zauberkarte zum Selbst-Ziehen ===== */
+.drawdeck {
+  display: flex; align-items: center; gap: 14px; width: calc(100% - 28px); margin: 10px 14px 0; padding: 12px 14px; text-align: left;
+  background: linear-gradient(135deg, #fff, #ffe6f3); border: 2px solid var(--hot); border-radius: 20px; color: var(--ink);
+  animation: deckGlow 1.4s ease-in-out infinite; position: relative; z-index: 3; font-family: var(--font);
+}
+@keyframes deckGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,79,163,.55), 0 6px 18px rgba(232,64,141,.25); }
+  50% { box-shadow: 0 0 0 9px rgba(255,79,163,0), 0 0 30px 6px rgba(255,140,198,.75); }
+}
+.dd-card {
+  flex: none; width: 58px; height: 82px; border-radius: 10px; background: var(--grad); color: #fff; border: 3px solid #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; box-shadow: 0 4px 12px rgba(212,46,138,.45);
+  animation: deckWiggle 1.4s ease-in-out infinite; position: relative; overflow: hidden;
+}
+.dd-card::after { content: ""; position: absolute; inset: -40% auto -40% -60%; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); transform: rotate(20deg); animation: deckShine 2.2s ease-in-out infinite; }
+@keyframes deckShine { 0% { left: -60%; } 60%, 100% { left: 130%; } }
+@keyframes deckWiggle { 0%, 100% { transform: rotate(-4deg) scale(1); } 50% { transform: rotate(4deg) scale(1.06); } }
+.dd-nail { font-size: 1.2rem; }
+.dd-t { font-family: var(--display); font-size: .62rem; line-height: 1.05; text-align: center; }
+.dd-q { font-weight: 800; font-size: 1rem; }
+.dd-txt { display: flex; flex-direction: column; gap: 2px; }
+.dd-txt b { font-size: 1.05rem; color: var(--hot); }
+.dd-txt small { color: var(--muted); font-weight: 600; }
+.drawwait {
+  margin: 8px 14px 0; padding: 10px 14px; border-radius: 16px; background: #fff; border: 2px dashed var(--line);
+  color: var(--muted); font-weight: 700; text-align: center; font-size: .9rem;
+}
+.awaitbtn {
+  display: flex; flex-direction: column; gap: 2px; width: calc(100% - 28px); margin: 8px 14px 0; padding: 12px; border-radius: 18px;
+  background: var(--grad); color: #fff; border: 3px solid #fff; font-family: var(--font); font-size: 1.05rem;
+  animation: deckGlow 1.2s ease-in-out infinite;
+}
+.awaitbtn small { font-weight: 600; opacity: .95; }
+
+/* ===== Pflicht-Kategorien ganz oben ===== */
+.mustbar {
+  margin: 8px 14px 0; padding: 10px 12px; border-radius: 18px; background: linear-gradient(135deg, #fff8e1, #ffeef7);
+  border: 2px solid var(--gold); text-align: center; position: relative; z-index: 3;
+}
+.mustbar p { margin: 0; font-weight: 700; color: var(--ink); font-size: .92rem; }
+.mustbar.mine { animation: deckGlow 1.6s ease-in-out infinite; }
+.mustbtns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
+.mustbtns .btn { flex: 1 1 40%; padding: 12px 10px; font-size: 1rem; }
+.ptable td .lockc { opacity: .45; font-size: .8rem; }
+
+/* ===== Echte pinke Würfel zum Antippen ===== */
+.pd-hint { margin: 0 0 10px; text-align: center; color: #fff; font-weight: 700; font-size: .85rem; text-shadow: 0 1px 6px rgba(122,20,80,.6); }
+.pinkdice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 2px 4px 4px; }
+.pdie {
+  position: relative; background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  animation: pdIn .45s cubic-bezier(.2,1.6,.4,1) both;
+}
+.pdie:nth-child(2) { animation-delay: .05s; } .pdie:nth-child(3) { animation-delay: .1s; } .pdie:nth-child(4) { animation-delay: .15s; }
+.pdie:nth-child(5) { animation-delay: .2s; } .pdie:nth-child(6) { animation-delay: .25s; }
+@keyframes pdIn { from { transform: scale(.3) rotate(-30deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.pdie .pd { width: 64px; height: 64px; filter: drop-shadow(0 5px 8px rgba(212,46,138,.45)); transition: transform .15s; }
+.pdie .pd rect { fill: #ff6fb5; stroke: #fff; stroke-width: 5; }
+.pdie .pd path, .pdie .pd circle { fill: #fff; }
+.pdie b { font-size: .78rem; color: var(--ink); margin-top: 2px; }
+.pdie:active .pd { transform: scale(.9); }
+.pdie.picked .pd { transform: scale(1.25) rotate(360deg); transition: transform .6s cubic-bezier(.2,1.6,.4,1); filter: drop-shadow(0 0 14px #ffd84d); }
+.pdie.off { opacity: .25; transition: opacity .3s; }
+
+/* ===== Sprüche-Blase ===== */
+.fx-quip {
+  position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 18px); transform: translateX(-50%);
+  width: min(92vw, 420px); display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 20px;
+  background: linear-gradient(135deg, #fff, #ffe6f3); border: 2px solid var(--hot); box-shadow: 0 10px 30px rgba(232,64,141,.35);
+  animation: quipIn .45s cubic-bezier(.2,1.6,.4,1); z-index: 60; pointer-events: none;
+}
+.fx-quip.bad { background: linear-gradient(135deg, #3a0f2e, #7a1450); border-color: #ff8cc6; color: #fff; }
+.fx-quip span { font-size: 1.6rem; flex: none; }
+.fx-quip p { margin: 0; font-weight: 700; font-size: .92rem; line-height: 1.3; color: inherit; }
+.fx-quip:not(.bad) p { color: var(--ink); }
+.fx-quip.out { animation: quipOut .4s ease forwards; }
+@keyframes quipIn { from { transform: translate(-50%, 120%); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+@keyframes quipOut { to { transform: translate(-50%, 120%); opacity: 0; } }
+.catgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; max-height: 55vh; overflow-y: auto; }
+
+/* gesperrte Kategorien: blass + Schraffur */
+.ptable td.blocked { background: repeating-linear-gradient(135deg, #f7eef3 0 6px, #fdf7fa 6px 12px) !important; opacity: .55; }
+.ptable td.blocked .lockc { opacity: .8; font-size: .85rem; filter: grayscale(.3); }
+.ptable td.blocked.on { box-shadow: inset 0 0 0 1px #e8cfdc; }
+/* gestrichen / nicht geschafft: großes gebrochenes Herz */
+.ptable td.struck .strike { font-size: 1.15rem; line-height: 1; display: inline-block; }
+.ptable td.struck .v.neg { display: block; font-size: .7rem; color: var(--red); font-weight: 800; }
+.ptable td.struck { background: #fde4ec !important; }
+
+/* ===== Ganzer Bildschirm: Wer ist dran? ===== */
+.fx-turn {
+  position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; pointer-events: auto;
+  background: radial-gradient(circle at 50% 40%, #ff8cc6, #d42e8a 75%);
+  animation: ftIn .45s ease both;
+}
+.fx-turn.out { animation: ftOut .4s ease forwards; }
+@keyframes ftIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ftOut { to { opacity: 0; transform: scale(1.06); } }
+.ft-in { text-align: center; color: #fff; padding: 24px; animation: ftPop .6s cubic-bezier(.2,1.6,.4,1) both .1s; }
+@keyframes ftPop { from { transform: scale(.4) rotate(-6deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.ft-crown { font-size: 3.2rem; animation: bob 1s ease-in-out infinite; }
+.ft-emo { font-size: 4.2rem; line-height: 1.1; filter: drop-shadow(0 6px 14px rgba(122,20,80,.45)); }
+.fx-turn small { display: block; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: .95rem; opacity: .95; margin-top: 8px; }
+.fx-turn b { display: block; font-family: var(--display); font-size: clamp(2.2rem, 11vw, 3.4rem); line-height: 1.15; margin: 6px 0 10px; text-shadow: 0 4px 16px rgba(122,20,80,.5); }
+.fx-turn p { margin: 0; font-weight: 700; font-size: 1rem; }
+.ft-dice { display: flex; gap: 14px; justify-content: center; margin-top: 18px; }
+.ft-dice .die { width: 54px; height: 54px; animation: spinDie 1.4s ease-in-out infinite; }
+.ft-dice .die:nth-child(2) { animation-delay: .2s; }
+.ft-dice .die rect { fill: #fff; } .ft-dice .die path { fill: #ff4fa3; }
+@keyframes spinDie { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg) translateY(-6px); } }
+.fx-turn.mine b { animation: glowTxt 1s ease-in-out infinite; }
+@keyframes glowTxt { 50% { text-shadow: 0 0 22px #fff, 0 4px 16px rgba(122,20,80,.5); } }
+
 </style>
 </head>
 <body>
@@ -1219,6 +1332,29 @@ const dname = p => {
 const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
 const nameOf = (room, pid) => shownName(room, (room.players || {})[pid]);
 
+const APP_VERSION = '17.11. · 12:20';
+/* ---------- Wer darf was? Jede trägt nur am eigenen Handy ein – und nur, wenn sie dran ist ---------- */
+const isLocal = () => !!(state.backend && state.backend.mode === 'local');
+function canAct(pid) {
+  if (!state.canWrite || !pid || !state.room) return false;
+  if (isLocal()) return true;                       // ein einziges Gerät für alle
+  const me = state.session && state.session.pid;
+  if (!me) return false;
+  const p = (state.room.players || {})[pid];
+  return pid === me || !!(p && p.by === me);        // „ohne Handy“-Spielerinnen trägt ihre Gastgeberin ein
+}
+const myTurn = () => { const t = state.room && turnOf(state.room); return !!(t && t.pid && canAct(t.pid)); };
+const isHostMe = () => { const r = state.room; if (!r) return false; const h = r.host && r.players[r.host] ? r.host : orderOf(r)[0]; return isLocal() || h === (state.session && state.session.pid); };
+// Karten, die nur bestimmte Kategorien erlauben (Pflichtwurf, Zwangswahl, Gegnerwahl, Hexe, Wette)
+function allowedCats(card, p) {
+  if (!card || card.forfeit) return null;
+  let list = null;
+  if (card.forceCat) list = [card.forceCat];
+  else if (card.bet && card.bet.cats) list = card.bet.cats;
+  if (list && p) { const free = list.filter(id => !isNum((p.scores || {})[id])); return free.length ? free : null; }
+  return list;
+}
+
 /* ================= Startbildschirm ================= */
 
 function renderStart(prefillCode = '') {
@@ -1233,7 +1369,7 @@ function renderStart(prefillCode = '') {
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
       <div class="logo">${die(5, 'die big d1', true)}${die(3, 'die big d2', true)}</div>
-      <h1>Pussey<span>Würfel</span></h1>
+      <h1>Pussy<span>Kniffel</span></h1>
       <div class="hearts" aria-hidden="true">💕 ♡ 💖 ♡ 💕</div>
       <p class="tagline">Wer wird heute zur <b>Pussy des Tages</b> gekrönt? 👑💅<br><span>Zeig allen, was für eine krasse Pussy du bist! 😈💅✨</span></p>
       ${state.backend.mode === 'local' ? `<p class="note">🌷 Vorschau-Modus: Punkte werden nur auf diesem Gerät gespeichert.</p>` : ''}
@@ -1361,15 +1497,37 @@ function handleLive(room) {
       state.focus = { pid: entry.pid, until: Date.now() + 2700 };
       setTimeout(() => { if (state.room) renderRoom(); }, 2750);
     }
-    if (t && t === state.session.pid && !gameOver(room)) {
-      const delay = (entry ? (entry.bonus ? 5400 : 2800) : 300) + (payout ? 4400 : 0) + (state.fxDelay || 0);
-      setTimeout(() => {
-        pop(`🎲 ${esc(nameOf(state.room, t))} ist dran! 💖`, 'Zauberkarte ziehen, Prinzessin 👑', true); burst(['💖', '✨', '👑', '🌸', '🎀'], 22); buzz([80, 60, 80]); play('turn');
-        setTimeout(() => { const tt = state.room && turnOf(state.room); if (tt && tt.pid === state.session.pid && !tt.card && state.canWrite && !state.cardOpen && !$('#layer.open')) openDrawStage(); }, 1900);
-      }, delay);
+    if (t && !gameOver(room)) {
+      // Erst sieht man, was eingetragen wurde – danach groß über den ganzen Bildschirm, wer jetzt dran ist
+      const delay = (entry ? (entry.bonus ? 5600 : 3200) : 300) + (payout ? 4400 : 0) + (state.fxDelay || 0);
+      setTimeout(() => { const tt = state.room && turnOf(state.room); if (tt && tt.pid === t) turnSplash(t); }, delay);
     }
   }
+  // Spielstart: auch die erste Person groß ankündigen
+  if (state.lastStatus === 'lobby' && room.status === 'playing' && t && !gameOver(room)) setTimeout(() => { const tt = state.room && turnOf(state.room); if (tt && tt.pid === t) turnSplash(t); }, 2600);
+  state.lastStatus = room.status;
   state.lastTurn = t;
+}
+
+function turnSplash(pid) {
+  const room = state.room, p = room && room.players[pid]; if (!p) return;
+  const mine = canAct(pid);
+  const old = fx().querySelector('.fx-turn'); if (old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'fx-turn' + (mine ? ' mine' : '');
+  el.innerHTML = `<div class="ft-in">
+      <div class="ft-crown">👑</div>
+      <div class="ft-emo">${p.emoji || '💖'}</div>
+      <small>${mine ? 'Jetzt bist DU dran!' : 'Jetzt ist dran:'}</small>
+      <b>${esc(dname(p))}</b>
+      <p>${mine ? 'Tipp auf deine leuchtende Zauberkarte 🔮✨' : 'Gleich wird eine Zauberkarte gezogen … 🔮'}</p>
+      <div class="ft-dice">${die(6, 'die', true)}${die(5, 'die', true)}</div>
+    </div>`;
+  el.onclick = () => { el.classList.add('out'); setTimeout(() => el.remove(), 400); };
+  fx().appendChild(el);
+  rain(['💖', '✨', '👑', '🌸', '🎀', '🎲'], 30); play('turn');
+  if (mine) buzz([80, 60, 80]);
+  setTimeout(() => { if (el.isConnected) { el.classList.add('out'); setTimeout(() => el.remove(), 400); } }, 3400);
 }
 
 function playEvent(e, room) {
@@ -1386,9 +1544,10 @@ function playEvent(e, room) {
   if (e.type === 'roll') { fxShow('roll', e); return; }
   if (e.type === 'wheel') { fxShow('wheel', e); return; }
   if (e.type === 'slot') { fxShow('slot', e); return; }
+  if (e.type === 'await') { if (canAct(e.target)) { pop('👯‍♀️ Du bist gefragt!', `Bestimme die Kategorie für ${name} 😈`, true); buzz([80, 50, 80]); play('turn'); } return; }
   if (e.type === 'bomb') { pop('💥 BUMM! 💥', `Die Zeitbombe explodiert bei ${name}: −50 Punkte 💣`, true); rain(['💥', '💣', '🔥', '💔'], 45); play('attack'); buzz([200, 80, 300]); setTimeout(() => laughFX(`${name} ist in die Luft geflogen! 💣`), 2400); return; }
-  if (e.type === 'chestin') { setTimeout(() => coinsToChest(e.amount), 900); return; }
-  if (e.type === 'chestout') { setTimeout(() => chestOpenShow(e.amount, name, e.reason), e.reason ? 1800 : 3000); return; }
+  if (e.type === 'chestin') { setTimeout(() => coinsToChest(e.amount), 900); setTimeout(() => quip(`🪙 ${nameOf(room, e.pid)} zahlt ${e.amount} in die Truhe – ${pick(INSULTS)}`, true), 1500); return; }
+  if (e.type === 'chestout') { setTimeout(() => chestOpenShow(e.amount, name, e.reason), e.reason ? 1800 : 3000); setTimeout(() => quip(`💰 ${pick(CHEERS)}`), e.reason ? 5800 : 7000); return; }
   if (e.type !== 'entry') return;
   const c = ALL.find(x => x.id === e.cat); if (!c) return;
   state.flash = { pid: e.pid, cat: e.cat, until: Date.now() + 2600 };
@@ -1415,6 +1574,7 @@ function playEvent(e, room) {
     pop(`${EMO[c.id]} ${name}: ${e.val}${e.cfx ? ` (${e.cfx})` : ''}`, c.label + (e.notes && e.notes.length ? ' · ' + e.notes.map(esc).join(' · ') : ''), !!e.cfx);
     burst(['💖', '✨', '🌸', '💕', '🎀']); play(e.cfx ? 'yay' : 'pling');
   }
+  setTimeout(() => (e.val === 0 ? quip(`💔 ${nameOf(room, e.pid)}: ${pick(INSULTS)}`, true) : quip(`💖 ${nameOf(room, e.pid)}: ${pick(CHEERS)}`)), 2200);
   if (e.mission) setTimeout(() => { pop(`🧚 Feen-Auftrag geschafft!`, `${name} bekommt +${e.mission} Bonus 💖`, true); rain(['🧚', '✨', '💖', '🌸'], 35); play('fanfare'); }, 2300);
   if (e.bonus) setTimeout(() => { pop('👑 BONUS GEKNACKT! 👑', `${name} bekommt +45 Punkte 💰`, true); rain(['👑', '💰', '✨', '💖'], 45); play('fanfare'); }, 2600);
 }
@@ -1429,7 +1589,7 @@ function renderRoom() {
   const app = $('#app');
   const y = window.scrollY || 0;
   const ro = !state.canWrite;
-  const mine = turn.pid && turn.pid === session.pid;
+  const mine = myTurn();
   const ch = turn.choosing && ALL.find(c => c.id === turn.choosing);
 
   app.innerHTML = `
@@ -1449,21 +1609,25 @@ function renderRoom() {
         <b>${esc(nameOf(room, turn.pid))} ist dran ${mine ? '💖' : '✨'}</b>
         <small>${ch ? `wählt gerade: ${EMO[ch.id]} ${ch.label} 🤔` : turn.card ? `Runde ${turn.round} · würfeln, würfeln, würfeln 🎲` : `Runde ${turn.round} · zieht gleich eine Zauberkarte 🔮`}</small>
       </div>
-      ${ro ? '' : `<button class="skip" id="skip" aria-label="Zug weitergeben">⏭</button>`}
+      ${mine || (!ro && isHostMe()) ? `<button class="skip" id="skip" aria-label="Zug weitergeben">⏭</button>` : ''}
     </div>
     ${turn.card ? `<button class="cardchip ${faceRar(turn.card)} ${turn.card.forfeit ? 'forfeit' : ''}" id="cardchip">
         <span class="cc-label">🔮 Zauberkarte von ${esc(nameOf(room, turn.pid))} · gilt jetzt!</span>
         <span class="cc-body">
           <span class="cc-emo">${isSecret(turn.card) ? '🔒' : cardDef(turn.card.id).emo}</span>
-          <span class="cc-text"><b>${isSecret(turn.card) ? 'Geheimkarte' : cardDef(turn.card.id).title}${turn.card.forfeit ? ' · verfallen → ×4' : ''}</b>${cardRoast(turn.card) ? `<i class="cc-roast">😂 „${esc(cardRoast(turn.card))}“</i>` : ''}${cardCheer(turn.card) ? `<i class="cc-cheer">💖 ${esc(cardCheer(turn.card))}</i>` : ''}<small>${esc(cardText(turn.card))}</small>${turn.card.result ? `<em>${esc(turn.card.result)}</em>` : ''}</span>
+          <span class="cc-text"><b>${isSecret(turn.card) ? 'Geheimkarte' : cardDef(turn.card.id).title}${turn.card.forfeit ? ' · Trostzauber 🎁' : ''}</b>${cardRoast(turn.card) ? `<i class="cc-roast">😂 „${esc(cardRoast(turn.card))}“</i>` : ''}${cardCheer(turn.card) ? `<i class="cc-cheer">💖 ${esc(cardCheer(turn.card))}</i>` : ''}${isSecret(turn.card) ? `<i class="cc-cheer">💋 ${esc(secretLine(turn.card))}</i>` : ''}<small>${esc(cardText(turn.card))}</small>${turn.card.result ? `<em>${esc(turn.card.result)}</em>` : ''}</span>
           ${turn.card.status === 'open' ? '<span class="cc-open">!</span>' : ''}
         </span>
         <span class="cc-spark" aria-hidden="true"><i>✨</i><i>💫</i><i>✨</i><i>⭐</i></span>
-      </button>` : (ro ? '' : `<button class="btn wide drawbtn shine" id="drawbtn">🔮 Zauberkarte ziehen ✨</button>`)}` : ''}
+      </button>${awaitHTML(room, turn)}` : mine ? `<button class="drawdeck" id="drawbtn" aria-label="Zauberkarte ziehen">
+        <span class="dd-card"><span class="dd-nail">💅</span><span class="dd-t">Baddy<br>Pro Max</span><span class="dd-q">?</span></span>
+        <span class="dd-txt"><b>Deine Zauberkarte wartet! ✨</b><small>Tipp drauf, um sie zu ziehen 🔮</small></span>
+      </button>` : `<div class="drawwait">🔮 ${esc(nameOf(room, turn.pid))} zieht gleich eine Zauberkarte … ✨</div>`}
+    ${mustHTML(room, turn, mine)}` : ''}
     ${chestHTML(room)}
     <nav class="names">
       ${players.map(([id, p]) => `<span class="nchip ${turn.pid === id ? 'turn' : ''}">${turn.pid === id ? '🎲 ' : ''}${esc(dname(p))}${p.shield ? ' 🛡️' : ''}${room.bomb && room.bomb.pid === id ? ' 💣' : ''}</span>`).join('')}
-      ${ro ? '' : `<button class="nchip add" id="addPlayer" aria-label="Mitspielerin hinzufügen">＋</button>`}
+      ${ro ? '' : `<button class="nchip add" id="addPlayer" aria-label="Pussy hinzufügen">＋</button>`}
     </nav>
     ${standHTML(players, turn)}
     <main id="main" class="${ro ? 'readonly' : ''}">${tableHTML(players, turn)}</main>`;
@@ -1483,13 +1647,21 @@ function renderRoom() {
   if (!ro && $('#skip')) $('#skip').onclick = skipTurn;
   if ($('#drawbtn')) $('#drawbtn').onclick = openDrawStage;
   $('#chest').onclick = () => { const a = state.room.chest || 0; toast(a ? `💰 ${a} Punkte in der Truhe – ${chestChance(a) ? `${chestChance(a)} % Chance pro Zug, dass sie an eine zufällige Person ausgeschüttet wird` : 'ab 15 Punkten kann sie ausgeschüttet werden'} ✨` : '🪙 Hier landet alles, was Pechkarten abziehen. Irgendwann wird sie zufällig ausgeschüttet!'); };
-  if ($('#cardchip')) $('#cardchip').onclick = () => { const tt = turnOf(state.room); showCard(tt.card, tt.pid, tt.pid === session.pid || (state.canWrite && tt.card.status === 'open'), true); };
+  if ($('#cardchip')) $('#cardchip').onclick = () => { const tt = turnOf(state.room); showCard(tt.card, tt.pid, canAct(tt.pid), true); };
+  if ($('#awaitbtn')) $('#awaitbtn').onclick = openAwait;
+  app.querySelectorAll('[data-must]').forEach(b => { b.onclick = () => openPicker(turnOf(state.room).pid, b.dataset.must); });
+  checkAwait();
   $('#share').onclick = shareCode;
   $('#menu').onclick = openMenu;
   $('#main').onclick = e => {
     if (ro) return;
     const row = e.target.closest('[data-cat]');
-    if (row) return openPicker(row.dataset.pid, row.dataset.cat);
+    if (row) {
+      const tt = turnOf(state.room);
+      if (row.dataset.pid !== tt.pid) { toast(`Hier trägt nur ${nameOf(state.room, row.dataset.pid)} ein – und nur, wenn sie dran ist 💅`); return; }
+      if (!canAct(tt.pid)) { toast(`${nameOf(state.room, tt.pid)} ist dran – nur sie kann an ihrem Handy eintragen 💅`); return; }
+      return openPicker(row.dataset.pid, row.dataset.cat);
+    }
     const rm = e.target.closest('[data-remove]');
     if (rm) return removePlayer(rm.dataset.remove);
   };
@@ -1614,10 +1786,13 @@ function openPicker(pid, catId) {
   const c = ALL.find(x => x.id === catId);
   const p = (state.room.players || {})[pid]; if (!p) return;
   const turnNow = turnOf(state.room);
+  if (turnNow.pid !== pid || !canAct(pid)) { toast(turnNow.pid ? `${nameOf(state.room, turnNow.pid)} ist dran – nur sie kann gerade eintragen 💅` : 'Gerade ist niemand dran 💅'); return; }
+  if (turnNow.card && turnNow.card.status === 'await') { toast(`⏳ ${nameOf(state.room, turnNow.card.awaitPid)} bestimmt noch deine Kategorie …`); return; }
   if (turnNow.pid === pid && !turnNow.card) { toast('Erst die Zauberkarte ziehen 🔮✨'); openDrawStage(); return; }
   if (turnNow.pid === pid && turnNow.card && turnNow.card.status === 'open') { toast('Erst die Karten-Aktion erledigen 🪄'); showCard(turnNow.card, pid, true, true); return; }
   if (turnNow.pid === pid && turnNow.card && (turnNow.card.locked || []).includes(catId)) { toast('🔒 Diese Kategorie ist diesen Zug gesperrt, Süße!'); return; }
-  if (turnNow.pid === pid && turnNow.card && turnNow.card.forceCat && turnNow.card.forceCat !== catId && !isNum(((p.scores) || {})[catId])) { toast(`📌 Du musst diesen Zug ${catLbl(turnNow.card.forceCat)} werten!`); return; }
+  const allow = allowedCats(turnNow.card, p);
+  if (allow && !allow.includes(catId)) { toast(`📌 Du darfst diesen Zug nur hier eintragen: ${allow.map(catLbl).join(', ')}`); return; }
   const s = p.scores || {};
   const cur = s[catId];
   const cdef = turnNow.pid === pid && turnNow.card ? cardDef(turnNow.card.id) : null;
@@ -1697,11 +1872,11 @@ async function skipTurn() {
 }
 
 async function addPlayer() {
-  const name = await askName('Mitspielerin hinzufügen 💕', 'Hinzufügen 💖');
+  const name = await askName('Pussy hinzufügen 💕', 'Hinzufügen 💖');
   if (!name) return;
   const pid = rid();
   const ev = { id: rid(), ts: Date.now(), type: 'join', pid };
-  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, emoji: pick(PUSSY_EMOJIS), joined: Date.now(), ...(state.room.status === 'playing' ? { suffix: pickSuffixes(1, Object.values(state.room.players || {}).map(p => p.suffix))[0] } : {}) } }, log: logPatch(state.room, ev) }));
+  const ok = await write(() => state.backend.updateRoom(state.session.code, { players: { [pid]: { name, emoji: pick(PUSSY_EMOJIS), joined: Date.now(), by: (state.session && state.session.pid) || null, ...(state.room.status === 'playing' ? { suffix: pickSuffixes(1, Object.values(state.room.players || {}).map(p => p.suffix))[0] } : {}) } }, log: logPatch(state.room, ev) }));
   if (ok && state.room) renderRoom();
 }
 
@@ -1720,13 +1895,14 @@ function shareCode() { openInvite(); }
 
 function openMenu() {
   const items = state.canWrite ? `
-    ${gameOver(state.room) ? '<button class="menuitem" data-act="ceremony">🏆 Siegerehrung nochmal ansehen</button>' : ''}
+    ${gameOver(state.room) ? '<button class="menuitem" data-act="ceremony">👑 Pussy Ranking nochmal ansehen</button>' : ''}
     <button class="menuitem" data-act="next">🎲 Nächstes Spiel starten<small>Punkte von Spiel ${state.room.game || 1} speichern, Blöcke leeren</small></button>` : '';
   openSheet(`<h3>Menü 🎀</h3>${items}
-    ${state.canWrite ? '<button class="menuitem" data-act="remove">👋 Mitspielerin entfernen<small>Jemand ist gegangen?</small></button>' : ''}
+    ${state.canWrite ? '<button class="menuitem" data-act="remove">👋 Pussy entfernen<small>Jemand ist gegangen?</small></button>' : ''}
     <button class="menuitem" data-act="share">💌 Einladung kopieren<small>Raum-Code ${esc(state.session.code)}</small></button>
     <button class="menuitem" data-act="sound">${SND.on ? '🔊 Töne sind an' : '🔇 Töne sind aus'}<small>Tippen zum ${SND.on ? 'Ausschalten' : 'Einschalten'}</small></button>
-    <button class="menuitem" data-act="leave">🚪 Raum verlassen</button>`,
+    <button class="menuitem" data-act="leave">🚪 Raum verlassen</button>
+    <p class="muted center small">Version ${APP_VERSION} 💖</p>`,
     (act, _b, close) => {
       close();
       if (act === 'next') nextGame();
@@ -1775,6 +1951,7 @@ async function init() {
   }
   state.db = db;
   if (db) state.backend = claudeBackend(db);
+  else if (/[?&]rtdb/.test(location.search)) state.backend = rtdbMockBackend();
   else if (typeof FIREBASE_CONFIG !== 'undefined' && FIREBASE_CONFIG.apiKey) {
     try { state.backend = await firebaseBackend(FIREBASE_CONFIG); }
     catch (e) { console.error(e); state.backend = localBackend(); toast('Keine Verbindung zum Server 💔 – bitte Internet prüfen'); }
@@ -1800,6 +1977,7 @@ function tableHTML(players, turn) {
     .sort((a, b) => (b.on ? 1 : 0) - (a.on ? 1 : 0));
   const fl = state.flash && state.flash.until > Date.now() ? state.flash : null;
   const me = state.session.pid;
+  const allow = turn.pid ? allowedCats(turn.card, state.room.players[turn.pid]) : null;
 
   const head = `<tr><th class="lblc corner">🌸</th>${cols.map(c => `
     <th class="${c.on ? 'on' : ''} ${c.turn ? 'turn' : ''}">
@@ -1811,16 +1989,18 @@ function tableHTML(players, turn) {
   const cell = (c, cat) => {
     const s = c.p.scores || {}, m = c.p.marks || {}, v = s[cat.id];
     const x = (c.p.xk || {})[cat.id], cf = (c.p.cfx || {})[cat.id];
-    const cls = ['pc', c.on ? 'on' : '', isNum(v) ? 'done' : '', v === 0 ? 'struck' : '',
+    const blocked = c.turn && !isNum(v) && turn.card && (((turn.card.locked || []).includes(cat.id)) || (allow && !allow.includes(cat.id)));
+    const cls = ['pc', c.on ? 'on' : '', isNum(v) ? 'done' : '', v <= 0 && isNum(v) ? 'struck' : '', blocked ? 'blocked' : '',
       c.turn && turn.choosing === cat.id ? 'choosing' : '', fl && fl.pid === c.id && fl.cat === cat.id ? 'flash' : ''].join(' ');
     let inner = '';
     if (isNum(v)) {
-      inner = v === 0 ? '<span class="strike">💔</span>' : `<span class="v">${v}</span>`;
+      inner = v === 0 ? '<span class="strike">💔</span>' : v < 0 ? `<span class="strike">💔</span><span class="v neg">${v}</span>` : `<span class="v">${v}</span>`;
       if (x) inner += `<i class="badge ${x >= 75 ? 'kx' : ''}">${c.on ? (x >= 75 ? '👸' : '💎') + '+' + x : (x >= 75 ? '👸' : '💎')}</i>`;
       else if (m[cat.id]) inner += `<i class="badge">💎</i>`;
       if (cf) inner += `<i class="badge cfx">${cf}</i>`;
       if ((c.p.prot || {})[cat.id]) inner += `<i class="badge prot">🛡️</i>`;
-    } else if (c.on && !ro) inner = '<span class="plus">＋</span>';
+    } else if (blocked) inner = '<span class="lockc">🔒</span>';
+    else if (c.on && c.turn && canAct(c.id)) inner = '<span class="plus">＋</span>';
     return `<td class="${cls}" data-cat="${cat.id}" data-pid="${c.id}">${inner}</td>`;
   };
   const lbl = cat => cat.type === 'upper'
@@ -1832,10 +2012,9 @@ function tableHTML(players, turn) {
   // Dropdown mit freien Kategorien der Person, die dran ist
   const tp = turn.pid && state.room.players[turn.pid];
   let picker = '';
-  if (tp && !ro) {
+  if (tp && canAct(turn.pid) && !allow) {
     const tcard = turn.card || {};
     let free = ALL.filter(c => !isNum((tp.scores || {})[c.id]) && !(tcard.locked || []).includes(c.id));
-    if (tcard.forceCat) free = free.filter(c => c.id === tcard.forceCat);
     picker = `<div class="pickbar">
       <label for="catSelect">🎯 <b>${esc(dname(tp))}</b> trägt ein in …</label>
       <div class="selwrap"><select id="catSelect" data-pid="${turn.pid}">
@@ -1863,7 +2042,7 @@ function tableHTML(players, turn) {
         ${sumRow('👑 Endsumme', t => `<b>${t.total}</b>`, 'finalr')}
       </tbody>
     </table></div>
-    <p class="muted center small">Die große Spalte gehört der Person, die dran ist 🎲${state.canWrite ? '<br>Tippe auf ein Feld oder nutze das Menü oben 💅' : ''}</p>
+    <p class="muted center small">Die große Spalte gehört der Person, die dran ist 🎲${myTurn() ? '<br>Du bist dran – tippe auf ein Feld 💅' : '<br>Eintragen kann nur, wer dran ist – am eigenen Handy 💅'}</p>
     <div class="stickers" aria-hidden="true">🦄 💖 🌸 👑 🎀 🦋 💅 🌷</div>`;
 }
 
@@ -1907,16 +2086,16 @@ const CARDS = [
   { id: 'lucky', w: 4, rar: 'common', emo: '🍀', title: 'Glücksfee', text: 'Die Glücksfee schenkt dir sofort +20 Punkte!', act: 'instant', self: 20 },
   { id: 'four', w: 5, rar: 'common', emo: '🎲', title: 'Vierter Wurf', text: 'Du darfst diesmal 4-mal statt 3-mal würfeln.', act: 'ok' },
   { id: 'again', w: 3, rar: 'rare', emo: '🔁', title: 'Nochmal, Prinzessin!', text: 'Nach deinem Eintrag bist du direkt nochmal dran.', act: 'ok', again: true },
-  { id: 'strike', w: 5, rar: 'common', emo: '⚔️', title: 'Streich-Attacke', text: 'Wähle eine Gegnerin und streiche ihr ein freies Feld!', act: 'targetCat' },
-  { id: 'steal', w: 4, rar: 'common', emo: '🦝', title: 'Diebische Elster', text: 'Klau einer Gegnerin 15 Punkte!', act: 'target', steal: 15 },
-  { id: 'tax', w: 3, rar: 'rare', emo: '👑', title: 'Prinzessinnen-Steuer', text: 'Alle anderen zahlen dir 5 Punkte Steuer.', act: 'instant', tax: 5, min: 2 },
+  { id: 'strike', w: 5, rar: 'common', emo: '⚔️', title: 'Streich-Attacke', text: 'Wähle eine andere Pussy und streiche ihr ein freies Feld!', act: 'targetCat' },
+  { id: 'steal', w: 4, rar: 'common', emo: '🦝', title: 'Diebische Elster', text: 'Klau einer anderen Pussy 15 Punkte!', act: 'target', steal: 15 },
+  { id: 'tax', w: 3, rar: 'rare', emo: '👑', title: 'Prinzessinnen-Steuer', text: 'Alle anderen Pussys zahlen dir 5 Punkte Steuer.', act: 'instant', tax: 5, min: 2 },
   { id: 'shield', w: 4, rar: 'common', emo: '🛡️', title: 'Feen-Schutzschild', text: 'Die nächste Attacke gegen dich prallt einfach ab.', act: 'instant', shield: true },
   { id: 'eraser', w: 3, rar: 'rare', emo: '🧽', title: 'Zauber-Radierer', text: 'Mach eines deiner gestrichenen Felder wieder frei.', act: 'ownStruck' },
-  { id: 'duel', w: 4, rar: 'common', emo: '🤺', title: 'Würfel-Duell', text: 'Fordere eine Gegnerin heraus: Ihr würfelt beide einmal alle 6 Würfel. Die höhere Augensumme bekommt +20!', act: 'duel', prize: 20 },
+  { id: 'duel', w: 4, rar: 'common', emo: '🤺', title: 'Würfel-Duell', text: 'Fordere eine andere Pussy heraus: Ihr würfelt beide einmal alle 6 Würfel. Die höhere Augensumme bekommt +20!', act: 'duel', prize: 20 },
   { id: 'reverse', w: 3, rar: 'common', emo: '🔄', title: 'Rückwärts-Zauber', text: 'Die Spielrichtung dreht sich um!', act: 'instant', reverse: true, min: 3 },
-  { id: 'sleepnext', w: 3, rar: 'common', emo: '💤', title: 'Schlafzauber', text: 'Die nächste Person schläft ein und muss aussetzen.', act: 'ok', skipNext: true, min: 3 },
-  { id: 'party', w: 2, rar: 'rare', emo: '🎉', title: 'Party-Runde', text: 'Alle bekommen +10 Punkte!', act: 'instant', all: 10 },
-  { id: 'gift', w: 3, rar: 'common', emo: '💝', title: 'Herzensgeschenk', text: 'Schenke einer Mitspielerin 10 Punkte – dafür bekommst du selbst 15.', act: 'target', gift: 10, giftSelf: 15 },
+  { id: 'sleepnext', w: 3, rar: 'common', emo: '💤', title: 'Schlafzauber', text: 'Die nächste Pussy schläft ein und muss aussetzen.', act: 'ok', skipNext: true, min: 3 },
+  { id: 'party', w: 2, rar: 'rare', emo: '🎉', title: 'Party-Runde', text: 'Alle Pussys bekommen +10 Punkte!', act: 'instant', all: 10 },
+  { id: 'gift', w: 3, rar: 'common', emo: '💝', title: 'Herzensgeschenk', text: 'Schenke einer anderen Pussy 10 Punkte – dafür bekommst du selbst 15.', act: 'target', gift: 10, giftSelf: 15 },
   { id: 'wish', w: 1, rar: 'legend', emo: '🪄', title: 'Wunschfee', text: 'Egal was du würfelst: Trag es in ein beliebiges freies Feld ein – als hättest du es geschafft!', act: 'ok' },
   { id: 'crown', w: 1, rar: 'legend', emo: '👸', title: 'Krone der Königin', text: 'Du bekommst +40 Punkte und dein Eintrag zählt doppelt!', act: 'instant', self: 40, mult: 2 },
   { id: 'half', w: 4, rar: 'bad', emo: '🐦', title: 'Pechvogel', text: 'Dein Eintrag zählt diesmal nur die Hälfte.', act: 'ok', mult: 0.5 , roast: ["Na, du Pechvogel mit Spatzenhirn? 🐦", "Selbst deine Würfel schämen sich gerade für dich.", "Halbe Punkte für eine halbe Portion. 💅"] },
@@ -1929,7 +2108,7 @@ const CARDS = [
   { id: 'curse', w: 2, rar: 'bad', emo: '🥀', title: 'Feen-Fluch', text: 'Du musst eines deiner freien Felder streichen.', act: 'ownCat' , roast: ["Verflucht! Aber ehrlich: Dein Würfelglück war vorher auch schon tot.", "Die Fee kann dich nicht leiden. Ganz ehrlich? Verständlich. 💅"] },
   { id: 'blind', w: 2, rar: 'bad', emo: '🙈', title: 'Augen zu!', text: 'Deinen ersten Wurf machst du mit geschlossenen Augen – du darfst erst danach schauen.', act: 'ok' , roast: ["Augen zu! Macht bei deinem Würfelglück eh keinen Unterschied.", "Endlich würfelst du so, wie du dich schminkst – blind. 💄"] },
   { id: 'pirate', w: 3, rar: 'bad', emo: '🏴‍☠️', title: 'Piraten-Überfall', text: 'Piraten klauen dir 15 Punkte – sie landen in der Schatztruhe!', act: 'instant', self: -15 , roast: ["Arrr! Selbst Piraten halten dich für leichte Beute, Prinzessin.", "Die Piraten meinten: Bei der klauen wir, die merkt's eh nicht. 🏴‍☠️"] },
-  { id: 'toll', w: 3, rar: 'common', emo: '🪙', title: 'Truhen-Zoll', text: 'Alle zahlen 5 Punkte in die Schatztruhe.', act: 'instant', allChest: 5, min: 2 },
+  { id: 'toll', w: 3, rar: 'common', emo: '🪙', title: 'Truhen-Zoll', text: 'Alle Pussys zahlen 5 Punkte in die Schatztruhe.', act: 'instant', allChest: 5, min: 2 },
   { id: 'seeker', w: 2, rar: 'rare', emo: '🗝️', title: 'Schatzsucherin', text: 'Du findest den Schlüssel: Die Hälfte der Schatztruhe gehört dir!', act: 'instant', chestShare: 0.5 },
   { id: 'queen', w: 1, rar: 'legend', emo: '💰', title: 'Schatzkönigin', text: 'Die GANZE Schatztruhe gehört dir!', act: 'instant', chestShare: 1 },
   { id: 'calm', w: 6, rar: 'common', emo: '🌷', title: 'Ruhige Runde', text: 'Nichts Besonderes – würfle ganz entspannt.', act: 'ok' },
@@ -2050,7 +2229,7 @@ async function doDraw() {
   const def = cardDef(card.id);
   state.myDraw = card.key;
   let patch = { players: {} };
-  if (def.act === 'instant' || card.forfeit) { const r = instantPatch(room, turn.pid, def, card); patch = r.patch; card.result = r.result; }
+  if (def.act === 'instant' && !card.forfeit) { const r = instantPatch(room, turn.pid, def, card); patch = r.patch; card.result = r.result; }
   if (def.pflicht && !card.forfeit) { patch.players = patch.players || {}; patch.players[turn.pid] = { ...(patch.players[turn.pid] || {}), pflichtN: ((room.players[turn.pid].pflichtN) || 0) + 1 }; }
   trackDraw(patch, room, turn.pid, card);
   patch.turn = { card };
@@ -2074,7 +2253,7 @@ async function doDraw() {
 
 function cardFaceHTML(card, pid) {
   const def = cardDef(card.id); if (!def) return '';
-  if (isSecret(card)) return `<div class="cf-rar rare">🔒 geheim</div><div class="cf-emo">🔒</div><div class="cf-title">Geheimkarte</div><div class="cf-text">Diese Karte wird erst aufgedeckt, nachdem du eingetragen hast … 🤫💖</div>`;
+  if (isSecret(card)) return `<div class="cf-rar rare">🔒 geheim</div><div class="cf-emo">🔒</div><div class="cf-title">Geheimkarte</div><div class="cf-cheer">💋 ${esc(secretLine(card))}</div><div class="cf-text">Diese Karte wird erst aufgedeckt, nachdem du eingetragen hast … 🤫💖</div>`;
   return `<div class="cf-rar ${def.rar}">${RAR[def.rar]}</div>
     <div class="cf-emo">${def.emo}</div>
     <div class="cf-title">${def.title}</div>
@@ -2126,7 +2305,7 @@ function showCard(card, pid, mine, already) {
     dustBurst(90);
     if (isSecret(card)) { play('magic'); renderCardActions(card, pid, mine); return; }
     if (def.rar === 'legend') { rain(['👑', '💎', '✨', '🦄', '👸'], 45); play('fanfare'); }
-    else if (def.rar === 'bad') laughFX();
+    else if (def.rar === 'bad') laughQuiet();
     else { burst(['✨', '💖', '🌸', '💫'], 20, 50, 42); play('chime'); cheerFX(); }
     renderCardActions(card, pid, mine);
   };
@@ -2140,7 +2319,7 @@ function renderCardActions(card, pid, mine) {
   const box = $('#cardlayer .cl-actions'); if (!box) return;
   const def = cardDef(card.id);
   if (state.stageBusy) return;
-  if (mine && state.canWrite && card.status === 'open' && NEW_ACTS.has(def.act)) { runChooser(card, pid); return; }
+  if (mine && state.canWrite && card.status === 'open' && (NEW_ACTS.has(def.act) || card.forfeit)) { runChooser(card, pid); return; }
   const room = state.room;
   const others = orderOf(room).filter(id => id !== pid);
   const btn = (act, label, cls = '') => `<button class="btn ${cls}" data-cact="${act}">${label}</button>`;
@@ -2150,7 +2329,7 @@ function renderCardActions(card, pid, mine) {
     box.innerHTML = btn('close', 'Los geht\'s! 💖', 'shine');
   } else if (def.act === 'target' || def.act === 'duel' || def.act === 'targetCat') {
     const list = def.act === 'targetCat' ? others.filter(id => emptyCats(room.players[id]).length) : others;
-    box.innerHTML = `<p class="cl-q">${def.act === 'duel' ? 'Wen forderst du heraus? 🤺' : def.act === 'target' && def.gift ? 'Wem schenkst du Punkte? 💝' : 'Wen erwischt es? 😈'}</p>
+    box.innerHTML = `<p class="cl-q">${def.act === 'duel' ? 'Welche Pussy forderst du heraus? 🤺' : def.act === 'target' && def.gift ? 'Welcher Pussy schenkst du Punkte? 💝' : 'Welche Pussy erwischt es? 😈'}</p>
       <div class="cl-grid">${list.map(id => btn('t:' + id, `${esc(nameOf(room, id))}${room.players[id].shield ? ' 🛡️' : ''}`, 'ghost')).join('')}</div>`;
   } else if (def.act === 'ownCat' || def.act === 'ownStruck') {
     const cats = def.act === 'ownCat' ? emptyCats(room.players[pid]) : struckCats(room.players[pid]);
@@ -2252,10 +2431,17 @@ async function resolveCard(card, pid, act) {
 }
 
 function playCardResult(e) {
-  if (e.fx === 'attack') { pop('😈 Angriff!', esc(e.result), true); rain(['⚔️', '💥', '😈', '💔'], 30); buzz([60, 40, 60]); play('attack'); }
+  // Ist die Karte gerade offen, steht alles auf der Karte – kein extra Text drüber
+  if ($('#cardlayer.open')) {
+    if (e.fx === 'attack') { rain(['⚔️', '💥', '😈', '💔'], 30); buzz([60, 40, 60]); play('attack'); }
+    else if (e.fx === 'bad') laughQuiet();
+    else { burst(['💖', '✨', '💝', '🌸'], 24); play('yay'); }
+    return;
+  }
+  if (e.fx === 'attack') { pop('😈 Angriff!', esc(e.result), true); rain(['⚔️', '💥', '😈', '💔'], 30); buzz([60, 40, 60]); play('attack'); if (e.target) setTimeout(() => quip(`${nameOf(state.room, e.target)}: ${pick(INSULTS)}`, true), 2300); }
   else if (e.fx === 'shield') { pop('🛡️ Abgewehrt!', esc(e.result), true); burst(['🛡️', '✨', '💖'], 22); play('chime'); }
   else if (e.fx === 'bad') { laughFX(esc(e.result)); }
-  else { pop('🪄 Zauber!', esc(e.result), true); burst(['💖', '✨', '💝', '🌸'], 24); play('yay'); }
+  else { pop('🪄 Zauber!', esc(e.result), true); burst(['💖', '✨', '💝', '🌸'], 24); play('yay'); setTimeout(() => quip(pick(CHEERS)), 2300); }
 }
 
 function setChooseMode() { const st = $('#cardlayer .cl-stage'); if (st) st.classList.toggle('choose', !!$('#cardlayer .cl-grid')); }
@@ -2347,7 +2533,7 @@ function play(name) {
 }
 
 const faceRar = card => (isSecret(card) ? 'secret' : cardDef(card.id).rar);
-const cardRoast = card => { const d = cardDef(card.id); if (isSecret(card) || card.forfeit) return ''; return d && d.roast ? d.roast[(card.roast || 0) % d.roast.length] : ''; };
+const cardRoast = card => { const d = cardDef(card.id); if (!d || isSecret(card) || d.rar !== 'bad') return ''; const pool = (d.roast || []).concat(INSULTS); return pool[(card.roast !== undefined ? card.roast : keyNum(card)) % pool.length]; };
 
 /* ================= Kniffel-Royale-Karten ================= */
 // Alte Karten, die durch das neue Set ersetzt werden, kommen nicht mehr vor
@@ -2379,7 +2565,7 @@ CARDS.push(
   RC('xroll2', 3, 'rare', '🎲', 'Zwei Extra-Würfe', 'Du hast diese Runde 5 Würfe – perfekt für Kniffel Extrem oder Highway! 💅'),
   RC('pech2', 4, 'common', '🍀', 'Pech gehabt', 'Nur 2 Würfe – dafür zählt deine Wertung ×2.', { mult: 2 }),
   RC('allin', 2, 'rare', '🎰', 'Alles oder nichts', 'Nur 1 Wurf – dafür zählt deine Wertung ZEHNFACH! 😱', { mult: 10 }),
-  RC('rollnum', 3, 'common', '🎲', 'Wurfzahl-Würfel', 'Der Zauberwürfel bestimmt, wie oft du diesen Zug würfeln darfst: {rolls}', { act: 'instant', rollCount: true }),
+  RC('rollnum', 3, 'common', '🎲', 'Wurfzahl-Würfel', 'Würfle in echt mit EINEM Würfel – die Zahl bestimmt, wie oft du diesen Zug würfeln darfst: {rolls}', { act: 'rollnum' }),
   RC('joker1', 4, 'common', '🃏', 'Joker-Würfel', 'Du darfst einmal einen Würfel auf eine beliebige Zahl drehen. 💖'),
   RC('joker2', 2, 'rare', '🃏', 'Zweiter Joker', 'Du darfst zwei Würfel auf beliebige Zahlen drehen! ✨'),
   RC('oneshot', 2, 'rare', '🏹', 'Ein Schuss', 'Nur 1 Wurf – dafür zählt deine Wertung ×8.', { mult: 8 }),
@@ -2388,7 +2574,7 @@ CARDS.push(
   RC('mirrordie', 3, 'common', '🪞', 'Spiegelwürfel', 'Einmal im Zug darfst du zwei Würfel auf die Gegenseite drehen (1↔6, 2↔5, 3↔4). ✨'),
   RC('frozen', 3, 'common', '🧊', 'Festgefroren', 'Was du einmal hältst, bleibt liegen – dafür zählt deine Wertung ×2. ❄️', { mult: 2 }),
   RC('nohold', 3, 'common', '🌪️', 'Kein Halten', 'Keine Würfel halten – jeder Wurf mit allen 6! Dafür zählt deine Wertung ×3.', { mult: 3 }),
-  RC('foreign', 3, 'common', '🎎', 'Fremdbestimmt', 'Nach deinem ersten Wurf bestimmt eine Mitspielerin, welche Würfel du hältst. 🙈'),
+  RC('foreign', 3, 'common', '🎎', 'Fremdbestimmt', 'Nach deinem ersten Wurf bestimmt eine andere Pussy, welche Würfel du hältst. 🙈'),
   // Wertung
   RC('x3', 4, 'rare', '💎', 'Dreifache Punkte', 'Deine Wertung zählt diese Runde dreifach! 💎', { mult: 3 }),
   RC('x5', 2, 'rare', '🌟', 'Fünffach', 'Deine Wertung zählt diese Runde fünffach! 🌟', { mult: 5 }),
@@ -2402,8 +2588,8 @@ CARDS.push(
   RC('costly2', 2, 'bad', '💳', 'Sehr teure Runde', 'Jeder Wurf nach dem ersten kostet 10 Punkte von deiner Wertung.', { cost: 10 }),
   RC('locked', 3, 'bad', '🔒', 'Gesperrt', 'Diese Kategorien sind für dich in diesem Zug gesperrt: {locked}', { lock: 3 }),
   RC('force', 3, 'common', '📌', 'Zwangswahl', 'Leg dich fest, bevor du würfelst – schaffst du deine Kategorie, zählt sie ×3! {force}', { act: 'forceOwn' }),
-  RC('oppchoice', 3, 'common', '👯‍♀️', 'Gegnerwahl', 'Eine Mitspielerin bestimmt deine Kategorie – schaffst du sie, zählt sie ×3! {force}', { act: 'forceOpp' }),
-  RC('double', 3, 'common', '🎲', 'Doppelt oder nichts', 'Nach dem Eintragen darfst du den Zauberwürfel werfen: 1–3 = Wertung weg, 4–6 = doppelt. Oder du verzichtest. 💋', { doubleOrNothing: true }),
+  RC('oppchoice', 3, 'common', '👯‍♀️', 'Pussy-Wahl', 'Eine andere Pussy bestimmt an IHREM Handy deine Kategorie – schaffst du sie, zählt sie ×3! {force}', { act: 'forceOpp' }),
+  RC('double', 3, 'common', '🎲', 'Doppelt oder nichts', 'Nach dem Eintragen darfst du in echt einen Würfel werfen: 1–3 = Wertung weg, 4–6 = doppelt. Oder du verzichtest. 💋', { doubleOrNothing: true }),
   // Bonus & Konto oben
   RC('b100', 2, 'bad', '🧗‍♀️', 'Bonus erst ab 100', 'Dein Bonus kommt ab sofort erst ab 100 Punkten oben. Dafür zählt dieser Wurf ×4.', { act: 'instant', bonusMin: 100, mult: 4 }),
   RC('b50', 2, 'rare', '🎀', 'Bonus schon ab 50', 'Dein Bonus kommt ab sofort schon ab 50 Punkten oben – und dieser Wurf zählt ×4! 🎀', { act: 'instant', bonusMin: 50, mult: 4 }),
@@ -2414,29 +2600,28 @@ CARDS.push(
   RC('bpush', 3, 'common', '🚀', 'Bonus-Schub', '+30 Punkte auf dein Bonus-Konto oben – und dieser Wurf zählt ×4! 🚀', { act: 'instant', upAdj: 30, mult: 4 }),
   RC('bhole', 2, 'bad', '🕳️', 'Bonus-Loch', '−15 Punkte auf deinem Bonus-Konto oben. Dafür zählt dieser Wurf ×4.', { act: 'instant', upAdj: -15, mult: 4 }),
   // Gegner & Spezial
-  RC('ostrike', 4, 'common', '⚔️', 'Gegner streichen', 'Streiche eine eingetragene Wertung einer Gegnerin – dafür zählt dein Wurf ×2. 😈', { act: 'oppScore', mult: 2 }),
+  RC('ostrike', 4, 'common', '⚔️', 'Pussy streichen', 'Streiche eine eingetragene Wertung einer anderen Pussy – dafür zählt dein Wurf ×2. 😈', { act: 'oppScore', mult: 2 }),
   RC('second', 3, 'common', '🧽', 'Zweite Chance', 'Eine deiner gestrichenen Kategorien wird wieder frei – würfle sie neu! 💕', { act: 'ownStruck' }),
-  RC('swap', 3, 'rare', '🔄', 'Tauschgeschäft', 'Tausche eine deiner Wertungen mit der einer Gegnerin (gleiche Kategorie) – dein Wurf zählt ×3!', { act: 'swap', mult: 3 }),
+  RC('swap', 3, 'rare', '🔄', 'Tauschgeschäft', 'Tausche eine deiner Wertungen mit der einer anderen Pussy (gleiche Kategorie) – dein Wurf zählt ×3!', { act: 'swap', mult: 3 }),
   RC('protect', 3, 'common', '🛡️', 'Schutzschild', 'Wähle eine eigene Wertung – sie kann nicht mehr gestrichen oder getauscht werden. 💖', { act: 'protect' }),
   RC('setback', 2, 'bad', '📉', 'Rückschlag', 'Deine beste Wertung verliert 30 Punkte – und dein Wurf zählt nur halb.', { act: 'instant', setback: 30, mult: 0.5 }),
   RC('revive', 2, 'rare', '🧚', 'Wiederbelebung', 'Wähle eine gestrichene Kategorie – du bekommst dort 40 Punkte! 🧚', { act: 'revive' }),
-  RC('sacrifice', 2, 'rare', '🕯️', 'Opfergabe', 'Streiche bei dir eine freie Kategorie – dafür darfst du bei einer Gegnerin 2 Wertungen streichen! 😈', { act: 'sacrifice' }),
-  RC('dieduel', 3, 'common', '🎲', 'Würfelduell', 'Der Zauberwürfel entscheidet: Gerade – du streichst bei einer Gegnerin. Ungerade – bei dir selbst. 🙊', { act: 'dieduel' }),
-  RC('duelall', 3, 'common', '🤺', 'Duell', 'Alle werfen den Zauberwürfel! Die Höchste bekommt +30 aufs Bonus-Konto, alle anderen −10.', { act: 'instant', duelAll: true, min: 2 }),
-  RC('audit', 2, 'rare', '🧾', 'Steuerprüfung', 'Alle anderen verlieren 10 % ihrer Punkte im unteren Teil – du nicht! 💅', { act: 'instant', audit: 0.1, min: 2 }),
-  RC('gooddeed', 3, 'common', '😇', 'Gute Tat', 'Schenk einer Mitspielerin 50 Punkte – dafür zählt dein Wurf ×2. Oder du gibst niemandem etwas.', { act: 'deed', give: 50, dmult: 2 }),
-  RC('gooddeed2', 2, 'common', '🎀', 'Gute Bonus-Tat', 'Schenk einer Mitspielerin 15 aufs Bonus-Konto – dafür zählt dein Wurf ×4. Oder niemand bekommt etwas.', { act: 'deed', giveUp: 15, dmult: 4 }),
+  RC('sacrifice', 2, 'rare', '🕯️', 'Opfergabe', 'Streiche bei dir eine freie Kategorie – dafür darfst du bei einer anderen Pussy 2 Wertungen streichen! 😈', { act: 'sacrifice' }),
+  RC('dieduel', 3, 'common', '🎲', 'Würfelduell', 'Würfle in echt einen Würfel: Gerade – du streichst bei einer anderen Pussy. Ungerade – bei dir selbst. 🙊', { act: 'dieduel' }),
+  RC('duelall', 3, 'common', '🤺', 'Duell', 'Alle Pussys würfeln in echt einen Würfel! Die Höchste bekommt +30 aufs Bonus-Konto, alle anderen −10.', { act: 'duelall', min: 2 }),
+  RC('audit', 2, 'rare', '🧾', 'Steuerprüfung', 'Alle anderen Pussys verlieren 10 % ihrer Punkte im unteren Teil – du nicht! 💅', { act: 'instant', audit: 0.1, min: 2 }),
+  RC('gooddeed', 3, 'common', '😇', 'Gute Tat', 'Schenk einer anderen Pussy 50 Punkte – dafür zählt dein Wurf ×2. Oder du gibst niemandem etwas.', { act: 'deed', give: 50, dmult: 2 }),
+  RC('gooddeed2', 2, 'common', '🎀', 'Gute Bonus-Tat', 'Schenk einer anderen Pussy 15 aufs Bonus-Konto – dafür zählt dein Wurf ×4. Oder niemand bekommt etwas.', { act: 'deed', giveUp: 15, dmult: 4 }),
   RC('krain', 2, 'rare', '🌧️', 'Kniffel-Regen', 'Für jeden Kniffel in diesem Spiel (alle zusammen) bekommst du +50, für jeden Kniffel Extrem +75! 💎', { act: 'instant', krain: true }),
   RC('coronation', 2, 'legend', '👸', 'Krönung', 'Deine aktuell höchste Wertung wird verdreifacht! 👑', { act: 'instant', crownBest: 3 }),
-  RC('spy', 2, 'common', '🕵️‍♀️', 'Spionage', 'Du darfst 3 Runden lang allen in die Karten schauen 👀 – und dein Wurf zählt ×3!', { mult: 3 }),
   RC('collapse', 2, 'bad', '🏚️', 'Einsturz', 'Deine höchste Wertung wird halbiert.', { act: 'instant', collapse: true }),
   RC('bomb', 2, 'rare', '💣', 'Zeitbombe', 'Die Zeitbombe tickt! Sie wandert nach jedem Zug weiter – wer sie hat, wenn sie hochgeht, verliert 50 Punkte. 💥', { act: 'instant', bomb: true, min: 2 }),
-  RC('revenge', 3, 'common', '🐍', 'Rache', 'Streiche eine Wertung bei der Person, die dir zuletzt Punkte genommen hat! 🐍', { act: 'revenge' }),
+  RC('revenge', 3, 'common', '🐍', 'Rache', 'Streiche eine Wertung bei der Pussy, die dir zuletzt Punkte genommen hat! 🐍', { act: 'revenge' }),
   RC('pflicht', 6, 'common', '📜', 'Pflichtwurf', 'Du musst diese Runde {cat} werten. Schaffst du es, zählt es ×3 – sonst wird es gestrichen!', { pflicht: true }),
   // Verdeckt – Aufdecken nach dem Eintragen
   RC('h_rescue', 2, 'rare', '🛟', 'Rettungsring', 'Müsstest du streichen, darfst du stattdessen den ganzen Zug wiederholen!', { hidden: 'rescue' }),
   RC('h_void', 2, 'bad', '🥀', 'Alles umsonst', 'Die gewählte Kategorie wird gestrichen.', { hidden: 'void' }),
-  RC('h_fate', 2, 'rare', '🔮', 'Schicksalswürfel', 'Ein Extra-Würfel entscheidet: 1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10.', { hidden: 'fate' }),
+  RC('h_fate', 2, 'rare', '🔮', 'Schicksalswürfel', 'Würfle in echt einen Extra-Würfel: 1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10.', { hidden: 'fate' }),
   RC('h_jackpot', 2, 'common', '💰', 'Jackpot', 'Ist deine Wertung 40 oder mehr, zählt sie doppelt!', { hidden: 'jackpot' }),
   RC('h_consol', 2, 'common', '🧸', 'Trostpreis', 'Hast du gestrichen, bekommst du trotzdem 20 Punkte. 🧸', { hidden: 'consol' }),
   RC('h_mirror', 2, 'common', '🪞', 'Spiegelung', 'Hast du 0 eingetragen, bekommst du stattdessen den Normalwert der Kategorie geschenkt.', { hidden: 'mirror' }),
@@ -2449,9 +2634,9 @@ CARDS.push(
   RC('h_bless5', 1, 'rare', '5️⃣', 'Fünfer-Segen', 'Für jede 5 nach deinem letzten Wurf wird die Wertung verdoppelt! ✨', { hidden: 'face', face: 5, ffx: 2 }),
   RC('h_bless6', 1, 'rare', '6️⃣', 'Sechser-Segen', 'Für jede 6 nach deinem letzten Wurf wird die Wertung verdoppelt! ✨', { hidden: 'face', face: 6, ffx: 2 }),
   RC('h_pioneer', 2, 'common', '🚩', 'Pionierin', 'Bist du die Erste mit Punkten in dieser Kategorie? Dann +20, sonst −20.', { hidden: 'pioneer' }),
-  RC('h_thief', 2, 'rare', '🦝', 'Punktedieb', 'Eine Gegnerin deiner Wahl verliert genau so viele Punkte, wie du gerade eingetragen hast! 😈', { hidden: 'thief' }),
-  RC('h_gift', 2, 'bad', '🎁', 'Geschenk', 'Deine Wertung geht an eine Mitspielerin deiner Wahl – du bekommst 0.', { hidden: 'gift' }),
-  RC('h_share', 2, 'common', '🍰', 'Teilen', 'Jede Mitspielerin bekommt 10 Punkte von deiner Wertung. Sharing is caring! 💕', { hidden: 'share' }),
+  RC('h_thief', 2, 'rare', '🦝', 'Punktedieb', 'Eine andere Pussy deiner Wahl verliert genau so viele Punkte, wie du gerade eingetragen hast! 😈', { hidden: 'thief' }),
+  RC('h_gift', 2, 'bad', '🎁', 'Geschenk', 'Deine Wertung geht an eine andere Pussy deiner Wahl – du bekommst 0.', { hidden: 'gift' }),
+  RC('h_share', 2, 'common', '🍰', 'Teilen', 'Jede andere Pussy bekommt 10 Punkte von deiner Wertung. Sharing is caring! 💕', { hidden: 'share' }),
   RC('h_mixup', 2, 'bad', '🌀', 'Verwechslung', 'Deine Wertung landet in einer zufälligen anderen freien Kategorie – passt sie dort nicht, als 0.', { hidden: 'mixup' }),
   RC('h_wheel', 2, 'rare', '🎡', 'Glücksrad', 'Das Rad dreht sich: +10, +25, +50, +100 oder ×2 auf deine Wertung – kein Minus möglich! 🎡', { hidden: 'wheel' }),
   RC('h_slot', 1, 'legend', '🎰', 'Jackpot-Maschine', 'Zieh den Hebel: Drei Walzen mit +25, ×2 oder ×3 – von links nach rechts gerechnet!', { hidden: 'slot' }),
@@ -2468,7 +2653,9 @@ const normalVal = id => { const c = ALL.find(x => x.id === id); return c.type ==
 const filledCats = p => ALL.filter(c => isNum(((p && p.scores) || {})[c.id]) && p.scores[c.id] !== 0);
 const isProt = (p, cat) => !!((p && p.prot) || {})[cat];
 const attackable = p => filledCats(p).filter(c => !isProt(p, c.id));
-const NEW_ACTS = new Set(['bet', 'forceOwn', 'forceOpp', 'oppScore', 'swap', 'protect', 'revive', 'sacrifice', 'dieduel', 'revenge', 'deed']);
+// Hexe: die Person nach dir bestimmt an ihrem Handy dein Feld
+(c => { if (c) { c.act = 'witch'; c.text = 'Die Pussy nach dir bestimmt an ihrem Handy, auf welches Feld du gehen musst. {force}'; } })(cardDef('witch'));
+const NEW_ACTS = new Set(['rollnum', 'duelall', 'witch', 'bet', 'forceOwn', 'forceOpp', 'oppScore', 'swap', 'protect', 'revive', 'sacrifice', 'dieduel', 'revenge', 'deed']);
 
 function cardFeasible(def, room, pid) {
   const ids = orderOf(room), p = room.players[pid], others = ids.filter(id => id !== pid);
@@ -2481,7 +2668,8 @@ function cardFeasible(def, room, pid) {
     case 'sacrifice': return emptyCats(p).length > 1 && opp.some(o => attackable(o).length);
     case 'revenge': { const a = p.lastAttacker; return a && room.players[a] && attackable(room.players[a]).length > 0; }
     case 'bet': return emptyCats(p).length >= 2;
-    case 'forceOwn': case 'forceOpp': return emptyCats(p).length >= 1;
+    case 'forceOwn': return emptyCats(p).length >= 1;
+    case 'forceOpp': case 'witch': return emptyCats(p).length >= 1 && others.length > 0;
     case 'deed': return others.length > 0;
   }
   if (def.chestShare) return (room.chest || 0) > 0;
@@ -2513,9 +2701,9 @@ function drawCard(room, pid) {
   for (const [c, w] of pool) { r -= w; if (r <= 0) { def = c; break; } }
   const card = { id: def.id, key: rid(), ts: Date.now() };
   card.status = (NEW_ACTS.has(def.act) || ['target', 'targetCat', 'ownCat', 'ownStruck', 'confirm', 'sleep'].includes(def.act)) ? 'open' : 'done';
-  if (def.roast) card.roast = Math.floor(Math.random() * def.roast.length);
+  if (def.rar === 'bad') card.roast = Math.floor(Math.random() * 100000); else card.cheer = Math.floor(Math.random() * 100000);
   if (def.hidden) card.hidden = true;
-  if (!cardFeasible(def, room, pid)) { card.forfeit = true; card.status = 'done'; return card; }
+  if (!cardFeasible(def, room, pid)) { card.forfeit = true; card.status = 'open'; card.hidden = false; return card; }
   if (def.id === 'mission') { const free = emptyCats(p), lower = free.filter(c => c.type === 'fixed'); card.cat = pick(lower.length ? lower : free).id; }
   if (def.pflicht) { card.cat = pick(emptyCats(p)).id; card.forceCat = card.cat; }
   if (def.lock) { const free = emptyCats(p).map(c => c.id); const k = Math.min(def.lock, free.length - 2); card.locked = free.sort(() => Math.random() - .5).slice(0, k); }
@@ -2535,7 +2723,7 @@ const WEIGHTS = {
   force: 2, oppchoice: 2, double: 3,
   b100: 1, b50: 1, bx3: 1, bx5: 0.5, b0: 1, hurdle: 1, bpush: 2, bhole: 1,
   ostrike: 3, second: 2, swap: 2, protect: 2, setback: 1, revive: 1.5, sacrifice: 1, dieduel: 2, duelall: 2, audit: 1,
-  gooddeed: 2, gooddeed2: 1.5, krain: 1, coronation: 1, spy: 1.5, collapse: 1, bomb: 1.5, revenge: 2, pflicht: 3,
+  gooddeed: 2, gooddeed2: 1.5, krain: 1, coronation: 1, spy: 0, collapse: 1, bomb: 1.5, revenge: 2, pflicht: 3,
   h_rescue: 1.5, h_void: 1.5, h_fate: 2, h_jackpot: 2, h_consol: 1.5, h_mirror: 1.5, h_up: 2, h_down: 1.5,
   h_curse1: 1, h_curse2: 1, h_curse3: 1, h_bless4: 1, h_bless5: 1, h_bless6: 1, h_pioneer: 2, h_thief: 1.5,
   h_gift: 1, h_share: 1.5, h_mixup: 1, h_wheel: 2, h_slot: 1, h_streak: 1.5, key: 1
@@ -2565,6 +2753,29 @@ function cardSensible(def, room, pid) {
   if (def.id === 'key' && (room.chest || 0) < 20) return false;
   if (def.id === 'krain' && kniffelCount(room).total === 0) return false;
   if (def.pflicht && (p.pflichtN || 0) >= 3) return false;
+  // --- Zusätzliche Sinn-Prüfungen ---
+  const t = calc(p);
+  const upFree = UPPER.filter(c => !isNum(s[c.id]));
+  const maxUp = t.up + upFree.reduce((a, c) => a + 6 * c.face, 0);   // mit 6 Würfeln max. 6× pro Feld
+  const reached = t.up >= t.bonusMin;
+  if (['b50', 'bpush', 'hurdle'].includes(def.id) && (reached || maxUp + (def.upAdj || 0) < (def.bonusMin || t.bonusMin) - 0)) return false;
+  if (['bx3', 'bx5', 'b0'].includes(def.id) && !reached && maxUp < t.bonusMin) return false;  // Bonus wäre eh unerreichbar
+  if (def.id === 'bx3' || def.id === 'bx5') { if (t.bonusMult !== 1) return false; }
+  if (def.id === 'b0' && t.bonusMult === 0) return false;
+  if (def.id === 'b100' && (t.up >= 100 || t.bonusMin >= 100 || maxUp < 73)) return false;
+  if (def.id === 'bhole' && maxUp < t.bonusMin && !reached) return false;
+  if (['again', 'h_streak', 'h_mixup'].includes(def.id) && free < 2) return false;
+  if (['gift', 'steal', 'foreign', 'h_share', 'h_thief', 'tax', 'toll'].includes(def.id) && n < 2) return false;
+  if (def.id === 'steal' && !others.some(id => calc(room.players[id]).total >= 15)) return false;
+  if (def.id === 'tax' && !others.some(id => calc(room.players[id]).total >= 5)) return false;
+  if (def.id === 'dieduel' && !(free >= 2 && others.some(id => attackable(room.players[id]).length))) return false;
+  if (def.id === 'protect' && !others.length) return false;
+  if (def.id === 'swap' && round < 2) return false;
+  if (['coronation', 'collapse', 'setback'].includes(def.id) && !bestCat(p)) return false;
+  if (def.id === 'setback' && (p.scores[bestCat(p)] || 0) < 10) return false;
+  if (def.id === 'fever' && free < 1) return false;
+  if (def.id === 'master' && free < 1) return false;
+  if (def.id === 'mission' && free < 1) return false;
   if (['eraser', 'second', 'revive'].includes(def.id) && !struckCats(p).length) return false;
   return cardFeasible(def, room, pid);
 }
@@ -2615,13 +2826,13 @@ function trackDraw(patch, room, pid, card) {
 const cardText = card => {
   const d = cardDef(card.id); if (!d) return '';
   if (card.hidden && !card.revealed) return 'Wird erst aufgedeckt, nachdem du eingetragen hast … 🤫💖';
-  if (card.forfeit) return `${d.text} – kann gerade nicht angewendet werden. Die Karte verfällt: Dein Wurf zählt diesen Zug ×4! 🎉`;
+  if (card.forfeit) return `${d.text} – das geht gerade leider nicht. Dafür darfst du dir einen Trostzauber aussuchen! 🎁${card.fallback ? ' → ' + (FALLBACK_TXT[card.fallback] || '') : ''}`;
   return d.text
     .replace('{cat}', catLbl(card.cat))
     .replace('{rolls}', card.rolls ? `${card.rolls}× würfeln! 🎲` : '🎲')
     .replace('{bet}', card.bet ? `Einsatz ${card.bet.stake} auf: ${card.bet.cats.map(catLbl).join(', ')}` : '')
     .replace('{locked}', (card.locked || []).map(catLbl).join(', '))
-    .replace('{force}', card.forceCat ? `Gewählt: ${catLbl(card.forceCat)}` : '');
+    .replace('{force}', card.forceCat ? `Gewählt: ${catLbl(card.forceCat)}` : card.status === 'await' ? `${nameOf(state.room, card.awaitPid)} wählt gerade …` : '');
 };
 const isSecret = card => card && card.hidden && !card.revealed;
 
@@ -2716,6 +2927,27 @@ async function stageRoll(pid, label) {
   return v;
 }
 
+// Echte Würfel: würfeln am Tisch, Ergebnis auf pinken Würfeln antippen
+function stageDice(q, pid) {
+  return new Promise(res => {
+    const box = $('#cardlayer .cl-actions'); if (!box) return res(1);
+    box.innerHTML = `<p class="cl-q">${q}</p><p class="pd-hint">Würfelt am Tisch 🎲 – dann die gewürfelte Zahl antippen 👇</p>
+      <div class="pinkdice">${[1, 2, 3, 4, 5, 6].map(n => `<button class="pdie" data-n="${n}" aria-label="${n}">${die(n, 'die pd', true)}<b>${n}</b></button>`).join('')}</div>`;
+    const st = $('#cardlayer .cl-stage'); if (st) st.classList.add('choose');
+    box.onclick = async e => {
+      const b = e.target.closest('[data-n]'); if (!b) return;
+      box.onclick = null;
+      const n = +b.dataset.n;
+      box.querySelectorAll('.pdie').forEach(x => x.classList.toggle('off', x !== b));
+      b.classList.add('picked'); play('chime'); buzz(40);
+      const r = b.getBoundingClientRect();
+      burst(['✨', '💖', '🎲', '💫'], 16, (r.left + r.width / 2) / innerWidth * 100, (r.top + r.height / 2) / innerHeight * 100);
+      await sleep(850);
+      res(n);
+    };
+  });
+}
+
 const WHEEL = ['+10', '+25', '+50', '+100', '×2'];
 async function animateWheel(container, idx) {
   const seg = 360 / WHEEL.length;
@@ -2755,6 +2987,37 @@ async function fxShow(kind, data) {
 }
 
 /* ---------- Aktionskarten vor dem Würfeln ---------- */
+const FALLBACK_TXT = { pts: '+25 Punkte 🎁', x3: 'Wertung ×3 💎', bonus: '+20 aufs Bonus-Konto 🎀', chest: 'Hälfte der Schatztruhe 💰', redraw: 'neue Karte 🔮' };
+// Trostzauber: Wenn eine Karte gerade nicht einlösbar ist, darf man sich etwas anderes aussuchen
+async function pickFallback(patch, done, pid, why) {
+  const room = state.room, me = room.players[pid];
+  const opts = [
+    { v: 'pts', label: '🎁 +25 Punkte sofort', cls: 'shine' },
+    { v: 'x3', label: '💎 Deine Wertung ×3' }
+  ];
+  if (UPPER.some(c => !isNum((me.scores || {})[c.id])) && calc(me).up < calc(me).bonusMin) opts.push({ v: 'bonus', label: '🎀 +20 aufs Bonus-Konto' });
+  if ((room.chest || 0) >= 20) opts.push({ v: 'chest', label: `💰 Halbe Truhe (${Math.floor((room.chest || 0) / 2)})` });
+  if (!done.redrawn) opts.push({ v: 'redraw', label: '🔮 Neue Karte ziehen' });
+  const v = await stageAsk(`${why ? esc(why) + '<br>' : ''}🎁 <b>Trostzauber!</b> Such dir was aus, Süße:`, opts);
+  done.forfeit = true; done.fallback = v;
+  if (v === 'pts') addExtra(patch, room, pid, 25);
+  if (v === 'bonus') P(patch, pid).upAdj = (me.upAdj || 0) + 20;
+  if (v === 'chest') { const have = chestNow(patch, room), amt = Math.floor(have / 2); addExtra(patch, room, pid, amt); patch.chest = have - amt; addLog(patch, room, { type: 'chestout', amount: amt, pid, reason: 'Trostzauber' }); }
+  return `Trostzauber: ${FALLBACK_TXT[v]}`;
+}
+
+async function redrawCard(patch, room, pid) {
+  patch.turn = { card: null };
+  const ev = { type: 'card', phase: 'result', pid, card: 'calm', result: `${nameOf(room, pid)} zieht eine neue Zauberkarte 🔮`, fx: 'good' };
+  addLog(patch, room, ev); state.seen.add(ev.id);
+  state.redrawFor = pid;
+  if (!(await write(() => state.backend.updateRoom(state.session.code, patch)))) return;
+  closeCardLayer();
+  let tries = 0;
+  const go = () => { const t = state.room && turnOf(state.room); if (t && t.pid === pid && !t.card) openDrawStage(); else if (tries++ < 20) setTimeout(go, 200); };
+  setTimeout(go, 300);
+}
+
 async function runChooser(card, pid) {
   const def = cardDef(card.id);
   const room = state.room;
@@ -2762,6 +3025,11 @@ async function runChooser(card, pid) {
   const patch = {};
   const done = { ...card, status: 'done' };
   let result = '', fxKind = 'good', target = null;
+  const isFb = card.forfeit && !card.fallback;
+  if (isFb) {
+    result = await pickFallback(patch, done, pid, 'Diese Karte kann gerade nicht eingelöst werden 🥺');
+    if (done.fallback === 'redraw') return redrawCard(patch, room, pid);
+  }
   const strike = (tid, cat) => {
     const t = room.players[tid]; const v = (t.scores || {})[cat] || 0;
     P(patch, tid).scores = { ...(P(patch, tid).scores || {}), [cat]: 0 };
@@ -2774,21 +3042,54 @@ async function runChooser(card, pid) {
   const pickOpp = (q, filter) => stageAsk(q, others.filter(filter).map(id => ({ v: id, label: esc(nameOf(room, id)) })));
   const pickScore = (q, tid) => stageAsk(q, attackable(room.players[tid]).filter(c => !(P(patch, tid).scores || {}).hasOwnProperty(c.id)).map(c => ({ v: c.id, label: `${catLbl(c.id)} · ${room.players[tid].scores[c.id]}`, small: true })));
 
-  switch (def.act) {
+  if (!isFb) switch (def.act) {
     case 'bet': {
       const stake = await stageAsk('💸 Wie viel setzt du, Süße?', [50, 60, 70, 80, 90, 100].map(v => ({ v, label: `${v}` })));
       const cats = emptyCats(me).map(c => c.id).sort(() => Math.random() - .5).slice(0, 3);
       done.bet = { stake, cats }; result = `Einsatz ${stake} auf ${cats.map(catLbl).join(', ')}`;
       break;
     }
-    case 'forceOwn': case 'forceOpp': {
-      const q = def.act === 'forceOwn' ? '📌 Auf welche Kategorie legst du dich fest?' : '👯‍♀️ Gib das Handy einer Mitspielerin – sie wählt deine Kategorie:';
-      const cat = await stageAsk(q, emptyCats(me).map(c => ({ v: c.id, label: catLbl(c.id), small: true })), true);
+    case 'forceOwn': {
+      const cat = await stageAsk('📌 Auf welche Kategorie legst du dich fest?', emptyCats(me).map(c => ({ v: c.id, label: catLbl(c.id), small: true })), true);
       done.forceCat = cat; result = `Festgelegt: ${catLbl(cat)} (×3 wenn geschafft)`;
       break;
     }
+    case 'forceOpp': case 'witch': {
+      // Die Gegnerin wählt an IHREM Handy
+      const chooser = def.act === 'witch' ? (nextTurn(room, pid).pid || pick(others)) : pick(others);
+      done.status = 'await'; done.awaitPid = chooser; done.awaitKind = def.act;
+      if (def.act === 'witch') done.noBonus = true;
+      target = chooser; fxKind = def.act === 'witch' ? 'bad' : 'good';
+      result = `${nameOf(room, chooser)} bestimmt jetzt an ihrem Handy deine Kategorie … 😈`;
+      break;
+    }
+    case 'rollnum': {
+      const v = await stageDice('🎲 Würfle jetzt in echt mit EINEM Würfel!<br>So oft darfst du diesen Zug würfeln:', pid);
+      const ev = { type: 'roll', pid, label: 'Wurfzahl-Würfel', rolls: [[pid, v]] }; addLog(patch, room, ev); state.seen.add(ev.id);
+      done.rolls = v; result = `Du darfst ${v}× würfeln 🎲`;
+      break;
+    }
+    case 'duelall': {
+      let cand = ids.slice(), round = 1, rolls = [];
+      while (cand.length > 1) {
+        const rs = [];
+        for (const id of cand) {
+          const v = await stageDice(`🤺 Duell${round > 1 ? ' – Stechen!' : ''}<br>Was hat <b>${esc(nameOf(room, id))}</b> gewürfelt?`, id);
+          rs.push([id, v]);
+        }
+        rolls.push(...rs);
+        const mx = Math.max(...rs.map(r => r[1])); cand = rs.filter(r => r[1] === mx).map(r => r[0]);
+        if (cand.length > 1) { stageInfo(`<p class="cl-q">Gleichstand! 😱 ${cand.map(id => esc(nameOf(room, id))).join(' & ')} würfeln nochmal!</p>`); play('drum'); await sleep(1500); }
+        round++;
+      }
+      const w = cand[0];
+      ids.forEach(id => { P(patch, id).upAdj = ((room.players[id].upAdj) || 0) + (id === w ? 30 : -10); });
+      const ev = { type: 'roll', pid, label: 'Duell', rolls: rolls.slice(-ids.length * 2) }; addLog(patch, room, ev); state.seen.add(ev.id);
+      target = w; result = `${nameOf(room, w)} gewinnt das Duell: +30 aufs Bonus-Konto, alle anderen −10 🤺`;
+      break;
+    }
     case 'oppScore': {
-      const tid = await pickOpp('⚔️ Wen erwischt es? 😈', id => attackable(room.players[id]).length); target = tid;
+      const tid = await pickOpp('⚔️ Welche Pussy erwischt es? 😈', id => attackable(room.players[id]).length); target = tid;
       const cat = await pickScore(`Welche Wertung von ${esc(nameOf(room, tid))} streichst du?`, tid);
       const v = strike(tid, cat); result = `${nameOf(room, tid)} verliert ${catLbl(cat)} (${v})!`; fxKind = 'attack';
       break;
@@ -2807,7 +3108,7 @@ async function runChooser(card, pid) {
     }
     case 'swap': {
       const common = id => ALL.filter(c => isNum((me.scores || {})[c.id]) && isNum((room.players[id].scores || {})[c.id]) && !isProt(me, c.id) && !isProt(room.players[id], c.id));
-      const tid = await pickOpp('🔄 Mit wem tauschst du?', id => common(id).length); target = tid;
+      const tid = await pickOpp('🔄 Mit welcher Pussy tauschst du?', id => common(id).length); target = tid;
       const t = room.players[tid];
       const cat = await stageAsk('Welche Kategorie tauscht ihr?', common(tid).map(c => ({ v: c.id, label: `${catLbl(c.id)} · ${me.scores[c.id]} ↔ ${t.scores[c.id]}`, small: true })), true);
       P(patch, pid).scores = { [cat]: t.scores[cat] }; P(patch, tid).scores = { [cat]: me.scores[cat] };
@@ -2823,7 +3124,7 @@ async function runChooser(card, pid) {
     case 'sacrifice': {
       const own = await stageAsk('🕯️ Welche eigene freie Kategorie opferst du?', emptyCats(me).map(c => ({ v: c.id, label: catLbl(c.id), small: true })));
       P(patch, pid).scores = { [own]: 0 }; P(patch, pid).cfx = { [own]: '🕯️' };
-      const tid = await pickOpp('Bei wem streichst du 2 Wertungen? 😈', id => attackable(room.players[id]).length); target = tid;
+      const tid = await pickOpp('Bei welcher Pussy streichst du 2 Wertungen? 😈', id => attackable(room.players[id]).length); target = tid;
       const c1 = await pickScore(`Erste Wertung von ${esc(nameOf(room, tid))}:`, tid); const v1 = strike(tid, c1);
       let txt = `${catLbl(c1)} (${v1})`;
       if (attackable(room.players[tid]).filter(c => c.id !== c1).length) { const c2 = await pickScore('Und die zweite:', tid); const v2 = strike(tid, c2); txt += ` und ${catLbl(c2)} (${v2})`; }
@@ -2831,16 +3132,16 @@ async function runChooser(card, pid) {
       break;
     }
     case 'dieduel': {
-      const v = await stageRoll(pid, 'Würfelduell'); const ev = { type: 'roll', pid, label: 'Würfelduell', rolls: [[pid, v]] };
+      const v = await stageDice('🎲 Würfle jetzt in echt einen Würfel!<br>Gerade = du streichst bei einer anderen Pussy · Ungerade = bei dir', pid); const ev = { type: 'roll', pid, label: 'Würfelduell', rolls: [[pid, v]] };
       addLog(patch, room, ev); state.seen.add(ev.id);
       if (v % 2 === 0) {
-        if (!others.some(id => attackable(room.players[id]).length)) { done.forfeit = true; result = `Gerade (${v}) – aber niemand hat etwas zum Streichen. Karte verfällt → ×4!`; break; }
-        const tid = await pickOpp(`Gerade (${v})! Bei wem streichst du? 😈`, id => attackable(room.players[id]).length); target = tid;
+        if (!others.some(id => attackable(room.players[id]).length)) { result = await pickFallback(patch, done, pid, `Gerade (${v}) – aber niemand hat etwas zum Streichen.`); if (done.fallback === 'redraw') return redrawCard(patch, room, pid); break; }
+        const tid = await pickOpp(`Gerade (${v})! Bei welcher Pussy streichst du? 😈`, id => attackable(room.players[id]).length); target = tid;
         const cat = await pickScore('Welche Wertung?', tid); const sv = strike(tid, cat);
         result = `Gerade ${v}: ${nameOf(room, tid)} verliert ${catLbl(cat)} (${sv})!`; fxKind = 'attack';
       } else {
         const free = emptyCats(me).length > 1 ? emptyCats(me) : [];
-        if (!free.length) { done.forfeit = true; result = `Ungerade (${v}) – nichts zu streichen. Karte verfällt → ×4!`; break; }
+        if (!free.length) { result = await pickFallback(patch, done, pid, `Ungerade (${v}) – du hast nichts zum Streichen.`); if (done.fallback === 'redraw') return redrawCard(patch, room, pid); break; }
         const cat = await stageAsk(`Ungerade (${v}) 🙊 Welche eigene freie Kategorie streichst du?`, free.map(c => ({ v: c.id, label: catLbl(c.id), small: true })));
         P(patch, pid).scores = { [cat]: 0 }; P(patch, pid).cfx = { [cat]: '🎲' };
         result = `Ungerade ${v}: ${nameOf(room, pid)} streicht ${catLbl(cat)}`; fxKind = 'bad';
@@ -2855,7 +3156,7 @@ async function runChooser(card, pid) {
     }
     case 'deed': {
       const opts = others.map(id => ({ v: id, label: `💝 ${esc(nameOf(room, id))}` })).concat([{ v: '', label: 'Niemandem 🙅‍♀️', cls: 'ghost' }]);
-      const tid = await stageAsk(def.give ? '😇 Wem schenkst du 50 Punkte?' : '🎀 Wem schenkst du 15 aufs Bonus-Konto?', opts);
+      const tid = await stageAsk(def.give ? '😇 Welcher Pussy schenkst du 50 Punkte?' : '🎀 Welcher Pussy schenkst du 15 aufs Bonus-Konto?', opts);
       if (tid) {
         target = tid; done.deed = true;
         if (def.give) addExtra(patch, room, tid, def.give); else P(patch, tid).upAdj = ((room.players[tid].upAdj) || 0) + def.giveUp;
@@ -2907,7 +3208,7 @@ async function flipReveal(card, pid) {
   l.classList.remove('casting'); l.querySelector('.card3d').classList.add('flipped');
   dustBurst(90);
   const def = cardDef(card.id);
-  if (def.rar === 'legend') { rain(['👑', '💎', '✨'], 40); play('fanfare'); } else if (def.rar === 'bad') laughFX(); else { play('chime'); cheerFX(); }
+  if (def.rar === 'legend') { rain(['👑', '💎', '✨'], 40); play('fanfare'); } else if (def.rar === 'bad') laughQuiet(); else { play('chime'); cheerFX(); }
   await sleep(1300);
 }
 
@@ -2947,13 +3248,13 @@ async function entryFlow(pid, catId, val, xk) {
 
   if (def && !card.hidden) {
     let m = 1, lbl = [];
-    if (card.forfeit) { m *= 4; lbl.push('×4'); }
+    if (card.forfeit) { if (card.fallback === 'x3') { m *= 3; lbl.push('🎁×3'); } else if (!card.fallback) { m *= 4; lbl.push('×4'); } }
     else {
       if (def.mult && (!def.dmult)) { m *= def.mult; lbl.push(def.mult < 1 ? '½' : '×' + def.mult); }
       if (def.dmult && card.deed) { m *= def.dmult; lbl.push('×' + def.dmult); }
       if (def.goldFixed && ALL.find(c => c.id === catId).type === 'fixed') { m *= def.goldFixed; lbl.push('🏆×' + def.goldFixed); }
       if (def.kmult && ['k5', 'k6'].includes(catId)) { m *= def.kmult; lbl.push('×' + def.kmult); }
-      if (card.forceCat && card.forceCat === catId && val > 0) { m *= 3; lbl.push('📌×3'); }
+      if (card.forceCat && !card.noBonus && card.forceCat === catId && val > 0) { m *= 3; lbl.push('📌×3'); }
     }
     if (val > 0 && m !== 1) mulVal(m, lbl.join(''));
     if (def.kmult && xk) xk *= def.kmult;
@@ -2975,7 +3276,7 @@ async function entryFlow(pid, catId, val, xk) {
     if (def.doubleOrNothing && val > 0) {
       const go = await stageAsk(`🎲 Doppelt oder nichts? Du hast ${val} Punkte.`, [{ v: 1, label: '🎲 Ich wag\'s!', cls: 'shine' }, { v: 0, label: 'Lieber nicht 🙈' }]);
       if (go) {
-        const r = await stageRoll(pid, 'Doppelt oder nichts'); preLog.push({ type: 'roll', pid, label: 'Doppelt oder nichts', rolls: [[pid, r]] });
+        const r = await stageDice('🎲 Würfle jetzt in echt!<br>1–3 = alles weg · 4–6 = doppelt', pid); preLog.push({ type: 'roll', pid, label: 'Doppelt oder nichts', rolls: [[pid, r]] });
         if (r <= 3) { lost += val; val = 0; cfx = '🎲✗'; notes.push(`🎲 ${r}: alles weg!`); } else { val *= 2; cfx = (cfx ? cfx + ' ' : '') + '🎲×2'; notes.push(`🎲 ${r}: doppelt!`); }
       }
     }
@@ -2991,7 +3292,7 @@ async function entryFlow(pid, catId, val, xk) {
       case 'rescue': if (val === 0) { rescue = true; revealResult = '🛟 Gerettet – der ganze Zug wird wiederholt!'; } else revealResult = 'Nicht gebraucht – du hast ja gepunktet 💖'; break;
       case 'void': lost += val; revealResult = `${catLbl(catId)} wird gestrichen 🥀`; val = 0; cfx = '🥀'; break;
       case 'fate': {
-        const r = await stageRoll(pid, 'Schicksalswürfel'); preLog.push({ type: 'roll', pid, label: 'Schicksalswürfel', rolls: [[pid, r]] });
+        const r = await stageDice('🔮 Würfle jetzt in echt den Schicksalswürfel!<br>1 = gestrichen · 2–3 = normal · 4–5 = ×5 · 6 = ×10', pid); preLog.push({ type: 'roll', pid, label: 'Schicksalswürfel', rolls: [[pid, r]] });
         if (r === 1) { lost += val; val = 0; cfx = '🔮✗'; revealResult = '1 – gestrichen! 💔'; }
         else if (r <= 3) revealResult = `${r} – zählt normal`;
         else { const m = r === 6 ? 10 : 5; mulVal(m, `🔮×${m}`); revealResult = `${r} – ×${m}! 🔮`; }
@@ -3016,7 +3317,7 @@ async function entryFlow(pid, catId, val, xk) {
       }
       case 'thief': {
         if (val > 0 && others.length) {
-          const tid = await stageAsk(`🦝 Wer verliert ${val} Punkte?`, others.map(id => ({ v: id, label: esc(nameOf(room, id)) })));
+          const tid = await stageAsk(`🦝 Welche Pussy verliert ${val} Punkte?`, others.map(id => ({ v: id, label: esc(nameOf(room, id)) })));
           addExtra(patch, room, tid, -val); P(patch, tid).lastAttacker = pid; chestIn(patch, room, val, tid, 'Punktedieb');
           revealResult = `${nameOf(room, tid)} verliert ${val} Punkte! 🦝`;
         } else revealResult = 'Nichts zu klauen';
@@ -3024,13 +3325,13 @@ async function entryFlow(pid, catId, val, xk) {
       }
       case 'gift': {
         if (val > 0 && others.length) {
-          const tid = await stageAsk(`🎁 Wer bekommt deine ${val} Punkte?`, others.map(id => ({ v: id, label: esc(nameOf(room, id)) })));
+          const tid = await stageAsk(`🎁 Welche Pussy bekommt deine ${val} Punkte?`, others.map(id => ({ v: id, label: esc(nameOf(room, id)) })));
           addExtra(patch, room, tid, val); revealResult = `${nameOf(room, tid)} bekommt ${val} Punkte 🎁`; val = 0; cfx = '🎁';
         } else revealResult = 'Nichts zu verschenken';
         break;
       }
       case 'share': {
-        if (val > 0) { const give = Math.min(val, others.length * 10); others.forEach(id => addExtra(patch, room, id, 10)); revealResult = `Alle anderen bekommen +10 🍰`; val = Math.max(0, val - others.length * 10); cfx = '🍰'; if (give < others.length * 10) {} }
+        if (val > 0) { const give = Math.min(val, others.length * 10); others.forEach(id => addExtra(patch, room, id, 10)); revealResult = `Alle anderen Pussys bekommen +10 🍰`; val = Math.max(0, val - others.length * 10); cfx = '🍰'; if (give < others.length * 10) {} }
         else revealResult = 'Nichts zu teilen';
         break;
       }
@@ -3143,11 +3444,23 @@ const LAUGHS = [
   'HA-HA! Heul doch, Prinzessin! 😹',
   'Hihi, das Pech steht dir richtig gut! 🤭💅'
 ];
+const keyNum = card => { const k = String(card.key || card.id || ''); let h = 0; for (const ch of k) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
 const cardCheer = card => {
   const d = cardDef(card.id);
-  if (!d || d.rar === 'bad' || isSecret(card) || card.cheer === undefined) return '';
-  return CHEERS[card.cheer % CHEERS.length];
+  if (!d || d.rar === 'bad' || isSecret(card)) return '';
+  return CHEERS[(card.cheer !== undefined ? card.cheer : keyNum(card)) % CHEERS.length];
 };
+const SECRETS = [
+  'Was drunter ist, siehst du erst danach – wie bei einem heißen Date 😏',
+  'Erst kommen, dann aufdecken, Baby 💦',
+  'Geheim wie dein Browserverlauf 🙈',
+  'Neugierig? Erst eintragen, dann wird ausgepackt 🎁😈',
+  'Vorfreude ist die schönste Lust 💋',
+  'Ein bisschen Spannung muss sein – wie bei Strapsen 😉',
+  'Pssst … die Überraschung kommt zum Schluss 🤫🍑'
+];
+const secretLine = card => SECRETS[keyNum(card) % SECRETS.length];
+function laughQuiet() { rain(['😂', '🤣', '😹', '🤭', '💅', '🥀'], 34); play('laugh'); buzz([60, 40, 60, 40, 60]); }
 function laughFX(sub) {
   const el = document.createElement('div');
   el.className = 'fx-laugh';
@@ -3177,6 +3490,434 @@ SFX.laugh = function () {
     o.start(t); o.stop(t + 0.14);
   }
 };
+
+/* ---------- Noch viel mehr Sprüche ---------- */
+CHEERS.push(
+  'Queen-Energie! Die anderen können einpacken 👑💅',
+  'So sieht eine Siegerin aus – nimm dir ein Selfie! 📸💖',
+  'Du würfelst, als hätte dich eine Fee geküsst 🧚‍♀️💋',
+  'Heiß, klug UND Glück – unfair für die anderen! 🔥',
+  'Das war so gut, sogar die Würfel klatschen 👏🎲',
+  'Iconic. Einfach nur iconic. 💅✨',
+  'Du bist der Main Character, Babe! 🎬💖',
+  'Slay, Queen, slay! 💃👑',
+  'Deine Punkte glänzen mehr als frischer Lipgloss 💄✨',
+  'Wer braucht Glück, wenn man DICH hat? 😍',
+  'Die Würfel sind verliebt in dich 💘🎲',
+  'Absolut zauberhaft – so wie du! 🪄🌸',
+  'Das ist kein Glück, das ist Talent, Süße 💎',
+  'Pussy-Power auf Maximum! 😈💖',
+  'Gönn dir, Prinzessin – du hast es verdient! 🍾',
+  'Die Krone sitzt heute verdammt gut 👑',
+  'Ihr anderen: Notizblock raus, so geht das! 📝💅',
+  'Glitzer, Glamour, Gewinnerin ✨✨✨',
+  'Die Feen haben heute nur Augen für dich 🧚‍♀️👀',
+  'Bombastisch! Du bist die Bombe, nicht die Zeitbombe 💣💖',
+  'Dein Glow ist heute nicht von dieser Welt 🌙✨',
+  'Was für ein Move – Applaus, Applaus! 👏💕',
+  'Du rockst diesen Tisch, Babygirl! 🎸💖',
+  'Wenn Würfeln ein Laufsteg wäre: Du wärst das Topmodel 💃',
+  'Diese Punkte riechen nach Sieg – und Vanille 🍦👑',
+  'Herzklopfen pur! So schön gewürfelt 💓',
+  'Alle anderen sind jetzt ganz leise … 🤫💅',
+  'Du hast den Dreh raus, Zuckerschnecke 🍭',
+  'Diamanten sind dein bester Freund – und die Würfel auch 💎',
+  'Holy Glitter! Was war DAS denn?! ✨😱',
+  'Du bist heute die Fee mit dem goldenen Händchen 🪄💛',
+  'Schön, schlau, siegreich – die Holy Trinity 💖',
+  'Rosa ist die Farbe deines Sieges 🎀',
+  'Läuft bei dir – auf High Heels! 👠',
+  'Du bist ein wandelnder Jackpot, Babe 🎰💖',
+  'Einhörner würden für diesen Wurf töten 🦄',
+  'Die Pussy des Tages zeichnet sich ab … 👀👑',
+  'Perfektion hat einen Namen – deinen! 💅',
+  'So viel Talent in so einer kleinen Hand 🤏💖',
+  'Hol dir den Thron, er wartet schon 👑🪑',
+  'Erste Sahne mit Streuseln obendrauf 🍰✨',
+  'Wahnsinn – sogar die Truhe ist neidisch 💰😍',
+  'Zucker, Zimt und Punkte satt 🍬',
+  'Mach weiter so und wir müssen dich anbeten 🙏👑',
+  'Du bist heute einfach eine andere Liga, Darling 💎',
+  'Bestform! Bestfrau! Bestes Ergebnis! 🏆',
+  'Sexy UND erfolgreich – das ist einfach zu viel 🔥💖',
+  'Ein Hoch auf dich, Glitzerkönigin! 🥂✨',
+  'Die Würfel tanzen nach deiner Pfeife 💃🎲',
+  'Das Glück hat sich in dich verknallt 😘',
+  'Hätten wir Konfetti, würden wir es jetzt werfen 🎊',
+  'So geht Kniffel, ihr Amateurinnen! 💅',
+  'Mit dir ist einfach alles glamourös ✨👠',
+  'Volle Punktzahl für Stil UND Wurf 💯',
+  'Der Feenstaub steht dir fantastisch ✨🧚',
+  'Du bist das Highlight dieses Abends 💖🌟',
+  'Babe, du brennst heute! 🔥🔥🔥',
+  'Herzchen-Alarm: Hier gewinnt jemand Großes 💗',
+  'Hübsch gewürfelt ist halb gewonnen 🌸',
+  'Weiter so, du funkelndes Wunder! 💫'
+);
+LAUGHS.push(
+  'Hahaha, Karma hat deine Adresse! 📬😂',
+  'Kicher kicher – das hast du davon! 🤭',
+  'Buhuu! Willst du ein Taschentuch, Süße? 🧻😹',
+  'LOL! Das Universum hasst dich heute 🌌😂',
+  'Hehehe, die Würfelgöttin ist nicht dein Fan 😈',
+  'Ohhh nein … doch! Hahaha! 🤣',
+  'Pech gehabt, Glitzerhase! 🐰💔',
+  'Hahaha – hast du WIRKLICH gedacht, das wird was? 😹',
+  'Da lacht sogar die Schatztruhe! 💰😂',
+  'Muahahaha, wie bitter! 🍋😈',
+  'Ach Schätzchen … nein. Einfach nein. 😂',
+  'Haha, rate mal, wer heute verliert! 🫵😹',
+  'Hihi, deine Würfel haben Feierabend gemacht 🛌',
+  'Ups – Absturz in 3, 2, 1 … 💥😂',
+  'Hahaha! Wir haben es ALLE gesehen! 👀🤣',
+  'Mimimi – wir hören dich schon jammern 😹',
+  'Die Feen lachen sich gerade schlapp 🧚‍♀️😂',
+  'Was für ein Fail, Darling! 💅🤣',
+  'Hahaha, das tat sogar UNS weh! 😬😂',
+  'Bwahaha! Willkommen im Club der Verliererinnen 🥀',
+  'Hehe, heute nicht, Prinzessin! 🙅‍♀️😹',
+  'Lach dich ruhig mit uns aus – wir tun es eh! 😂',
+  'Hahaha, ein Glück, dass du hübsch bist! 💄🤣',
+  'Hihihi – der Absturz war spektakulär! 🎢',
+  'Klatsch, klatsch – für dein Pech! 👏😹',
+  'Hahaha, die Krone rutscht, Süße! 👑💨',
+  'Uiii, das gibt Punktabzug UND Gelächter! 😂',
+  'Heul leise, wir wollen weiterspielen! 😹💅',
+  'HAHA! Das kommt in die Story! 📱😂',
+  'Pff – Pech ist wohl dein Parfüm! 🧴🤣'
+);
+const INSULTS = [
+  'Du würfelst wie du einparkst – katastrophal. 🚗💥',
+  'Dein Glück hat dich wohl auf „gelesen“ gelassen. 📱',
+  'Selbst ein Glückskeks würde dir Pech wünschen. 🥠',
+  'Deine Punkte sind so flach wie deine Witze. 😴',
+  'Hast du die Würfel mit Absicht verflucht, oder kannst du das einfach so? 🧙‍♀️',
+  'Das war so schlecht, die Würfel wollen anonym bleiben. 🕶️',
+  'Du bist der Grund, warum es Anleitungen gibt. 📖',
+  'Mit dir zu spielen ist wie Gratis-Punkte für alle anderen. 🎁',
+  'Dein Würfelglück hat gekündigt – fristlos. 📄',
+  'Sogar dein Spiegelbild hat weggeschaut. 🪞',
+  'Pech? Nein, Süße – das ist dein natürlicher Zustand. 🥀',
+  'Deine Strategie: Hoffen und verlieren. 💀',
+  'Du spielst Kniffel wie andere Lotto – ohne Gewinn. 🎟️',
+  'Die Schatztruhe sagt danke, du großzügiges Opfer. 💰',
+  'Dein Punktestand weint gerade leise. 😢',
+  'Zum Glück zählt hier nicht Aussehen … ach, warte. 💅',
+  'Dein Pech ist so treu, das ist fast schon Liebe. 💔',
+  'Hast du heute schon mal gewonnen? Rhetorische Frage. 🙄',
+  'Die Würfel haben dich gesehen und sofort aufgegeben. 🏳️',
+  'Selbst die Fee hat bei dir den Zauberstab hingeworfen. 🪄',
+  'Du bist wie Glitzer auf dem Boden: nervig und überall falsch. ✨',
+  'Deine Punkte verdunsten schneller als dein Parfüm. 💨',
+  'Wie fühlt es sich an, die Pechmarie des Abends zu sein? 🥴',
+  'Wenn Pech eine Sportart wäre, hättest du Gold. 🥇',
+  'Deine Würfel brauchen dringend eine Therapie nach dir. 🛋️',
+  'Das war kein Wurf, das war ein Hilferuf. 🆘',
+  'Du verlierst so elegant – fast schon Talent. 💃',
+  'Mach dir nichts draus, du warst eh nie im Rennen. 🐌',
+  'Die Würfel flüstern: „Bitte nicht die schon wieder.“ 🤫',
+  'Du bist das lebende Beispiel für „knapp daneben ist auch vorbei“. 🎯',
+  'Ich würde dich trösten, aber ich lache noch. 😂',
+  'Deine Glückssträhne ist wohl beim Friseur geblieben. 💇‍♀️',
+  'Dein Punktekonto hat gerade Schluss gemacht. 💌',
+  'Du sammelst Pech wie andere Handtaschen. 👜',
+  'Selbst Aschenputtel hatte mehr Glück als du. 👠',
+  'Du bist die Spenderin des Abends – applaus! 👏',
+  'Die anderen danken dir für die Gratispunkte. 🙏',
+  'Deine Krone? Längst beim Pfandautomaten. 👑♻️',
+  'Mit dem Glück kannst du nicht mal Bingo gewinnen. 🔢',
+  'Ein Würfel mit verbundenen Augen wäre besser. 🙈',
+  'Das war so schwach, wir müssen kurz Luft holen. 😮‍💨',
+  'Bist du sicher, dass du die Regeln verstanden hast? 🤨',
+  'Glück hat dich blockiert – auf allen Kanälen. 🚫',
+  'Du bist so tief gefallen, unten winkt schon jemand. 👋',
+  'Selbst dein Horoskop hat dich heute gewarnt. 🔮',
+  'Die Truhe wird fett, du wirst arm. Perfekte Balance. ⚖️',
+  'Deine Punkte haben einen besseren Ort gefunden. 🕊️',
+  'Du bist wie ein Rubbellos – nur Nieten. 🎫',
+  'Sogar der Frosch würde dich nicht küssen. 🐸',
+  'Du spielst nicht gegen uns, du spielst gegen dich – und verlierst. 🥊',
+  'Das Glitzer in deinem Leben? Nur Lidschatten. 💄',
+  'Dein Pech hat schon einen eigenen Insta-Account. 📸',
+  'Zurück auf Start, Prinzessin – im Kopf bist du eh schon da. 🔙',
+  'Wenn man dich sieht, weiß man, wohin die Punkte gehen. 🪙',
+  'Würfelkunst? Bei dir eher Würfelkrampf. 😖',
+  'Die Pussy des Tages wirst du heute nur in deinen Träumen. 💤',
+  'Du bist das „Vorher“-Bild in jeder Werbung. 📺',
+  'Sei froh, dass Zuschauen nichts kostet. 👀',
+  'Dein Glück ist auf Diät – null Kalorien, null Punkte. 🥗',
+  'Selbst die Zeitbombe hat Mitleid mit dir. 💣',
+  'Gut, dass du hübsch bist, Babe – denn würfeln kannst du nicht. 💅',
+  'Hast du die Würfel geschüttelt oder nur gestreichelt? 🫳',
+  'So viel Pech auf einmal – bist du über eine schwarze Katze gestolpert? 🐈‍⬛',
+  'Keine Sorge, irgendwer muss ja Letzte werden. 🫶',
+  'Das war so traurig, die Einhörner weinen. 🦄😭',
+  'Du schuldest der Schatztruhe ein Dankeschön-Kärtchen. 💌',
+  'Mit deinem Glück verlierst du sogar bei Schere-Stein-Papier. ✂️',
+  'Wow. Einfach … wow. Und zwar nicht im guten Sinne. 😬',
+  'Die Würfel sind rund, aber dein Spiel ist eckig. 🔲',
+  'Zieh dir was Warmes an, es wird kalt da unten in der Tabelle. 🧥',
+  'Dein Pech ist ansteckend – bitte Abstand halten. 😷',
+  'Man sagt, Geld macht nicht glücklich – Punkte offenbar auch nicht. 💸',
+  'Du bist wie WLAN im Keller: einfach kein Empfang fürs Glück. 📶',
+  'Das Leben ist ein Ponyhof – nur nicht für dich. 🐴',
+  'Selbst Lipgloss kann diesen Wurf nicht mehr retten. 💋',
+  'Die Würfel haben gerade ihre Kündigung bei dir eingereicht. 📝',
+  'Dein Glück ist im Urlaub – ohne Rückflugticket. ✈️',
+  'Wenn du so weitermachst, gründen wir dir einen Fanclub für Verlierer. 🥉',
+  'Bitte lächeln – du bist gerade die Lachnummer des Abends. 🤡',
+  'Herzlichen Glückwunsch, du hast den Preis für das meiste Pech gewonnen! 🏆🥀'
+];
+
+/* ---------- Spruch-Blase unten ---------- */
+let quipTimer;
+function quip(text, bad = false) {
+  return; // Sprüche stehen nur noch auf den Karten
+  const old = fx().querySelector('.fx-quip'); if (old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'fx-quip' + (bad ? ' bad' : '');
+  el.innerHTML = `<span>${bad ? '😂' : '💖'}</span><p>${esc(text)}</p>`;
+  fx().appendChild(el);
+  clearTimeout(quipTimer);
+  quipTimer = setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 450); }, 4200);
+}
+
+/* ---------- Gegnerwahl & Hexe: Auswahl nur am Handy der Gegnerin ---------- */
+function awaitHTML(room, turn) {
+  const c = turn.card;
+  if (!c || c.status !== 'await' || !c.awaitPid) return '';
+  if (canAct(c.awaitPid)) return `<button class="awaitbtn" id="awaitbtn">👯‍♀️ <b>Du bist gefragt!</b><small>Bestimme die Kategorie für ${esc(nameOf(room, turn.pid))} – hier tippen 😈</small></button>`;
+  return `<div class="drawwait">⏳ ${esc(nameOf(room, c.awaitPid))} bestimmt gerade an ihrem Handy die Kategorie für ${esc(nameOf(room, turn.pid))} …</div>`;
+}
+function mustHTML(room, turn, mine) {
+  const c = turn.card;
+  if (!c || c.status !== 'done') return '';
+  const tp = room.players[turn.pid];
+  const allow = allowedCats(c, tp);
+  if (!allow) return '';
+  const def = cardDef(c.id);
+  const lbl = def && def.pflicht ? '📜 Pflichtwurf' : c.bet ? '💸 Wette' : def && def.id === 'witch' ? '🧙‍♀️ Die Hexe hat bestimmt' : '📌 Festgelegt';
+  if (!mine) return `<div class="mustbar"><p>${lbl}: <b>${esc(nameOf(room, turn.pid))}</b> darf nur in ${allow.map(catLbl).join(', ')} eintragen</p></div>`;
+  return `<div class="mustbar mine"><p>${lbl} – du darfst diesen Zug nur hier eintragen 👇</p>
+    <div class="mustbtns">${allow.map(id => `<button class="btn shine" data-must="${id}">${catLbl(id)}</button>`).join('')}</div></div>`;
+}
+function checkAwait() {
+  const room = state.room; if (!room) return;
+  const t = turnOf(room), c = t.card;
+  if (!c || c.status !== 'await' || !canAct(c.awaitPid) || state.awaitShown === c.key) return;
+  state.awaitShown = c.key;
+  setTimeout(() => {
+    const tt = state.room && turnOf(state.room);
+    if (!tt || !tt.card || tt.card.key !== c.key || tt.card.status !== 'await') return;
+    if (state.cardOpen || $('#layer.open')) { state.awaitShown = null; return; }
+    pop('👯‍♀️ Du bist gefragt!', `Bestimme die Kategorie für ${esc(nameOf(state.room, tt.pid))} 😈`, true); buzz([80, 50, 80]); play('turn');
+    setTimeout(openAwait, 900);
+  }, 1600);
+}
+function openAwait() {
+  const room = state.room; if (!room) return;
+  const t = turnOf(room), c = t.card;
+  if (!c || c.status !== 'await' || !canAct(c.awaitPid)) return;
+  const tp = room.players[t.pid];
+  const cats = emptyCats(tp).filter(x => !(c.locked || []).includes(x.id));
+  const witch = c.awaitKind === 'witch';
+  openSheet(`<h3>${witch ? '🧙‍♀️ Du bist die Hexe!' : '👯‍♀️ Du bestimmst!'}</h3>
+    <p class="muted">Welche Kategorie muss <b>${esc(nameOf(room, t.pid))}</b> diesen Zug würfeln? ${witch ? 'Sei ruhig gemein 😈' : 'Schafft sie es, zählt es ×3.'}</p>
+    <div class="catgrid">${cats.map(x => `<button class="btn ghost small" data-act="c:${x.id}">${catLbl(x.id)}</button>`).join('')}</div>`,
+    async (act, _b, close) => {
+      if (!act.startsWith('c:')) return;
+      close();
+      const cur = state.room && turnOf(state.room).card;
+      if (!cur || cur.key !== c.key || cur.status !== 'await') return;
+      const cat = act.slice(2);
+      const result = `${nameOf(state.room, c.awaitPid)} hat bestimmt: ${catLbl(cat)}${witch ? ' 🧙‍♀️' : ' (×3 wenn geschafft)'}`;
+      const patch = { turn: { card: { ...cur, status: 'done', forceCat: cat, result } } };
+      const ev = { type: 'card', phase: 'result', pid: t.pid, target: null, card: c.id, result, fx: witch ? 'bad' : 'good' };
+      addLog(patch, state.room, ev); state.seen.add(ev.id);
+      if (await write(() => state.backend.updateRoom(state.session.code, patch))) { pop('✅ Festgelegt!', esc(result), true); burst(['😈', '✨', '💖'], 18); play('chime'); }
+    },
+    () => { toast('Du musst noch eine Kategorie bestimmen 😈 – tipp oben auf den Knopf'); });
+}
+
+/* ---------- Versaute Sprüche (ersetzen alle bisherigen) ---------- */
+function setPool(arr, list) { arr.length = 0; arr.push(...list); }
+setPool(CHEERS, [
+  'Du bist so heiß, die Würfel schmelzen gleich 🔥🎲',
+  'Na, wer wird denn da schon feucht vor lauter Punkten? 💦',
+  'So ein Höhepunkt – und das ganz ohne Vorspiel 😏',
+  'Du kommst heute richtig auf deine Kosten, Baby 💋',
+  'Diese Karte macht dich an, gib’s zu 😈',
+  'Die Würfel liegen dir zu Füßen – und auf dem Rücken 🎲💕',
+  'Du weißt genau, wie man’s richtig schüttelt 🍑',
+  'Heute bist du oben – in jeder Stellung 👑',
+  'Bei dir kommen sogar die Würfel zweimal 💦💦',
+  'Wet Ass Pussy Energy – volle Punktzahl! 💦👑',
+  'So viel Glück, das ist fast schon unanständig 😳',
+  'Du bist das Sahnehäubchen – und alle wollen naschen 🍒',
+  'Deine Pussy glüht heute, Baby 🔥',
+  'Leg dich zurück und lass die Punkte kommen 😌💦',
+  'Du hast den Dreh raus – und den Schwung in der Hüfte 💃',
+  'Schön tief rein in die Punkte, Süße 😏',
+  'Das Glück steht auf dich – und zwar richtig hart 😈',
+  'Die anderen können nur zuschauen, wie du’s machst 👀💋',
+  'Sexy, siegreich, unersättlich – das bist du 💖',
+  'Bei dem Wurf hat sogar die Truhe gestöhnt 🪙😮‍💨',
+  'Heute wirst du verwöhnt, Prinzessin 🛁💋',
+  'Gib’s ihnen – aber mit Gefühl 😘',
+  'Deine Würfel haben gerade einen Orgasmus gehabt 🎲💥',
+  'Mmmh, das fühlt sich gut an, oder? 😏',
+  'Du bist die Königin der Lust – und der Punkte 👑🍑',
+  'Dein Glück hat heute Lust auf dich 💘',
+  'Die Feen sind ganz scharf auf dich 🧚‍♀️🔥',
+  'Leg los, Tiger – du bist heute die Wildeste 🐯',
+  'So nass vor Glück hat dich noch keiner gesehen 💦',
+  'Alle Blicke auf dich – und auf deinen Hintern 🍑👀',
+  'Ein Quickie mit dem Glück – und es hat sich gelohnt ⚡',
+  'Du lässt die Würfel richtig tanzen – im Bett wohl auch 💃',
+  'Diese Punkte sind so heiß, wir brauchen eine kalte Dusche 🚿',
+  'Du hast heute das gewisse Etwas – und alle wollen es 😈',
+  'Pussy-Power deluxe! Die Krone ist feucht vor Freude 👑💦',
+  'Wenn Glück sexy wäre – oh warte, du bist es ja 💋',
+  'Lass sie betteln, Babe 😌',
+  'Du bist so gut, das sollte verboten sein 🚨',
+  'Spreiz die Flügel, Fee – heute fliegst du hoch 🧚‍♀️',
+  'Zeig, was du hast – wir wissen ja, dass es viel ist 🍒🍒',
+  'Hart, härter, Highscore 💎',
+  'Du machst das so gut, die anderen werden ganz eifersüchtig 😏',
+  'Dein Glück hat dich heute die ganze Nacht im Arm 🌙💕',
+  'Volle Punktzahl für Technik UND Ausdauer 💯',
+  'So ein Treffer – du triffst immer den richtigen Punkt 🎯😳',
+  'Die Würfel wollen heute nur mit dir ins Bett 🛏️🎲',
+  'Gönn dir, du kleine Sünde 😈🍓',
+  'Ein heißer Wurf von einer heißen Pussy 🔥🐱',
+  'Bei dir rollt nicht nur der Würfel, sondern auch die Zunge 👅',
+  'Du bist die Pussy des Tages – und der Nacht 🌙👑'
+]);
+setPool(LAUGHS, [
+  'HAHAHA! Heute wirst du ordentlich rangenommen! 😂',
+  'Hihihi – das tut weh, aber nicht auf die gute Art! 🤭',
+  'Muahaha, kein Höhepunkt für dich, Süße! 😈',
+  'Bwahaha – du kommst heute einfach nicht! 🤣',
+  'Haha, trocken wie die Sahara! 🏜️😹',
+  'Ups – zu früh gekommen, was? 😂',
+  'HA-HA! Leg dich hin und nimm’s hin! 😹',
+  'Hehehe – das war ein Schuss in den Ofen! 🔥😂',
+  'Kicher – heute bist du unten, Babe! 🤭',
+  'Hahaha, nicht mal die Würfel wollen mit dir! 🎲😹',
+  'LOL – so unbefriedigend wie dein letztes Date! 😂',
+  'Muahaha, keine Erlösung für dich heute! 😈',
+  'Haha, du wurdest gerade richtig durchgenommen! 🤣',
+  'Pech gehabt – heute gibt’s nur Kuscheln ohne Happy End! 🧸😹',
+  'Hihi, schlapp wie ein nasser Waschlappen! 🧽😂',
+  'Bwahaha – Abtörner des Abends! 🥶',
+  'HAHA! Du bist so frustriert, man riecht’s! 😹',
+  'Hehe – die Lust ist weg, die Punkte auch! 💨😂'
+]);
+setPool(INSULTS, [
+  'Du würfelst, wie du küsst – viel zu nass und völlig daneben. 💦',
+  'Bei dir kommt nicht mal der Würfel. 🎲😴',
+  'So trocken wie dein Liebesleben, Süße. 🏜️',
+  'Selbst dein Vibrator hat heute keine Lust auf dich. 🔋',
+  'Du bist wie ein Quickie: schnell vorbei und keiner ist befriedigt. ⏱️',
+  'Dein Glück hat dich gerade gegostet – wie alle deine Dates. 👻',
+  'Mehr Vorspiel als Punkte, wie immer bei dir. 😴',
+  'Du kriegst heute nichts rein – keine Punkte, keine Kategorie, nix. 🙅‍♀️',
+  'Deine Pussy ist heute im Energiesparmodus. 🪫',
+  'Spreiz ruhig die Beine – Punkte gibt’s trotzdem keine. 😹',
+  'Du bläst heute nur Trübsal, Schätzchen. 🎺',
+  'Das war so schlapp, da hilft nicht mal Viagra. 💊',
+  'Du bist heute untenrum komplett abgemeldet. 📵',
+  'Die Würfel haben Kopfschmerzen, wenn du kommst. 🤕',
+  'Dein Pech ist größer als alles, was du je im Bett hattest. 🍆',
+  'Selbst mit Gleitgel würdest du heute nirgendwo reinkommen. 🧴',
+  'Du bist so unbefriedigend, die Truhe verlangt ihr Geld zurück. 🪙',
+  'Na, Frust geschoben? Sieht man, Babe. 😏',
+  'Deine Punkte sind kürzer als sein Durchhaltevermögen. ⏳',
+  'Du bist der Abtörner des Abends. 🥶',
+  'Kein Wunder, dass du Single bist – bei dem Glück. 💔',
+  'Heute wirst du nicht verwöhnt, heute wirst du verarscht. 🃏',
+  'Bück dich, Süße – das Pech kommt von hinten. 🍑',
+  'Du hast so viel Pech, sogar dein Toy hat sich abgemeldet. 🔌',
+  'Die einzige, die dich heute flachlegt, ist die Würfelgöttin. 😈',
+  'Du bist wie ein schlechtes Date: teuer und ohne Höhepunkt. 💸',
+  'Feucht bist du heute nur vor Angst. 💦😰',
+  'Deine Lust ist groß, dein Glück winzig. 🤏',
+  'Selbst die Feen würden dich nicht anfassen. 🧚‍♀️🚫',
+  'Du stöhnst schon wieder – leider vor Frust. 😩',
+  'Das war so schwach, der Würfel hat einen Schlappen. 🎲🥀',
+  'Dein Höhepunkt heute? Dass du mitspielen durftest. 🫠',
+  'Du verlierst Punkte schneller als deine Unterwäsche. 👙',
+  'Keine Punkte für dich – aber Trostkuscheln mit der Truhe. 🧸',
+  'Die anderen kommen, du gehst – leer aus. 🚪',
+  'Selbst eine aufblasbare Puppe hätte besser gewürfelt. 🎈',
+  'Deine Pussy hat heute Hausarrest. 🔒🐱',
+  'Du bist so verklemmt, nicht mal die Würfel lockern sich. 😬',
+  'Wer so würfelt, landet auch im Bett immer auf der falschen Seite. 🛏️',
+  'Dein Glück hat sich nach dem ersten Mal nie wieder gemeldet. 📵',
+  'Du bist wie ein Kondom im Portemonnaie – lange da, nie benutzt. 🙈',
+  'Heute heißt es für dich: Hand anlegen – an deine Tränen. 😭',
+  'Die Schatztruhe ist voller als dein Terminkalender für Dates. 📅',
+  'Du gibst dir so viel Mühe – und kommst trotzdem nicht. 🫤',
+  'Schade, Babe – die Würfel stehen einfach nicht auf dich. 💅',
+  'Du hast heute so wenig Glück wie Fummelzeit im Kino. 🍿',
+  'Selbst dein Ex lacht gerade über dich. 😂',
+  'Wenn Pech sexy wäre, wärst du ein Pornostar. 🎬',
+  'Zieh dich warm an – unten in der Tabelle wird’s kalt und einsam. 🥶',
+  'Ganz ehrlich? Die Truhe hat dich lieber als jeder Mann. 🪙💋',
+  'Du bist heute so heiß wie ein kalter Fisch. 🐟',
+  'Mach die Beine zu, es zieht – und die Punkte auch. 🌬️',
+  'Dein Glück ist impotent, Süße. 🥀',
+  'Die anderen haben Spaß, du hast nur Kopfweh. 🤕',
+  'So viel Abzug – das nennt man wohl „von hinten genommen“. 🍑😂'
+]);
+// Karten-eigene Sprüche
+const NAUGHTY = {
+  halved: ['Halbe Punkte – genau wie bei deinem letzten Mal: nur halb so gut. 🫤', 'Halbiert! Wie seine Ausdauer. ⏳'],
+  costly: ['Jeder Wurf kostet – wie ein teures Date ohne Happy End. 💸', 'Teuer und unbefriedigend – kennst du ja. 💳'],
+  costly2: ['Sehr teuer, Süße – fast so teuer wie dein Toy-Sammelfimmel. 🛍️', 'Zahlen und nicht kommen – dein Lebensmotto. 💸'],
+  locked: ['Gesperrt! Wie dein Keuschheitsgürtel. 🔒', 'Drei Türen zu – da kommt heute keiner rein. 🚪'],
+  b100: ['100 Punkte oben? So hoch kommst du heute nicht. 🧗‍♀️', 'Die Latte liegt hoch – höher als deine Ansprüche. 😏'],
+  b0: ['Kein Bonus – wie ein Date ohne Nachspiel. 🫥', 'Bonus weg, Lust weg. 🥀'],
+  bhole: ['Ein Loch im Konto – und nicht das, das du dir gewünscht hast. 🕳️', 'Minus 15 – da ist wohl was danebengegangen. 💦'],
+  setback: ['Rückschlag! Er hat dich wohl doch nicht zurückgerufen. 📉', 'Deine beste Nummer? Schnell vorbei. 😴'],
+  collapse: ['Eingestürzt – schlapp wie nach dem dritten Glas. 🍷', 'Halbiert! Da ist wohl jemand eingeknickt. 🥀'],
+  h_void: ['Alles umsonst – wie Rasieren vorm Date, das abgesagt wurde. 🪒', 'Gestrichen! Kein Höhepunkt für dich. 🥀'],
+  h_down: ['Abgerundet – er hat auch immer übertrieben. 📏', 'Weniger ist mehr? Bei dir eher weniger. 😹'],
+  h_curse1: ['Einser-Fluch! Eins – wie die Minuten, die er durchhält. ⏱️', 'Jede Eins tut weh – und nicht auf die gute Art. 😩'],
+  h_curse2: ['Zweier-Fluch! Zu zweit wäre schöner gewesen. 💔', 'Die Zwei – immer nur zweite Wahl im Bett. 🛏️'],
+  h_curse3: ['Dreier-Fluch! Und nein, nicht DIE Art Dreier. 😏', 'Dreier ja – aber nur mit Pech und Frust. 😹'],
+  h_gift: ['Geschenk! Du gibst’s her, ohne was zu bekommen – typisch. 🎁', 'Verschenkt! So großzügig warst du zuletzt nachts um drei. 🌙'],
+  h_mixup: ['Verwechslung! Falsches Loch, Süße. 🌀', 'Falsches Feld – wie damals im Dunkeln. 🙈'],
+  h_streak: ['Pechsträhne – und nicht die, die man gern hat. 🌧️', 'Nächstes Mal auch nur halb – halbsteif sozusagen. 🥀'],
+  half: ['Halbe Punkte für eine halbe Portion. 🤏', 'Nur die Hälfte – wie seine Bemühungen. 😴'],
+  two: ['Nur zwei Würfe – schneller vorbei als sein Höhepunkt. ⏱️', 'Zweimal und Schluss – kennst du doch. 😹'],
+  frog: ['Quak! Den Frosch küsst du heute ganz allein. 🐸💋', 'Ein Würfel weniger – wie bei ihm was fehlt. 🤏'],
+  pickpocket: ['Weg sind sie – wie er am Morgen danach. 🏃‍♂️', 'Ausgenommen wie nach einer heißen Nacht. 💸'],
+  sleep: ['Schlaf schön – im Bett passiert bei dir eh nichts anderes. 💤', 'Dornröschen ohne Prinz – wie traurig. 😴'],
+  witch: ['Die Hexe bestimmt, wo’s langgeht – du stehst ja drauf, dominiert zu werden. ⛓️', 'Heute bist du die Sub, Süße. 😈'],
+  pudding: ['Wackelig wie deine Knie nach ihm. 🍮', 'Festhalten konntest du noch nie – nicht mal ihn. 💔'],
+  curse: ['Verflucht – wie deine Beziehungen. 🥀', 'Streich was – so wie er dich aus seinem Handy. 📱'],
+  blind: ['Augen zu – das kennst du ja von deinen Dates. 🙈', 'Blind würfeln, blind daten – du kannst beides schlecht. 😹'],
+  pirate: ['Arrr! Die Piraten plündern dich – und nicht so, wie du’s magst. 🏴‍☠️', 'Ausgeraubt und unbefriedigt. 🦜'],
+  bomb: ['Tick, tack – gleich kommt’s … aber nicht bei dir. 💣']
+};
+Object.entries(NAUGHTY).forEach(([id, r]) => { const c = cardDef(id); if (c) c.roast = r; });
+CARDS.forEach(c => { if (c.rar === 'bad' && !NAUGHTY[c.id]) c.roast = []; });
+
+/* ---------- Jede Karte hat eine Würfel-Aktion für diesen Zug ---------- */
+// Kein Aussetzen mehr
+['sleep', 'sleepnext'].forEach(id => { const c = cardDef(id); if (c) c.w = 0; });
+// Pechkarten: Strafe + Wurf zählt nur die Hälfte · Glückskarten ohne Würfel-Aktion: Wurf zählt doppelt
+const HALF_TXT = ' UND: Dein Wurf zählt diesen Zug nur die Hälfte! 💔🎲';
+const DBL_TXT = ' PLUS: Dein Wurf zählt diesen Zug doppelt! 💖🎲';
+(c => { if (c) { c.text = 'Dein Bonus kommt ab sofort erst ab 100 Punkten oben.'; c.mult = 0.5; c.text += HALF_TXT; } })(cardDef('b100'));
+(c => { if (c) { c.text = 'Dein Bonus bringt ab sofort 0 Punkte.'; c.mult = 0.5; c.text += HALF_TXT; } })(cardDef('b0'));
+(c => { if (c) { c.text = '−15 Punkte auf deinem Bonus-Konto oben.'; c.mult = 0.5; c.text += HALF_TXT; } })(cardDef('bhole'));
+['pickpocket', 'pirate', 'curse', 'collapse', 'toll'].forEach(id => { const c = cardDef(id); if (c && !c.mult) { c.mult = 0.5; c.text += HALF_TXT; } });
+['lucky', 'steal', 'tax', 'party', 'gift', 'reverse', 'second', 'protect', 'revive', 'sacrifice', 'dieduel', 'duelall',
+ 'audit', 'krain', 'coronation', 'bomb', 'revenge', 'key'].forEach(id => { const c = cardDef(id); if (c && !c.mult) { c.mult = 2; c.text += DBL_TXT; } });
+// Ruhige Runde bekommt auch eine Aktion
+(c => { if (c) { c.title = 'Entspannte Runde'; c.text = 'Ganz entspannt, Süße: Du hast diesen Zug 4 Würfe statt 3! 🌷🎲'; } })(cardDef('calm'));
 
 /* ================= Eigene Web-App: Firebase, Lobby, Einladen ================= */
 
@@ -3233,7 +3974,7 @@ const inviteLink = code => {
   const baseUrl = state.backend && state.backend.mode === 'claude' ? ARTIFACT_URL : location.href.split('#')[0].split('?')[0];
   return `${baseUrl}#raum-${code}`;
 };
-const inviteText = code => `💖 Komm in meinen PusseyWürfel-Raum! 👑🎲\nRaum-Code: ${code}\n${inviteLink(code)}`;
+const inviteText = code => `💖 Komm in meinen PussyKniffel-Raum! 👑🎲\nRaum-Code: ${code}\n${inviteLink(code)}`;
 
 function openInvite() {
   const code = state.session.code;
@@ -3244,7 +3985,7 @@ function openInvite() {
     ${navigator.share && state.backend.mode !== 'claude' ? '<button class="btn wide ghost" data-act="share" style="margin-top:8px">📤 Teilen …</button>' : ''}
     <button class="btn wide ghost" data-act="copy" style="margin-top:8px">📋 Link kopieren</button>`,
     async (act, _b, close) => {
-      if (act === 'share') { try { await navigator.share({ title: 'PusseyWürfel', text: inviteText(code) }); } catch {} close(); }
+      if (act === 'share') { try { await navigator.share({ title: 'PussyKniffel', text: inviteText(code) }); } catch {} close(); }
       if (act === 'copy') {
         try { await navigator.clipboard.writeText(inviteText(code)); toast('Einladung kopiert 💌'); } catch { toast(`Raum-Code: ${code} 💖`); }
         close();
@@ -3265,7 +4006,7 @@ function renderLobby() {
     <div class="lobby">
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
       <div class="crown" aria-hidden="true">👑</div>
-      <h1>Pussey<span>Würfel</span></h1>
+      <h1>Pussy<span>Kniffel</span></h1>
       <p class="tagline"><span>Heute wird eine von euch zur <b>Pussy des Tages</b> gekrönt 👑 Zeigt, was ihr drauf habt! 😈💅</span></p>
       <div class="lobby-card">
         <small>💌 Raum-Code</small>
@@ -3323,7 +4064,7 @@ function ceremonyHook(app) {
   ['.turnbar', '#cardchip', '#drawbtn'].forEach(sel => { const el = app.querySelector(sel); if (el) el.remove(); });
   const chest = app.querySelector('#chest');
   if (chest && !app.querySelector('.over-banner')) {
-    chest.insertAdjacentHTML('beforebegin', `<button class="over-banner" id="overBanner">🏆 Spiel vorbei! <b>Zur Siegerehrung</b> ✨</button>`);
+    chest.insertAdjacentHTML('beforebegin', `<button class="over-banner" id="overBanner">🏆 Spiel vorbei! <b>Zum Pussy Ranking</b> ✨</button>`);
     app.querySelector('#overBanner').onclick = () => showCeremony(true);
   }
   const key = `${state.session.code}:${room.game || 1}`;
@@ -3372,7 +4113,7 @@ async function showCeremony(replay) {
   el.innerHTML = `
     <div class="cer-bg"><i class="spot s1"></i><i class="spot s2"></i><i class="spot s3"></i></div>
     <div class="cer-in">
-      <div class="cer-title">✨ Die große Siegerehrung ✨</div>
+      <div class="cer-title">✨ Das große Pussy Ranking ✨</div>
       <div class="cer-sub" id="cerSub">Trommelwirbel bitte …</div>
       <div class="podium">${pod(top[1], 2)}${pod(top[0], 1)}${pod(top[2], 3)}</div>
       <div class="cer-rest">${rest.map(x => `<div class="cr" data-rank="${x.rank}"><b>${x.rank}.</b> ${avatarOf(room, x.id)} ${esc(dname(x.p))}<span>${x.t}</span></div>`).join('')}</div>
