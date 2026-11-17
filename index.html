@@ -1344,7 +1344,7 @@ function logPatch(room, ev) {
   if (list.length > 40) list.slice(0, list.length - 40).forEach(e => { patch[e.id] = null; });
   return patch;
 }
-const PUSSY_EMOJIS = ['💅', '👑', '💖', '🌸', '🦄', '🎀', '💋', '👠', '🍓', '🦋', '🌷', '💎', '🍒', '🐱', '🌈', '✨'];
+const PUSSY_EMOJIS = ['💦', '🍌', '🍆', '🍑', '🍒', '👅'];
 const SUFFIXES = ['Pussy', 'Luder', 'Sahneschnitte', 'Zuckerschnecke', 'Wildkatze', 'Sexbombe', 'Knackpo', 'Pfirsichpopo',
   'Lustmolchin', 'Schlüpferstürmerin', 'Raubkatze', 'Biest', 'Bunny', 'Glitzerluder', 'Prachtweib', 'Spitzenhöschen',
   'Naschkatze', 'Kuschelmaus', 'Herzensbrecherin', 'Sugar Babe', 'Bettflüsterin', 'Schnecke', 'Busenfreundin', 'Teufelchen'];
@@ -1361,7 +1361,7 @@ const dname = p => {
 const shownName = (room, p) => (room && room.status === 'lobby' ? (p && p.name) || 'Jemand' : dname(p));
 const nameOf = (room, pid) => shownName(room, (room.players || {})[pid]);
 
-const APP_VERSION = '17.11. · 13:55';
+const APP_VERSION = '17.11. · 15:30';
 /* ---------- Wer darf was? Jede trägt nur am eigenen Handy ein – und nur, wenn sie dran ist ---------- */
 const isLocal = () => !!(state.backend && state.backend.mode === 'local');
 function canAct(pid) {
@@ -1391,7 +1391,7 @@ function renderStart(prefillCode = '') {
   clearTimeout(state.loadTimer);
   state.room = null;
   const lastName = store.get('kx-name') || '';
-  let myEmoji = store.get('kx-emoji') || PUSSY_EMOJIS[0];
+  let myEmoji = PUSSY_EMOJIS.includes(store.get('kx-emoji')) ? store.get('kx-emoji') : PUSSY_EMOJIS[0];
   const ro = !state.canWrite;
   $('#app').innerHTML = `
     <div class="start">
@@ -2335,7 +2335,6 @@ function showCard(card, pid, mine, already) {
   const reveal = () => {
     l.querySelector('.card3d').classList.add('flipped');
     l.classList.remove('casting');
-    sayCardLine();
     const def = cardDef(card.id);
     dustBurst(90);
     if (isSecret(card)) { play('magic'); renderCardActions(card, pid, mine); return; }
@@ -2523,36 +2522,6 @@ function audioUnlock() {
   } catch {}
 }
 document.addEventListener('pointerdown', audioUnlock, { capture: true });
-/* ---------- Stimme beim Kartenumdrehen ---------- */
-const TTS = { ok: 'speechSynthesis' in window, unlocked: false, voice: null };
-function pickVoice() {
-  if (!TTS.ok) return null;
-  const v = speechSynthesis.getVoices();
-  return v.find(x => /samantha|ava|allison|susan|zira|female/i.test(x.name) && /^en/i.test(x.lang))
-    || v.find(x => /^en-US/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null;
-}
-if (TTS.ok) { TTS.voice = pickVoice(); speechSynthesis.onvoiceschanged = () => { TTS.voice = pickVoice(); }; }
-// iPhone: Sprachausgabe muss einmal durch ein Antippen (click/touchend) freigeschaltet werden
-function ttsUnlock() {
-  if (!TTS.ok || TTS.unlocked) return;
-  try { speechSynthesis.speak(new SpeechSynthesisUtterance('')); TTS.unlocked = true; } catch {}
-  if (!TTS.voice) TTS.voice = pickVoice();
-}
-['touchend', 'click'].forEach(ev => document.addEventListener(ev, ttsUnlock, { capture: true }));
-let lastUtter = null; // Referenz behalten, sonst verschluckt Safari die Ausgabe
-function sayCardLine() {
-  if (!TTS.ok || !SND.on) return;
-  try {
-    if (!TTS.voice) TTS.voice = pickVoice();
-    const u = new SpeechSynthesisUtterance('Wet Ass Pussy!');
-    u.lang = 'en-US';
-    if (TTS.voice) u.voice = TTS.voice;
-    u.rate = 0.95; u.pitch = 1.15;
-    lastUtter = u;
-    if (speechSynthesis.paused) speechSynthesis.resume();
-    speechSynthesis.speak(u);
-  } catch {}
-}
 function tone(freq, at, dur, type = 'sine', vol = 0.18, slideTo = null) {
   const c = SND.ctx, t = c.currentTime + at;
   const o = c.createOscillator(), g = c.createGain();
@@ -3273,7 +3242,6 @@ async function flipReveal(card, pid) {
   l.classList.add('casting'); fairyDust(1400); play('magic');
   await sleep(1400);
   l.classList.remove('casting'); l.querySelector('.card3d').classList.add('flipped');
-  sayCardLine();
   dustBurst(90);
   const def = cardDef(card.id);
   if (def.rar === 'legend') { rain(['👑', '💎', '✨'], 40); play('fanfare'); } else if (def.rar === 'bad') laughQuiet(); else { play('chime'); cheerFX(); }
@@ -4072,7 +4040,7 @@ function renderLobby() {
   const isHost = session.pid === host;
   const ro = !state.canWrite;
   const wa = `https://wa.me/?text=${encodeURIComponent(inviteText(session.code))}`;
-  const avatars = ['💖', '🌸', '🦄', '🎀', '🦋', '👑', '💅', '🌷', '✨', '🍓'];
+  const avatars = PUSSY_EMOJIS;
   $('#app').innerHTML = `
     <div class="lobby">
       <div class="deco" aria-hidden="true"><i>💖</i><i>🌸</i><i>✨</i><i>💕</i><i>🦋</i><i>🎀</i><i>🌷</i><i>💗</i></div>
@@ -4125,7 +4093,7 @@ const gameOver = room => {
   const ps = playersOf(room || {});
   return room && room.status !== 'lobby' && ps.length > 0 && ps.every(([, p]) => calc(p).filled === ALL.length);
 };
-const AVATARS = ['💖', '🌸', '🦄', '🎀', '🦋', '👑', '💅', '🌷', '✨', '🍓'];
+const AVATARS = PUSSY_EMOJIS;
 const avatarOf = (room, pid) => ((room.players[pid] || {}).emoji) || AVATARS[Math.max(0, orderOf(room).indexOf(pid)) % AVATARS.length];
 
 // Wird nach jedem Rendern aufgerufen: Banner statt Zug-Anzeige, Siegerehrung automatisch starten
