@@ -1,9 +1,10 @@
-// PusseyWürfel – Service Worker (macht die App installierbar, lädt immer die neueste Version)
-const CACHE = 'pussykniffel-v2';
+// PussyKniffel – Service Worker (macht die App installierbar, lädt immer die neueste Version)
+const CACHE = 'pussykniffel-v3';
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', 'index.html', 'icon-192.png', 'icon-512.png'])).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== CACHE).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
-  e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request, { ignoreSearch: true })));
+  const html = e.request.mode === 'navigate' || /\.html$|\/$/.test(u.pathname);
+  e.respondWith((html ? fetch(e.request.url, { cache: 'no-store' }) : fetch(e.request)).then(r => { const c = r.clone(); caches.open(CACHE).then(x => x.put(e.request, c)); return r; }).catch(() => caches.match(e.request, { ignoreSearch: true })));
 });
